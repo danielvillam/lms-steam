@@ -1,0 +1,11 @@
+services:
+  caq-frontend:
+    container_name: caq-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - ${APP_PORT-3000}:80
