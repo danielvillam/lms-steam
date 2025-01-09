@@ -34,11 +34,11 @@ export const AttachmentForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
-      toast.success("Course updated successfully");
+      toast.success("Curso actualizado correctamente");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     }
   };
 
@@ -46,10 +46,10 @@ export const AttachmentForm = ({
     try {
       setDeletingId(id);
       await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
-      toast.success("Attachment deleted successfully");
+      toast.success("Adjunto eliminado exitosamente");
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     } finally {
       setDeletingId(null);
     }
@@ -58,13 +58,13 @@ export const AttachmentForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course attachments
+        Anexos del curso
         <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>Cancel</>}
+          {isEditing && <>Cancelar</>}
           {!isEditing && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add a file
+              Añadir un archivo
             </>
           )}
         </Button>
@@ -73,7 +73,7 @@ export const AttachmentForm = ({
         <>
           {initialData.attachments.length === 0 && (
             <p className="text-sm mt-2 text-slate-500 italic">
-              No attachments yet
+              Aún no hay archivos adjuntos
             </p>
           )}
           {initialData.attachments.length > 0 && (
@@ -115,7 +115,7 @@ export const AttachmentForm = ({
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-            Add anything your student might need to complete the course.
+            Agregue todo lo que su estudiante pueda necesitar para completar el curso.
           </div>
         </div>
       )}

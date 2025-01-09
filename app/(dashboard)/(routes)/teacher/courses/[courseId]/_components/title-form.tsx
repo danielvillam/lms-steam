@@ -63,7 +63,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
         Course title
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
-            <>Cancel</>
+            <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />

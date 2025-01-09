@@ -69,7 +69,7 @@ export const ChapterTitleForm = ({
         Chapter title
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
-            <>Cancel</>
+            <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
@@ -103,7 +103,7 @@ export const ChapterTitleForm = ({
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Guardar
               </Button>
             </div>
           </form>

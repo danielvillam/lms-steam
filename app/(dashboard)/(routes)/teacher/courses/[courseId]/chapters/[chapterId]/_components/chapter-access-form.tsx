@@ -71,7 +71,7 @@ export const ChapterAccessForm = ({
         Chapter access
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
-            <>Cancel</>
+            <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
@@ -122,7 +122,7 @@ export const ChapterAccessForm = ({
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                Save
+                Guardar
               </Button>
             </div>
           </form>

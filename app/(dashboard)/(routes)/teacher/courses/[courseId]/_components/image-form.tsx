@@ -33,30 +33,30 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success("Course updated successfully");
+      toast.success("Curso actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     }
   };
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Course image
+        Imagen del curso
         <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>Cancel</>}
+          {isEditing && <>Cancelar</>}
           {!isEditing && !initialData.imageUrl && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add an image
+              Añadir una imagen
             </>
           )}
           {!isEditing && initialData.imageUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit image
+              Editar imagen
             </>
           )}
         </Button>
@@ -87,7 +87,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-            16:9 aspect ration recommended
+            Se recomienda una relación de aspecto de 16:9
           </div>
         </div>
       )}

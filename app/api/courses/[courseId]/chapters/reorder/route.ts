@@ -1,5 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
+import { ObjectId } from "mongodb";
 
 import { db } from "@/lib/db";
 
@@ -13,11 +14,12 @@ export async function PUT(
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
+    const { courseId } = params;
     const { list } = await req.json();
 
     const courseOwner = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId,
       },
     });
