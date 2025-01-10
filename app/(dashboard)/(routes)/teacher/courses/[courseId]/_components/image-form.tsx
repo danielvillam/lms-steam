@@ -73,6 +73,7 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
               fill
               className="object-cover rounded-md"
               src={initialData.imageUrl}
+              sizes="(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
           </div>
         ))}

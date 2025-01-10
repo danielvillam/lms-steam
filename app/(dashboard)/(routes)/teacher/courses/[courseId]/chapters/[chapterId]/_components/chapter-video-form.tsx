@@ -39,30 +39,30 @@ export const ChapterVideoForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Chapter updated successfully");
+      toast.success("Capítulo actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     }
   };
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Chapter video
+        Vídeo del capítulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && <>Cancelar</>}
           {!isEditing && !initialData.videoUrl && (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Add an video
+              Añadir un vídeo
             </>
           )}
           {!isEditing && initialData.videoUrl && (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit video
+              Editar vídeo
             </>
           )}
         </Button>
@@ -88,14 +88,14 @@ export const ChapterVideoForm = ({
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-            Upload this chapter&apos;s video
+            Sube el vídeo de este capítulo.
           </div>
         </div>
       )}
       {initialData.videoUrl && !isEditing && (
         <div className="text-xs text-muted-foreground mt-2">
-          Videos can take a few minutes to process. Refresh the page if the
-          video does not appear.
+          Los vídeos pueden tardar unos minutos en procesarse. Actualiza la página si
+          el vídeo no aparece.
         </div>
       )}
     </div>
