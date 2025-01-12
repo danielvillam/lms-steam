@@ -35,19 +35,19 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps)=> {
               variant="outline"
               role="combobox"
               aria-expanded={open}
-              className="w-[200px] justify-between"
+              className="w-full justify-between"
           >
             {value
                 ? options.find((option) => option.value === value)?.label
-                : "Select framework..."}
-            <ChevronsUpDown className="opacity-50" />
+                : "Seleccione la categoría..."}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-full p-0">
           <Command>
-            <CommandInput placeholder="Search framework..." className="h-9" />
+            <CommandInput placeholder="Buscar categoría" className="h-9" />
             <CommandList>
-              <CommandEmpty>No framework found.</CommandEmpty>
+              <CommandEmpty>No se encontró ninguna categoría.</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
                     <CommandItem

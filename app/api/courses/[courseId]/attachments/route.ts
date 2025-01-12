@@ -9,6 +9,7 @@ export async function POST(
 ) {
   try {
     const { userId } = await auth();
+    const { courseId } = await params;
     const { url } = await req.json();
 
     if (!userId) {
@@ -17,7 +18,7 @@ export async function POST(
 
     const courseOwner = await db.course.findUnique({
       where: {
-        id: params.courseId,
+        id: courseId,
         userId,
       },
     });
@@ -30,7 +31,7 @@ export async function POST(
       data: {
         url,
         name: url.split("/").pop(),
-        courseId: params.courseId,
+        courseId: courseId,
       },
     });
 

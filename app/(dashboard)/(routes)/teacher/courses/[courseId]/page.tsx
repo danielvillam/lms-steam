@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import {
-  CircleDollarSign,
   File,
   LayoutDashboard,
   ListChecks,
@@ -16,6 +15,8 @@ import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
+import { SkillsForm } from './_components/skills-form';
+import { LevelForm } from './_components/level-form';
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = await auth();
@@ -62,6 +63,8 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const requiredFields = [
     course.title,
     course.description,
+    course.level,
+    course.skills,
     course.imageUrl,
     course.categoryId,
     course.chapters.some((chapter: { isPublished: boolean }) => chapter.isPublished),
@@ -90,6 +93,8 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           </div>
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
+          <LevelForm initialData={course} courseId={course.id} />
+          <SkillsForm initialData={course} courseId={course.id} />
           <ImageForm initialData={course} courseId={course.id} />
           <CategoryForm
             initialData={course}
