@@ -55,25 +55,25 @@ export const ChapterTitleForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Chapter updated successfully");
+      toast.success("Capítulo actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     }
   };
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Chapter title
+        Título del capítulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit title
+              Editar título
             </>
           )}
         </Button>
@@ -93,7 +93,7 @@ export const ChapterTitleForm = ({
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Intro to the course'"
+                      placeholder="p.ej. 'Introducción al curso'"
                       {...field}
                     />
                   </FormControl>

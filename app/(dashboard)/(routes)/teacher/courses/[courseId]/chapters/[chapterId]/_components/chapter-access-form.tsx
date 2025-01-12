@@ -28,7 +28,7 @@ interface ChapterAccessFormProps {
 }
 
 const formSchema = z.object({
-  isFree: z.boolean().default(false),
+  isEnabled: z.boolean().default(false),
 });
 
 export const ChapterAccessForm = ({
@@ -45,7 +45,7 @@ export const ChapterAccessForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isFree: !!initialData.isFree,
+      isEnabled: !!initialData.isEnabled,
     },
   });
 
@@ -57,25 +57,25 @@ export const ChapterAccessForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Chapter updated successfully");
+      toast.success("Capítulo actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     }
   };
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Chapter access
+        Acceso al capítulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Edit access
+              Editar acceso
             </>
           )}
         </Button>
@@ -84,13 +84,13 @@ export const ChapterAccessForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.isFree && "text-slate-500 italic"
+            !initialData.isEnabled && "text-slate-500 italic"
           )}
         >
-          {initialData.isFree ? (
-            <>This chapter is free for preview</>
+          {initialData.isEnabled ? (
+            <>Este capítulo esta activo para vista previa.</>
           ) : (
-            <>This chapter is not free.</>
+            <>Este capitulo no esta activo para vista previa..</>
           )}
         </p>
       )}
@@ -102,7 +102,7 @@ export const ChapterAccessForm = ({
           >
             <FormField
               control={form.control}
-              name="isFree"
+              name="isEnabled"
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
                   <FormControl>
@@ -113,8 +113,8 @@ export const ChapterAccessForm = ({
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormDescription>
-                      Check this box if you want to make this chapter free for
-                      preview
+                      Marque esta casilla si desea que este capítulo esté activo para obtener una vista
+                      previa.
                     </FormDescription>
                   </div>
                 </FormItem>
