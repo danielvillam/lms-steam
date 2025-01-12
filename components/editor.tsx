@@ -1,24 +1,43 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useMemo } from "react";
+interface CustomElement extends BaseElement {
+    type: string;
+    children: Descendant[];
+}
 
-import "react-quill/dist/quill.snow.css";
+type CustomDescendant = CustomElement | Descendant;
+import React, { useCallback, useMemo, useState } from "react";
+import { createEditor, Descendant, BaseElement } from 'slate';
+import { Slate, Editable, withReact } from "slate-react";
 
 interface EditorProps {
-  onChange: (value: string) => void;
-  value: string;
+    onChange: (value: string) => void;
+    value: string;
 }
 
 export const Editor = ({ onChange, value }: EditorProps) => {
-  const ReactQuill = useMemo(
-    () => dynamic(() => import("react-quill"), { ssr: false }),
-    []
-  );
+    const editor = useMemo(() => withReact(createEditor()), []);
+    const [editorValue, setEditorValue] = useState<CustomDescendant[]>([
+        {
+            type: "paragraph",
+            children: [{ text: value || "Escribe algo aquí..." }],
+        },
+    ]);
 
-  return (
-    <div className="bg-white">
-      <ReactQuill theme="snow" value={value} onChange={onChange} />
-    </div>
-  );
+    const handleChange = useCallback(
+        (newValue: any) => {
+            setEditorValue(newValue);
+            const plainText = newValue.map((node: any) => node.children[0].text).join("\n");
+            onChange(plainText);
+        },
+        [onChange]
+    );
+
+    return (
+        <div className="bg-white p-4 border rounded">
+            <Slate editor={editor} initialValue={editorValue} onChange={handleChange}>
+                <Editable placeholder="Escribe algo aquí..." />
+            </Slate>
+        </div>
+    );
 };

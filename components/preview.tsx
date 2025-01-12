@@ -1,19 +1,41 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useMemo } from "react";
+interface CustomElement extends BaseElement {
+  type: string;
+  children: Descendant[];
+}
 
-import "react-quill/dist/quill.bubble.css";
+type CustomDescendant = CustomElement | Descendant;
+import React, { useCallback, useMemo, useState } from "react";
+import { createEditor, Descendant, BaseElement } from 'slate';
+import { Slate, Editable, withReact } from "slate-react";
 
 interface PreviewProps {
   value: string;
 }
 
 export const Preview = ({ value }: PreviewProps) => {
-  const ReactQuill = useMemo(
-    () => dynamic(() => import("react-quill"), { ssr: false }),
-    []
+  const editor = useMemo(() => withReact(createEditor()), []);
+  const [editorValue, setEditorValue] = useState<CustomDescendant[]>([
+    {
+      type: "paragraph",
+      children: [{ text: value || "Escribe algo aquí..." }],
+    },
+  ]);
+
+  const handleChange = useCallback(
+      (newValue: any) => {
+        setEditorValue(newValue);
+        const plainText = newValue.map((node: any) => node.children[0].text).join("\n");
+      },
+      []
   );
 
-  return <ReactQuill theme="bubble" value={value} readOnly />;
+  return (
+      <div className="bg-white p-4 border rounded">
+        <Slate editor={editor} initialValue={editorValue}>
+          <Editable placeholder="Escribe algo aquí..." />
+        </Slate>
+      </div>
+  );
 };
