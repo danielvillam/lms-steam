@@ -21,21 +21,21 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
-interface DescriptionFormProps {
+interface SkillsFormProps {
   initialData: Course;
   courseId: string;
 }
 
 const formSchema = z.object({
-  description: z.string().min(1, {
-    message: "Se requiere descripción",
+  skills: z.string().min(1, {
+    message: "Se requiere habilidades previas",
   }),
 });
 
-export const DescriptionForm = ({
+export const SkillsForm = ({
   initialData,
   courseId,
-}: DescriptionFormProps) => {
+}: SkillsFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -45,7 +45,7 @@ export const DescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || "",
+      skills: initialData?.skills || "",
     },
   });
 
@@ -65,14 +65,14 @@ export const DescriptionForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Descripción del curso
+        Habilidades previas del curso
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Editar descripción
+              Editar habilidades previas
             </>
           )}
         </Button>
@@ -81,10 +81,10 @@ export const DescriptionForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.description && "text-slate-500 italic"
+            !initialData.skills && "text-slate-500 italic"
           )}
         >
-          {initialData.description || "Sin descripción"}
+          {initialData.skills || "Sin habilidades previas"}
         </p>
       )}
       {isEditing && (
@@ -95,13 +95,13 @@ export const DescriptionForm = ({
           >
             <FormField
               control={form.control}
-              name="description"
+              name="skills"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
-                      placeholder="por ejemplo, 'Este curso trata sobre...'"
+                      placeholder="por ejemplo, 'Inteligencia empresarial, Python...'"
                       {...field}
                     />
                   </FormControl>
