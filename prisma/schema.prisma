@@ -13,7 +13,8 @@ model Course {
   title       String
   description String?
   imageUrl    String?
-  price       Float?
+  skills      String?
+  level       String?
   isPublished Boolean @default(false)
 
   categoryId String?   @db.ObjectId
@@ -21,7 +22,7 @@ model Course {
 
   chapters    Chapter[]
   attachments Attachment[]
-  purchases   Purchase[]
+  registered  Registration[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -52,7 +53,7 @@ model Chapter {
   videoUrl    String?
   position    Int
   isPublished Boolean @default(false)
-  isFree      Boolean @default(false)
+  isEnabled   Boolean @default(false)
 
   muxData MuxData?
 
@@ -87,12 +88,12 @@ model UserProgress {
   updatedAt DateTime @updatedAt
 }
 
-model Purchase {
+model Registration {
   id     String @id @default(auto()) @map("_id") @db.ObjectId
   userId String
 
   courseId String @db.ObjectId
-  course   Course @relation(fields: [courseId], references: [id])
+  course Course? @relation(fields: [courseId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
