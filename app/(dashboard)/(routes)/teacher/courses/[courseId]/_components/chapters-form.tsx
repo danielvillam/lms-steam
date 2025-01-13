@@ -114,7 +114,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="por ejemplo, 'Introducción al curso.'"
+                      placeholder="p.ej. 'Introducción al curso.'"
                       {...field}
                     />
                   </FormControl>

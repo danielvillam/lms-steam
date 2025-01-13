@@ -101,7 +101,7 @@ export const SkillsForm = ({
                   <FormControl>
                     <Textarea
                       disabled={isSubmitting}
-                      placeholder="por ejemplo, 'Inteligencia empresarial, Python...'"
+                      placeholder="p.ej. 'Inteligencia empresarial, Python...'"
                       {...field}
                     />
                   </FormControl>
