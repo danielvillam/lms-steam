@@ -10,8 +10,11 @@ const mux = new Mux({
 });
 
 export async function DELETE(
-    { params }: { params: { courseId: string; chapterId: string } }
-) { try {
+    req: Request,
+    props: { params: Promise<{ courseId: string; chapterId: string }> }
+) {
+  const params = await props.params;
+  try {
     const { userId } = await auth();
     const { courseId, chapterId } = params;
 
@@ -91,8 +94,9 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { courseId: string; chapterId: string } }
+  props: { params: Promise<{ courseId: string; chapterId: string }> }
 ) {
+  const params = await props.params;
   try {
     const { userId } = await auth();
     const { courseId, chapterId } = params;
