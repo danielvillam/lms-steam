@@ -1,6 +1,6 @@
 "use client";
 
-import { Search, List, Contact } from "lucide-react";
+import { Search, List, Contact, BarChart, Text } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { SidebarItem } from "./sidebar-item";
 
@@ -29,9 +29,14 @@ const teacherRoutes = [
     href: "/teacher/courses",
   },
   {
-    icon: Contact,
-    label: "Quienes Somos",
+    icon: BarChart,
+    label: "Analítica",
     href: "/teacher/analytics",
+  },
+  {
+    icon: Text,
+    label: "Prestamos",
+    href: "/teacher/pres",
   },
 ];
 
