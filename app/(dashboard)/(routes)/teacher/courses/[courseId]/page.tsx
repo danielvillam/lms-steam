@@ -20,22 +20,27 @@ import { SkillsForm } from './_components/skills-form';
 import { LevelForm } from './_components/level-form';
 import { Actions } from './_components/actions';
 
-const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
+const CourseIdPage = async ({
+                              params: asyncParams,
+ }: {
+  params: {
+    courseId: string;
+  }; }) => {
+  const params = await asyncParams;
+
   const { userId } = await auth();
 
-  const { courseId } = await params
-  
   if (!userId) {
     return redirect("/");
   }
 
-  if (!courseId) {
+  if (!params.courseId) {
     return redirect("/");
   }
 
   const course = await db.course.findUnique({
     where: {
-      id: courseId,
+      id: params.courseId,
       userId,
     },
     include: {
@@ -96,7 +101,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
             </div>
             <Actions
               disabled={!isComplete}
-              courseId={courseId}
+              courseId={params.courseId}
               isPublished={course.isPublished}
             />
           </div>

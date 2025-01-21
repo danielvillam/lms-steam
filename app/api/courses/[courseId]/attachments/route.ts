@@ -4,12 +4,13 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 
 export async function POST(
-  req: Request,
-  { params }: { params: { courseId: string } }
+    req: Request,
+    { params: asyncParams }: { params: { courseId: string } }
 ) {
   try {
+    const params = await asyncParams;
+
     const { userId } = await auth();
-    const { courseId } = await params;
     const { url } = await req.json();
 
     if (!userId) {
@@ -18,7 +19,7 @@ export async function POST(
 
     const courseOwner = await db.course.findUnique({
       where: {
-        id: courseId,
+        id: params.courseId,
         userId,
       },
     });
@@ -31,7 +32,7 @@ export async function POST(
       data: {
         url,
         name: url.split("/").pop(),
-        courseId: courseId,
+        courseId: params.courseId,
       },
     });
 

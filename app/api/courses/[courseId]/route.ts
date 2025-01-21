@@ -11,11 +11,12 @@ const mux = new Mux({
 
 export async function DELETE(
     req: Request,
-    { params }: { params: { courseId: string } }
+    { params: asyncParams }: { params: { courseId: string } }
 ) {
   try {
+    const params = await asyncParams;
+
     const { userId } = await auth();
-    const { courseId } = await params;
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -23,7 +24,7 @@ export async function DELETE(
 
     const course = await db.course.findUnique({
       where: {
-        id: courseId,
+        id: params.courseId,
         userId: userId,
       },
       include: {
@@ -64,21 +65,21 @@ export async function DELETE(
     // Elimina los capítulos
     await db.chapter.deleteMany({
       where: {
-        courseId: courseId,
+        courseId: params.courseId,
       },
     });
 
     // Elimina los attachments relacionados
     await db.attachment.deleteMany({
       where: {
-        courseId: courseId,
+        courseId: params.courseId,
       },
     });
 
     // Finalmente, elimina el curso
     const deletedCourse = await db.course.delete({
       where: {
-        id: courseId,
+        id: params.courseId,
       },
     });
 
@@ -91,12 +92,13 @@ export async function DELETE(
 
 
 export async function PATCH(
-  req: Request,
-  { params }: { params: { courseId: string } }
+    req: Request,
+    { params: asyncParams }: { params: { courseId: string } }
 ) {
   try {
+    const params = await asyncParams;
+
     const { userId } = await auth();
-    const { courseId } = await params;
     const values = await req.json();
 
     if (!userId) {
@@ -105,7 +107,7 @@ export async function PATCH(
 
     const course = await db.course.update({
       where: {
-        id: courseId,
+        id: params.courseId,
         userId,
       },
       data: {

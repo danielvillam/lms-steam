@@ -58,9 +58,9 @@ export const LevelForm = ({ initialData, courseId }: LevelFormProps) => {
   };
 
   const options = [
-    { label: "Principiante", value: "principiante" },
-    { label: "Intermedio", value: "intermedio" },
-    { label: "Avanzado", value: "avanzado" },
+    { label: "Principiante", value: "Principiante" },
+    { label: "Intermedio", value: "Intermedio" },
+    { label: "Avanzado", value: "Avanzado" },
   ];
 
   const selectedOption = options.find(

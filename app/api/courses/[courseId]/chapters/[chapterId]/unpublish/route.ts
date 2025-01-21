@@ -5,11 +5,11 @@ import { db } from '@/lib/db';
 
 export async function PATCH(
     req: Request,
-        { params }: { params: {courseId: string; chapterId: string } }
+    { params: asyncParams }: { params: { courseId: string, chapterId: string } },
 ) {
     try {
+        const params = await asyncParams;
         const { userId } = await auth();
-        const { courseId, chapterId } = await params;
 
         if (!userId) {
             return new NextResponse("Unauthorized", { status: 401 });
@@ -17,7 +17,7 @@ export async function PATCH(
 
         const ownCourse = await db.course.findUnique({
             where: {
-                id: courseId,
+                id: params.courseId,
                 userId,
             }
         });
@@ -28,8 +28,8 @@ export async function PATCH(
 
         const unpublishedChapter = await db.chapter.update({
             where: {
-                id: chapterId,
-                courseId: courseId,
+                id: params.chapterId,
+                courseId: params.courseId,
             },
             data: {
                 isPublished: false,
@@ -38,7 +38,7 @@ export async function PATCH(
 
         const publishedChaptersInCourse = await db.chapter.findMany({
             where: {
-                courseId: courseId,
+                courseId: params.courseId,
                 isPublished: true,
             }
         });
@@ -46,7 +46,7 @@ export async function PATCH(
         if (!publishedChaptersInCourse.length) {
             await db.course.update({
                 where: {
-                    id: courseId,
+                    id: params.courseId,
                 },
                 data: {
                     isPublished: false,
