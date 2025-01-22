@@ -1,19 +1,31 @@
 import { db } from '@/lib/db';
-import { Course, Purchase } from '@prisma/client';
+import { Registration } from '@prisma/client';
 
-type PurchaseWithCourse = Purchase & {
-    course: Course;
+type RegistrationWithCourse = Registration & {
+    course: {
+        id: string;
+        userId: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        imageUrl: string | null;
+        skills: string | null;
+        level: string | null;
+        isPublished: boolean;
+        categoryId: string | null;
+    };
 };
 
-const groupByCourse = (purchases: PurchaseWithCourse[]) => {
+const groupByCourse = (registrations: RegistrationWithCourse[]) => {
     const grouped: { [courseTitle: string]: number } = {};
 
-    purchases.forEach((purchase) => {
-        const courseTitle = purchase.course.title;
+    registrations.forEach((registration) => {
+        const courseTitle = registration.course.title;
         if (!grouped[courseTitle]) {
             grouped[courseTitle] = 0;
         }
-        grouped[courseTitle] += purchase.course.price!;
+        grouped[courseTitle] += 1; // Contar inscripciones
     });
 
     return grouped;
@@ -21,7 +33,7 @@ const groupByCourse = (purchases: PurchaseWithCourse[]) => {
 
 export const getAnalytics = async (userId: string) => {
     try {
-        const purchases = await db.purchase.findMany({
+        const registered = await db.registration.findMany({
             where: {
                 course: {
                     userId: userId,
@@ -32,28 +44,34 @@ export const getAnalytics = async (userId: string) => {
             },
         });
 
-        const groupedEarnings = groupByCourse(purchases);
-        const data = Object.entries(groupedEarnings).map(
+        // Normalizar datos para garantizar el tipado
+        const normalized = registered.map((registration) => {
+            if (!registration.course) {
+                throw new Error('Registration with null course found');
+            }
+            return registration as RegistrationWithCourse;
+        });
+
+        const groupedRegistrations = groupByCourse(normalized);
+
+        const data = Object.entries(groupedRegistrations).map(
             ([courseTitle, total]) => ({
                 name: courseTitle,
                 total: total,
             })
         );
 
-        const totalRevenue = data.reduce((acc, curr) => acc + curr.total, 0);
-        const totalSales = purchases.length;
+        const totalRegistrations = registered.length;
 
         return {
             data,
-            totalRevenue,
-            totalSales,
+            totalRegistrations,
         };
     } catch (error) {
         console.log('[GET_ANALYTICS]', error);
         return {
             data: [],
-            totalRevenue: 0,
-            totalSales: 0,
+            totalRegistrations: 0,
         };
     }
 };

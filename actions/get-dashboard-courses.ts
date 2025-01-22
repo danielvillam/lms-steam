@@ -18,7 +18,7 @@ export const getDashboardCourses = async (
     userId: string
 ): Promise<DashboardCourses> => {
     try {
-        const purchasedCourses = await db.registration.findMany({
+        const registeredCourses = await db.registration.findMany({
             where: {
                 userId: userId,
             },
@@ -36,8 +36,8 @@ export const getDashboardCourses = async (
             },
         });
 
-        const courses = purchasedCourses.map(
-            (purchase) => purchase.course
+        const courses = registeredCourses.map(
+            (registered) => registered.course
         ) as CourseWithProgressWithCategory[];
 
         for (let course of courses) {
