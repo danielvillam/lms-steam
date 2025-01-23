@@ -1,15 +1,17 @@
 import { NextResponse } from 'next/server';
 import { currentUser } from '@clerk/nextjs/server';
 
-import { db } from '@/lib/db'
-import toast from 'react-hot-toast';
+import { db } from '@/lib/db';
 
 export async function POST(
     req: Request,
-    { params: asyncParams }: { params: { courseId: string } },
+    props: {
+        params: Promise<{ courseId: string }>;
+    }
 ) {
     try {
-        const params = await asyncParams;
+        const params = await props.params;
+
         const user = await currentUser();
         if (!user || !user.id || !user.emailAddresses[0].emailAddress) {
             return new NextResponse('Unauthorized', { status: 401 });
@@ -40,12 +42,11 @@ export async function POST(
 
         await db.registration.create({
             data: {
-                userId: user.id,
                 courseId: course.id,
+                userId: user.id,
             },
         });
 
-        toast.success('Registro exitoso');
         return NextResponse.json({ url: `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}?success=1` });
     } catch (error) {
         console.log('[COURSE_ID_CHECKOUT]', error);

@@ -1,19 +1,21 @@
-import { auth } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { auth } from '@clerk/nextjs/server';
+import { NextResponse } from 'next/server';
 
-import { db } from "@/lib/db";
+import { db } from '@/lib/db';
 import { isTeacher } from '@/lib/teacher';
 
 export async function DELETE(
     req: Request,
-    { params: asyncParams }: { params: { courseId: string, attachmentId: string } }
+    props: {
+      params: Promise<{ attachmentId: string; courseId: string }>;
+    }
 ) {
   try {
-    const params = await asyncParams;
+    const params = await props.params;
     const { userId } = await auth();
 
     if (!userId || !isTeacher(userId)) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
     const courseOwner = await db.course.findUnique({
@@ -24,7 +26,7 @@ export async function DELETE(
     });
 
     if (!courseOwner) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse('Unauthorized', { status: 401 });
     }
 
     const attachment = await db.attachment.delete({
@@ -36,7 +38,7 @@ export async function DELETE(
 
     return NextResponse.json(attachment);
   } catch (error) {
-    console.log("[ATTACHMENT_ID]", error);
-    return new NextResponse("Internal error", { status: 500 });
+    console.log('[ATTACHMENT_ID]', error);
+    return new NextResponse('Internal error', { status: 500 });
   }
 }

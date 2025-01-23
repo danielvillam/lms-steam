@@ -10,16 +10,12 @@ import { CourseEnrollButton } from './_components/course-enroll-button';
 import { CourseProgressButton } from './_components/course-progress-button';
 import { VideoPlayer } from './_components/video-player';
 
-const ChapterIdPage = async ({
-                                 params: asyncParams,
-}: {
-    params: {
-        courseId: string;
-        chapterId: string;
-    };
-}) => {
-    const params = await asyncParams;
-
+export default async function ChapterIdPage(
+    props: {
+        params: Promise<{ chapterId: string; courseId: string }>;
+    }
+) {
+    const params = await props.params;
     const { userId } = await auth();
 
     if (!userId) {
@@ -111,6 +107,4 @@ const ChapterIdPage = async ({
             </div>
         </div>
     );
-};
-
-export default ChapterIdPage;
+}

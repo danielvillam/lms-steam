@@ -10,17 +10,18 @@ import { Categories } from './_components/categories';
 
 interface SearchPageProps {
     searchParams: {
-        title?: string;
         categoryId?: string;
+        title?: string;
     };
 }
 
-const SearchPage = async ({
-                              searchParams: asyncSearchParams,
-                          }: SearchPageProps) => {
+export const dynamic = 'force-dynamic';
 
-    const searchParams = await asyncSearchParams;
+export default async function SearchPage({ searchParams, }: {
+    searchParams: Promise<SearchPageProps['searchParams']>;
+}) {
 
+    const resolvedSearchParams = await searchParams;
     const { userId } = await auth();
 
     if (!userId) {
@@ -35,7 +36,7 @@ const SearchPage = async ({
 
     const courses = await getCourses({
         userId,
-        ...searchParams,
+        ...resolvedSearchParams,
     });
 
     return (
@@ -49,7 +50,5 @@ const SearchPage = async ({
             </div>
         </>
     );
-};
-
-export default SearchPage;
+}
 

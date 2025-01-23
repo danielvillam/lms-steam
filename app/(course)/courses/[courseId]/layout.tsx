@@ -7,14 +7,15 @@ import { db } from '@/lib/db';
 import { CourseSidebar } from './_components/course-sidebar';
 import { CourseNavbar } from './_components/course-navbar';
 
-interface CourseLayoutProps {
-    children: React.ReactNode;
-    params: { courseId: string };
-}
+export default async function CourseLayout(
+    props: {
+        params: Promise<{ courseId: string }>;
+        children: React.ReactNode;
+    }
+) {
+    const params = await props.params;
 
-const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
     const { userId } = await auth();
-    const { courseId } = await params;
 
     if (!userId) {
         return redirect('/');
@@ -22,7 +23,7 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
 
     const course = await db.course.findUnique({
         where: {
-            id: courseId,
+            id: params.courseId,
         },
         include: {
             chapters: {
@@ -57,9 +58,7 @@ const CourseLayout = async ({ children, params }: CourseLayoutProps) => {
             <div className="fixed inset-y-0 z-50 flex-col hidden h-full md:flex w-80">
                 <CourseSidebar course={course} progressCount={progressCount} />
             </div>
-            <main className="md:pl-80 pt-[80px] h-full">{children}</main>
+            <main className="md:pl-80 pt-[80px] h-full">{props.children}</main>
         </div>
     );
 };
-
-export default CourseLayout;

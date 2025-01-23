@@ -11,11 +11,12 @@ const mux = new Mux({
 
 export async function DELETE(
     req: Request,
-    { params: asyncParams }: { params: { courseId: string } }
+    props: {
+      params: Promise<{ courseId: string }>;
+    }
 ) {
   try {
-    const params = await asyncParams;
-
+    const params = await props.params;
     const { userId } = await auth();
 
     if (!userId) {
@@ -93,11 +94,12 @@ export async function DELETE(
 
 export async function PATCH(
     req: Request,
-    { params: asyncParams }: { params: { courseId: string } }
+    props: {
+      params: Promise<{ courseId: string }>;
+    }
 ) {
   try {
-    const params = await asyncParams;
-
+    const params = await props.params;
     const { userId } = await auth();
     const values = await req.json();
 

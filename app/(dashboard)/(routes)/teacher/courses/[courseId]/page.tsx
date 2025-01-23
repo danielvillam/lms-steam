@@ -20,14 +20,12 @@ import { SkillsForm } from './_components/skills-form';
 import { LevelForm } from './_components/level-form';
 import { Actions } from './_components/actions';
 
-const CourseIdPage = async ({
-                              params: asyncParams,
- }: {
-  params: {
-    courseId: string;
-  }; }) => {
-  const params = await asyncParams;
-
+export default async function CourseIdPage(
+  props: {
+      params: Promise<{ courseId: string }>;
+  }
+) {
+  const params = await props.params;
   const { userId } = await auth();
 
   if (!userId) {
@@ -145,6 +143,4 @@ const CourseIdPage = async ({
         </div>
       </>
   );
-};
-
-export default CourseIdPage;
+}

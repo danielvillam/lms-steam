@@ -5,14 +5,16 @@ import { db } from '@/lib/db';
 
 export async function PATCH(
     req: Request,
-    { params: asyncParams }: { params: { courseId: string, chapterId: string } },
+    props: {
+        params: Promise<{ chapterId: string; courseId: string }>;
+    }
 ) {
     try {
-        const params = await asyncParams;
+        const params = await props.params;
         const { userId } = await auth();
 
         if (!userId) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return new NextResponse('Unauthorized', { status: 401 });
         }
 
         const ownCourse = await db.course.findUnique({
@@ -23,13 +25,13 @@ export async function PATCH(
         });
 
         if (!ownCourse) {
-            return new NextResponse("Unauthorized", { status: 401 });
+            return new NextResponse('Unauthorized', { status: 401 });
         }
 
         const chapter = await db.chapter.findUnique({
             where: {
-                id: params.chapterId,
                 courseId: params.courseId,
+                id: params.chapterId,
             }
         });
 
@@ -40,22 +42,22 @@ export async function PATCH(
         });
 
         if(!chapter || !muxData || !chapter.title || !chapter.description || !chapter.videoUrl) {
-            return new NextResponse("Faltan campos obligatorios", { status: 400 })
+            return new NextResponse('Faltan campos obligatorios', { status: 400 });
         }
 
         const publishedChapter = await db.chapter.update({
-            where: {
-                id: params.chapterId,
-                courseId: params.courseId,
-            },
             data: {
                 isPublished: true,
+            },
+            where: {
+                courseId: params.courseId,
+                id: params.chapterId,
             }
         });
 
         return NextResponse.json(publishedChapter);
     } catch (error) {
-        console.log("[CHAPTER_PUBLISH]", error);
-        return new NextResponse("Internal Error", { status: 500 });
+        console.log('[CHAPTER_PUBLISH]', error);
+        return new NextResponse('Internal Error', { status: 500 });
     }
 }

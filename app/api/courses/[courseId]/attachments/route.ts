@@ -6,10 +6,12 @@ import { isTeacher } from '@/lib/teacher';
 
 export async function POST(
     req: Request,
-    { params: asyncParams }: { params: { courseId: string } }
+    props: {
+      params: Promise<{ courseId: string }>;
+    }
 ) {
   try {
-    const params = await asyncParams;
+    const params = await props.params;
 
     const { userId } = await auth();
     const { url } = await req.json();
