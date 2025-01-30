@@ -16,7 +16,7 @@ export async function POST(
     const { userId } = await auth();
     const { url } = await req.json();
 
-    if (!userId || isTeacher(userId)) {
+    if (!userId || !isTeacher(userId)) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 

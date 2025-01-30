@@ -39,7 +39,7 @@ export const Combobox = ({ options, value, onChange }: ComboboxProps)=> {
           >
             {value
                 ? options.find((option) => option.value === value)?.label
-                : "Seleccione la categoría..."}
+                : "Seleccione una opción..."}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

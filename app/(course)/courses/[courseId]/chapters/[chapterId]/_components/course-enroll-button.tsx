@@ -34,7 +34,7 @@ const CourseEnrollButton = ({ courseId }: CourseEnrollButtonProps) => {
             size="sm"
             className="w-full md:w-auto"
         >
-            Enroll for {}
+            Inscribirse
         </Button>
     );
 };

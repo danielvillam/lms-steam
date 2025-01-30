@@ -19,7 +19,7 @@ interface ImageFormProps {
 
 const formSchema = z.object({
   imageUrl: z.string().min(1, {
-    message: "Image is required",
+    message: "Se requiere imagen",
   }),
 });
 
@@ -80,13 +80,14 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
       {isEditing && (
         <div>
           <FileUpload
-            endpoint="courseImage"
-            onChange={(url) => {
-              if (url) {
-                onSubmit({ imageUrl: url });
-              }
-            }}
+              endpoint="courseImage"
+              action={(url) => {
+                if (url) {
+                  onSubmit({ imageUrl: url });
+                }
+              }}
           />
+
           <div className="text-xs text-muted-foreground mt-4">
             Se recomienda una relación de aspecto de 16:9
           </div>

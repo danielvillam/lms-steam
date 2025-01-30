@@ -1,7 +1,4 @@
 import { Category, Course } from "@prisma/client";
-import { Simulate } from 'react-dom/test-utils';
-import progress = Simulate.progress;
-
 import { CourseCard } from '@/components/course-card';
 
 type CourseWithProgressWithCategory = Course & {

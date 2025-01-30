@@ -108,14 +108,14 @@ export const AttachmentForm = ({
         <div>
           <FileUpload
             endpoint="courseAttachment"
-            onChange={(url) => {
+            action={(url) => {
               if (url) {
                 onSubmit({ url: url });
               }
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-            Agregue todo lo que su estudiante pueda necesitar para completar el curso.
+            Agregue lo que su estudiante pueda necesitar para completar el curso.
           </div>
         </div>
       )}
