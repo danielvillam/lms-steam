@@ -1,5 +1,4 @@
 import { auth } from '@clerk/nextjs/server';
-import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
 import { SearchInput } from '@/components/search-input';
@@ -22,11 +21,9 @@ export default async function SearchPage({ searchParams, }: {
 }) {
 
     const resolvedSearchParams = await searchParams;
-    const { userId } = await auth();
+    const { userId, redirectToSignIn } = await auth()
 
-    if (!userId) {
-        return redirect('/');
-    }
+    if (!userId) return redirectToSignIn()
 
     const categories = await db.category.findMany({
         orderBy: {

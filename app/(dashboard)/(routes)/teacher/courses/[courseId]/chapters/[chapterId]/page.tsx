@@ -19,11 +19,9 @@ export default async function ChapterIdPage(
   }
 ) {
   const params = await props.params;
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth()
 
-  if (!userId) {
-    return redirect("/");
-  }
+  if (!userId) return redirectToSignIn()
 
   const chapter = await db.chapter.findUnique({
     where: {

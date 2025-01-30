@@ -26,11 +26,9 @@ export default async function CourseIdPage(
   }
 ) {
   const params = await props.params;
-  const { userId } = await auth();
+  const { userId, redirectToSignIn } = await auth();
 
-  if (!userId) {
-    return redirect("/");
-  }
+  if (!userId) return redirectToSignIn()
 
   if (!params.courseId) {
     return redirect("/");

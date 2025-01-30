@@ -1,5 +1,4 @@
 import { Chapter, Course, UserProgress } from '@prisma/client';
-import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs/server';
@@ -19,11 +18,9 @@ const CourseSidebar = async ({
     course,
     progressCount
 }: CourseSidebarProps) => {
-    const { userId } = await auth();
+    const { userId, redirectToSignIn } = await auth()
 
-    if (!userId) {
-        return redirect('/');
-    }
+    if (!userId) return redirectToSignIn()
 
     const purchase = await db.registration.findFirst({
         where: {
