@@ -6,8 +6,7 @@ const config: Config = {
 		'./components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
-    darkMode: ['class'],
-	// eslint-disable-next-line @typescript-eslint/no-require-imports
+    darkMode: 'class',
 	plugins: [require('tailwindcss-animate')],
 	theme: {
   	extend: {
