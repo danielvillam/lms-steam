@@ -10,6 +10,9 @@ import { CourseEnrollButton } from './_components/course-enroll-button';
 import { CourseProgressButton } from './_components/course-progress-button';
 import { VideoPlayer } from './_components/video-player';
 
+/**
+ * Page component for displaying a specific chapter.
+ */
 export default async function ChapterIdPage(
     props: {
         params: Promise<{ chapterId: string; courseId: string }>;
@@ -43,11 +46,11 @@ export default async function ChapterIdPage(
     return (
         <div>
             {userProgress?.isCompleted && (
-                <Banner label="You've completed this chapter" variant="success" />
+                <Banner label="Has completado este capítulo" variant="success" />
             )}
             {isLocked && (
                 <Banner
-                    label="You need to purchase this course to watch this course"
+                    label="Necesitas inscribirte en este curso para poder visualizarlo"
                     variant="warning"
                 />
             )}

@@ -19,6 +19,9 @@ interface VideoPlayerProps {
     title: string;
 }
 
+/**
+ * Video player component for course chapters.
+ */
 const VideoPlayer = ({
                          chapterId,
                          completeOnEnd,

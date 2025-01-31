@@ -18,6 +18,10 @@ interface ChapterVideoFormProps {
   chapterId: string;
 }
 
+/**
+ * A form to upload or edit a chapter's video.
+ * Allows toggling between viewing and editing the video.
+ */
 const formSchema = z.object({
   videoUrl: z.string().min(1),
 });

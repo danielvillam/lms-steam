@@ -3,6 +3,11 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
+/**
+ * POST Request Handler for Creating a New Chapter in a Course.
+ *
+ * This function handles POST requests to create a new chapter for a specified course.
+ */
 export async function POST(
     req: Request,
     props: {

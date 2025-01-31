@@ -15,6 +15,9 @@ interface CourseProgressButtonProps {
     nextChapterId?: string;
 }
 
+/**
+ * Button to mark a chapter as completed or incomplete.
+ */
 export const CourseProgressButton = ({
                                          chapterId,
                                          courseId,

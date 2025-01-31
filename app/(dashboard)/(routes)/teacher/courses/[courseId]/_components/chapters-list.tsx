@@ -19,6 +19,9 @@ interface ChaptersListProps {
   onEdit: (id: string) => void;
 }
 
+/**
+ * A component that displays a list of chapters for a course with drag-and-drop reordering and edit functionality.
+ */
 export const ChaptersList = ({
   items,
   onReorder,

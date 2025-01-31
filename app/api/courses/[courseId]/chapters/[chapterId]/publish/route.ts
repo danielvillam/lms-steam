@@ -3,6 +3,11 @@ import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
 
+/**
+ * PATCH Request Handler for Publishing a Chapter in a Course.
+ *
+ * This function handles PATCH requests to publish a chapter in a course.
+ */
 export async function PATCH(
     req: Request,
     props: {

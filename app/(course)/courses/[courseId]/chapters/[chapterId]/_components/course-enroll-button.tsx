@@ -10,6 +10,9 @@ interface CourseEnrollButtonProps {
     courseId: string;
 }
 
+/**
+ * Button to enroll in a course.
+ */
 const CourseEnrollButton = ({ courseId }: CourseEnrollButtonProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -17,11 +20,11 @@ const CourseEnrollButton = ({ courseId }: CourseEnrollButtonProps) => {
         try {
             setIsLoading(true);
 
-            const response = await axios.post(`/api/courses/${courseId}/checkout`);
-
-            window.location.assign(response.data.url);
+            await axios.post(`/api/courses/${courseId}/enroll`);
+            toast.success('Inscrito exitosamente');
+            window.location.reload();
         } catch {
-            toast.error('Something went wrong');
+            toast.error('Algo salió mal');
         } finally {
             setIsLoading(false);
         }

@@ -17,6 +17,11 @@ interface ImageFormProps {
   courseId: string;
 }
 
+/**
+ * A form component for uploading and editing the course image.
+ * It allows the user to toggle between viewing the current image and editing it.
+ * Upon submitting a new image, it sends a PATCH request to update the course's image URL.
+ */
 const formSchema = z.object({
   imageUrl: z.string().min(1, {
     message: "Se requiere imagen",

@@ -26,6 +26,12 @@ interface DescriptionFormProps {
   courseId: string;
 }
 
+/**
+ * A form component for editing and displaying the description of a course.
+ * It allows the user to toggle between viewing and editing the course description.
+ * The form uses react-hook-form for handling validation and submission.
+ * Upon submission, it sends a PATCH request to update the course description.
+ */
 const formSchema = z.object({
   description: z.string().min(1, {
     message: "Se requiere descripción",

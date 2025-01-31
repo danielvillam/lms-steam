@@ -3,6 +3,11 @@ import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
 
+/**
+ * PATCH Request Handler for Unpublishing a Course.
+ *
+ * This function handles PATCH requests to unpublish a course.
+ */
 export async function PATCH(
     req: Request,
     props: {

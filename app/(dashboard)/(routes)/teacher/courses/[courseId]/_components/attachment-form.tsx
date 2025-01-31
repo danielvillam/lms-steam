@@ -16,6 +16,10 @@ interface AttachmentFormProps {
   courseId: string;
 }
 
+/**
+ * A form component to manage course attachments, allowing users to add new files, view existing attachments, and delete them.
+ * Includes an upload feature and button to toggle between viewing and editing state.
+ */
 const formSchema = z.object({
   url: z.string().min(1),
 });

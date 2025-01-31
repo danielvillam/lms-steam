@@ -26,6 +26,10 @@ interface LevelFormProps {
   courseId: string;
 }
 
+/**
+ * A form component for managing and editing the course's difficulty level.
+ * It allows the user to toggle between viewing the current level and editing it.
+ */
 const formSchema = z.object({
   level: z.string().min(1),
 });

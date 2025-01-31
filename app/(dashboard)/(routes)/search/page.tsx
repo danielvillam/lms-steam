@@ -14,6 +14,10 @@ interface SearchPageProps {
     };
 }
 
+/**
+ * Search page that allows users to search for courses by category and title.
+ * It fetches the courses and categories, then displays them with search and category filters.
+ */
 export const dynamic = 'force-dynamic';
 
 export default async function SearchPage({ searchParams, }: {

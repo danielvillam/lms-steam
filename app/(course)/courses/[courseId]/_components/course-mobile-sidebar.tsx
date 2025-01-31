@@ -13,6 +13,10 @@ interface CourseMobileSidebarProps {
     progressCount: number;
 }
 
+/**
+ * Mobile sidebar for course navigation.
+ */
+
 const CourseMobileSidebar = ({
                                  course,
                                  progressCount,

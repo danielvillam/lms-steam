@@ -1,6 +1,12 @@
 import { Navbar } from "./_components/navbar";
 import { Sidebar } from "./_components/sidebar";
+import React from 'react';
 
+/**
+ * DashboardLayout Component.
+ *
+ * This layout component is responsible for rendering the dashboard layout structure.
+ */
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="h-full">

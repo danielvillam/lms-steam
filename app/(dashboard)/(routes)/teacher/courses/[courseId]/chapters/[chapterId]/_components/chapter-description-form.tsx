@@ -27,6 +27,10 @@ interface ChapterDescriptionFormProps {
   chapterId: string;
 }
 
+/**
+ * Form for editing chapter description in a course.
+ * Allows toggling between viewing and editing the description.
+ */
 const formSchema = z.object({
   description: z.string().min(1),
 });

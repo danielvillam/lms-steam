@@ -12,6 +12,9 @@ interface CourseSidebarItemProps {
     isLocked: boolean;
 }
 
+/**
+ * Sidebar item representing a course chapter.
+ */
 const CourseSidebarItem = ({
                                courseId,
                                id,

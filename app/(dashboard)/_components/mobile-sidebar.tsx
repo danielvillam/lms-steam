@@ -3,6 +3,11 @@ import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Sidebar } from "./sidebar";
 
+/**
+ * Mobile Sidebar Component.
+ *
+ * This component renders a sidebar navigation menu for mobile devices.
+ */
 export const MobileSidebar = () => {
   return (
     <Sheet>

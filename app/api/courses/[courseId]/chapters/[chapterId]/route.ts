@@ -9,6 +9,13 @@ const mux = new Mux({
   tokenSecret: process.env.MUX_TOKEN_SECRET!,
 });
 
+/**
+ * DELETE Request Handler for Deleting a Chapter and Associated Video.
+ *
+ * This function handles DELETE requests to remove a specific chapter from a course.
+ * If the chapter has an associated video, it will also be deleted from Mux.
+ * Additionally, if no chapters are left published in the course, the course itself will be unpublished.
+ */
 export async function DELETE(
     req: Request,
     props: { params: Promise<{ courseId: string; chapterId: string }> }
@@ -92,6 +99,13 @@ export async function DELETE(
 }
 }
 
+/**
+ * PATCH Request Handler for Updating a Chapter and Associated Video.
+ *
+ * This function handles PATCH requests to update the details of a specific chapter in a course.
+ * If the chapter's video URL is updated, it will delete the old video from Mux
+ * and upload the new video to Mux.
+ */
 export async function PATCH(
   req: Request,
   props: { params: Promise<{ courseId: string; chapterId: string }> }

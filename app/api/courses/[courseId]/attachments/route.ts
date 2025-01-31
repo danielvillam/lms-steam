@@ -4,6 +4,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isTeacher } from '@/lib/teacher';
 
+/**
+ * POST Request Handler for Adding an Attachment to a Course.
+ *
+ * This function handles POST requests to add an attachment (e.g., a file URL) to a course.
+ */
 export async function POST(
     req: Request,
     props: {

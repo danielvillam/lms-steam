@@ -27,6 +27,10 @@ interface ChapterAccessFormProps {
   chapterId: string;
 }
 
+/**
+ * Form to manage chapter access.
+ * Allows toggling preview availability via a checkbox.
+ */
 const formSchema = z.object({
   isEnabled: z.boolean().default(false),
 });

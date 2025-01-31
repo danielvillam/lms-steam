@@ -2,6 +2,11 @@ import { redirect } from 'next/navigation';
 
 import { db } from '@/lib/db';
 
+
+/**
+ * Course page redirect handler.
+ */
+
 export default async function CourseIdPage(
     props: {
         params: Promise<{ courseId: string }>;
@@ -9,6 +14,7 @@ export default async function CourseIdPage(
 ) {
     const params = await props.params;
 
+    // Fetches the course and includes only published chapters, ordered by position
     const course = await db.course.findUnique({
         where: {
             id: params.courseId,

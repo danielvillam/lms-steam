@@ -5,6 +5,10 @@ import { db } from '@/lib/db';
 import { DataTable } from './_components/data-table';
 import { columns } from './_components/columns';
 
+/**
+ * Courses Page.
+ * Displays a list of courses created by the authenticated user.
+ */
 const CoursesPage = async () => {
     const { userId, redirectToSignIn } = await auth();
 

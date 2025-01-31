@@ -4,6 +4,11 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { isTeacher } from '@/lib/teacher';
 
+/**
+ * POST Request Handler for Creating a New Course.
+ *
+ * This function handles POST requests to create a new course. It first checks if the user is authenticated and has the role of a teacher.
+ */
 export async function POST(req: Request) {
   try {
     const { userId } = await auth();

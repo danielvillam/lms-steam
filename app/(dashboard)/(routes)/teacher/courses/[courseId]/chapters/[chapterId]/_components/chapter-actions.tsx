@@ -16,6 +16,10 @@ interface ChapterActionsProps {
     isPublished: boolean;
 }
 
+/**
+ * Component for managing chapter actions.
+ * Allows publishing, unpublishing, or deleting a chapter.
+ */
 export const ChapterActions = ({
     disabled,
     courseId,

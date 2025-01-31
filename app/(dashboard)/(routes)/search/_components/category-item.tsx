@@ -15,6 +15,10 @@ interface CategoryItemProps {
     icon?: IconType;
 }
 
+/**
+ * Renders a category button that toggles the filter when clicked.
+ * The button highlights if the category is selected.
+ */
 export const CategoryItem = ({
     label,
     value,

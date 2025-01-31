@@ -26,6 +26,13 @@ import { Button } from '@/components/ui/button';
 import { Input } from "@/components/ui/input"
 import { PlusCircle } from 'lucide-react';
 
+/**
+ * DataTable Component.
+ *
+ * A reusable table component using TanStack React Table.
+ * Provides sorting, filtering, and pagination functionalities.
+ * Allows users to filter courses by title and navigate between pages.
+ */
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]

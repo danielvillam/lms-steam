@@ -20,6 +20,10 @@ import { SkillsForm } from './_components/skills-form';
 import { LevelForm } from './_components/level-form';
 import { Actions } from './_components/actions';
 
+/**
+ * Course Configuration Page.
+ * Displays and allows the editing of a course's title, description, image, category, level, skills, chapters, and attachments.
+ */
 export default async function CourseIdPage(
   props: {
       params: Promise<{ courseId: string }>;

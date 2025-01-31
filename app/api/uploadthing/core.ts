@@ -3,9 +3,12 @@ import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { isTeacher } from '@/lib/teacher';
 
+/**
+ * Centralized Authentication and File Upload Routes for Course Resources.
+ */
 const f = createUploadthing();
 
-// Función de autenticación centralizada
+// Centralized Authentication Function.
 const handleAuth = async (req: Request) => {
     const { userId } = await auth();
 
@@ -16,9 +19,9 @@ const handleAuth = async (req: Request) => {
     return { userId };
 };
 
-// Define las rutas de carga (FileRoutes)
+// Defines File Upload Routes for Course Resources.
 export const ourFileRouter = {
-    // Ruta para imágenes del curso
+    // Route for course images
     courseImage: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
         .middleware(async ({ req }) => {
             const userId = await handleAuth(req);
@@ -29,7 +32,7 @@ export const ourFileRouter = {
             console.log("File URL:", file.url);
         }),
 
-    // Ruta para adjuntos del curso
+    // Route for course attachments (multiple file types allowed)
     courseAttachment: f(["text", "image", "video", "audio", "pdf"])
         .middleware(async ({ req }) => {
             const userId = await handleAuth(req);
@@ -40,7 +43,7 @@ export const ourFileRouter = {
             console.log("File URL:", file.url);
         }),
 
-    // Ruta para videos de capítulos
+    // Route for chapter videos
     chapterVideo: f({ video: { maxFileSize: "512GB", maxFileCount: 1 } })
         .middleware(async ({ req }) => {
             const userId = await handleAuth(req);

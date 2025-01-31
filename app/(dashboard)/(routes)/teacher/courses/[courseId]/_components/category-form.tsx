@@ -27,6 +27,11 @@ interface CategoryFormProps {
   options: { label: string; value: string }[];
 }
 
+/**
+ * A form component for managing the category of a course. It allows users to view and edit the course's category.
+ * Includes a combobox for selecting a category from available options, and a button to toggle between editing and viewing states.
+ * After submitting, the course category is updated, and the changes are reflected in the UI.
+ */
 const formSchema = z.object({
   categoryId: z.string().min(1),
 });

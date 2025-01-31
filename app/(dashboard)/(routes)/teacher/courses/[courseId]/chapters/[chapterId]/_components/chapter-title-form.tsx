@@ -27,6 +27,10 @@ interface ChapterTitleFormProps {
   chapterId: string;
 }
 
+/**
+ * A form to edit a chapter's title.
+ * Toggles between viewing and editing mode for the title.
+ */
 const formSchema = z.object({
   title: z.string().min(1),
 });

@@ -3,6 +3,11 @@ import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
 
+/**
+ * PUT Request Handler for Reordering Chapters in a Course.
+ *
+ * This function handles PUT requests to update the order (position) of chapters within a course.
+ */
 export async function PUT(
     req: Request,
     props: {

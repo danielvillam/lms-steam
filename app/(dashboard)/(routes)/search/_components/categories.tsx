@@ -18,6 +18,9 @@ interface CategoriesProps{
     items: Category[];
 }
 
+/**
+ * Displays a list of categories with their respective icons.
+ */
 const iconMap: Record<Category["name"], IconType> = {
     "Música": FcMusic,
     "Fotografía": FcOldTimeCamera,

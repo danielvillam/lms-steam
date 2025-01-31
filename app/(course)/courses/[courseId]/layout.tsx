@@ -7,6 +7,9 @@ import { db } from '@/lib/db';
 import { CourseSidebar } from './_components/course-sidebar';
 import { CourseNavbar } from './_components/course-navbar';
 
+/**
+ * Course layout component.
+ */
 export default async function CourseLayout(
     props: {
         params: Promise<{ courseId: string }>;
@@ -18,6 +21,7 @@ export default async function CourseLayout(
 
     if (!userId) return redirectToSignIn()
 
+    // Fetches the course, including only published chapters and tracking user progress
     const course = await db.course.findUnique({
         where: {
             id: params.courseId,
@@ -44,7 +48,7 @@ export default async function CourseLayout(
     if (!course) {
         return redirect('/');
     }
-
+    // Retrieves the user's progress in the course
     const progressCount = await getProgress(userId, course.id);
 
     return (

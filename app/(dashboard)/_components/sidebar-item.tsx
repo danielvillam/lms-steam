@@ -5,6 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 
+/**
+ * SidebarItem Component.
+ *
+ * This component represents a single item in the sidebar navigation.
+ */
 interface SidebarItemProps {
   icon: LucideIcon;
   label: string;

@@ -20,6 +20,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
+/**
+ * Create Course Page.
+ *
+ * This page allows users to create a new course by entering a title.
+ */
 const formSchema = z.object({
   title: z.string().min(1, {
     message: "Title is required",

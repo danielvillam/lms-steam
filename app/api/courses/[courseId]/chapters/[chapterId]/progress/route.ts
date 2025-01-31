@@ -3,6 +3,12 @@ import { NextResponse } from 'next/server';
 
 import { db } from '@/lib/db';
 
+/**
+ * PUT Request Handler for Updating or Creating User Progress for a Chapter.
+ *
+ * This function handles PUT requests to update or create progress data for a user
+ * on a specific chapter of a course.
+ */
 export async function PUT(
     req: Request,
     props: {
@@ -25,8 +31,8 @@ export async function PUT(
             },
         });
 
+        // If progress is found, update the existing record
         if (existingUserProgress) {
-            // Actualizar el registro existente
             const updatedUserProgress = await db.userProgress.update({
                 where: {
                     id: existingUserProgress.id,
@@ -37,7 +43,7 @@ export async function PUT(
             });
             return NextResponse.json(updatedUserProgress);
         } else {
-            // Crear un nuevo registro
+            // If no progress record exists, create a new one
             const newUserProgress = await db.userProgress.create({
                 data: {
                     userId,

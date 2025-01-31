@@ -15,8 +15,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { cn } from '@/lib/utils';
 
-
-
+/**
+ * Course Table Columns.
+ * Defines the column structure for displaying courses in a table using React Table.
+ * Provides sorting functionality, a status badge for publication state, and an action menu.
+ */
 export const columns: ColumnDef<Course>[] = [
     {
         accessorKey: "title",

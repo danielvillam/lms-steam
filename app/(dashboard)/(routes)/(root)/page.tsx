@@ -5,6 +5,9 @@ import { CoursesList } from '@/components/courses-list';
 import { getDashboardCourses } from '@/actions/get-dashboard-courses';
 import { InfoCard } from './_components/info-card';
 
+/**
+ * Dashboard page that displays user's course progress and a list of courses.
+ */
 export default async function Dashboard() {
     const { userId, redirectToSignIn } = await auth()
 

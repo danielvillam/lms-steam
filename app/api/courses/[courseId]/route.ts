@@ -9,6 +9,11 @@ const mux = new Mux({
   tokenSecret: process.env.MUX_TOKEN_SECRET!,
 });
 
+/**
+ * DELETE Request Handler for Deleting a Course and its Related Data.
+ *
+ * This function handles DELETE requests to remove a course from the database.
+ */
 export async function DELETE(
     req: Request,
     props: {
@@ -41,21 +46,21 @@ export async function DELETE(
       return new NextResponse("Not Found", { status: 404 });
     }
 
-    // Elimina todos los capítulos relacionados
+    // Delete all chapters related to the course
     for (const chapter of course.chapters) {
-      // Si hay datos en Mux, elimínalos
+      // If Mux data exists for the chapter, delete it from Mux
       if (chapter.muxData?.assetId) {
         await mux.video.assets.delete(chapter.muxData.assetId);
       }
 
-      // Elimina el progreso del usuario relacionado con el capítulo
+      // Delete user progress related to the chapter
       await db.userProgress.deleteMany({
         where: {
           chapterId: chapter.id,
         },
       });
 
-      // Elimina los datos de Mux relacionados con el capítulo
+      // Delete Mux data related to the chapter
       await db.muxData.deleteMany({
         where: {
           chapterId: chapter.id,
@@ -63,21 +68,21 @@ export async function DELETE(
       });
     }
 
-    // Elimina los capítulos
+    // Delete the chapters from the database
     await db.chapter.deleteMany({
       where: {
         courseId: params.courseId,
       },
     });
 
-    // Elimina los attachments relacionados
+    // Delete any attachments related to the course
     await db.attachment.deleteMany({
       where: {
         courseId: params.courseId,
       },
     });
 
-    // Finalmente, elimina el curso
+    // Finally, delete the course itself
     const deletedCourse = await db.course.delete({
       where: {
         id: params.courseId,
@@ -91,7 +96,11 @@ export async function DELETE(
   }
 }
 
-
+/**
+ * PATCH Request Handler for Updating a Course.
+ *
+ * This function handles PATCH requests to update a course's details.
+ */
 export async function PATCH(
     req: Request,
     props: {

@@ -14,6 +14,9 @@ interface CourseSidebarProps {
     progressCount: number;
 }
 
+/**
+ * Sidebar component for displaying course details and chapters.
+ */
 const CourseSidebar = async ({
     course,
     progressCount
@@ -22,6 +25,7 @@ const CourseSidebar = async ({
 
     if (!userId) return redirectToSignIn()
 
+    // Check if the user has purchased the course
     const purchase = await db.registration.findFirst({
         where: {
             AND: [

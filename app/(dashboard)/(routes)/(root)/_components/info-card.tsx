@@ -9,6 +9,9 @@ interface InfoCardProps {
     icon: LucideIcon;
 }
 
+/**
+ * Displays an information card with an icon, label, and item count.
+ */
 export const InfoCard = ({
                              variant,
                              icon: Icon,

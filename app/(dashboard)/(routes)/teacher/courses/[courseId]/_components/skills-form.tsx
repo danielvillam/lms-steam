@@ -26,6 +26,10 @@ interface SkillsFormProps {
   courseId: string;
 }
 
+/**
+ * A form component for managing and editing the "previous skills" required for a course.
+ * It allows toggling between viewing the current skills and editing them.
+ */
 const formSchema = z.object({
   skills: z.string().min(1, {
     message: "Se requiere habilidades previas",

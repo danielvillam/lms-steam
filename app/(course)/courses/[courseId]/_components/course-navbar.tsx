@@ -12,6 +12,9 @@ interface CourseNavbarProps {
     progressCount: number;
 }
 
+/**
+ * Navbar component for the course page.
+ */
 const CourseNavbar = ({ course, progressCount }: CourseNavbarProps) => {
     return (
         <div className="flex items-center h-full p-4 bg-white border-b shadow-sm">

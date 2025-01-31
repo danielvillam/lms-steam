@@ -13,6 +13,11 @@ import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from './_components/chapter-actions';
 
+/**
+ * Chapter Edit Page for Course.
+ * Displays and allows the editing of chapter title, description, access settings, and video.
+ * Checks user authentication and chapter completion before allowing certain actions.
+ */
 export default async function ChapterIdPage(
   props: {
     params: Promise<{ chapterId: string; courseId: string }>;

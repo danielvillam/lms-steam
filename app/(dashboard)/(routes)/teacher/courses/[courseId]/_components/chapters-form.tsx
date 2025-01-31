@@ -27,6 +27,11 @@ interface ChaptersFormProps {
   courseId: string;
 }
 
+/**
+ * A form component for managing chapters in a course. It allows users to view, create, reorder, and edit chapters.
+ * Users can toggle between adding a new chapter and viewing the existing ones. The chapters can be reordered by dragging.
+ * When submitting, the chapter is created, and changes are reflected in the UI.
+ */
 const formSchema = z.object({
   title: z.string().min(1),
 });

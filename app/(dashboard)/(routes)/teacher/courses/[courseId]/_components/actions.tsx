@@ -15,6 +15,10 @@ interface ActionsProps {
     isPublished: boolean;
 }
 
+/**
+ * Component that handles actions for a course, including publishing, unpublishing, and deleting the course.
+ * Displays buttons for publishing/unpublishing the course and a delete button with confirmation modal.
+ */
 export const Actions = ({
     disabled,
     courseId,

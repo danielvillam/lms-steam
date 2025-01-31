@@ -26,6 +26,10 @@ interface TitleFormProps {
   courseId: string;
 }
 
+/**
+ * A form component for managing and editing the course title.
+ * It allows toggling between viewing the current title and editing it.
+ */
 const formSchema = z.object({
   title: z.string().min(1, {
     message: "Se requiere título",

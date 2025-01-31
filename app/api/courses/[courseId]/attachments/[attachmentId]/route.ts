@@ -4,6 +4,11 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import { isTeacher } from '@/lib/teacher';
 
+/**
+ * DELETE Request Handler for Deleting an Attachment.
+ *
+ * This function handles DELETE requests to remove an attachment associated with a course.
+ */
 export async function DELETE(
     req: Request,
     props: {
