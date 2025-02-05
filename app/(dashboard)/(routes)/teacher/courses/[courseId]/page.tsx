@@ -1,10 +1,11 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import {
+  CircleDollarSign,
   File,
   LayoutDashboard,
   ListChecks,
-} from "lucide-react";
+} from 'lucide-react';
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -21,7 +22,8 @@ import { LevelForm } from './_components/level-form';
 import { Actions } from './_components/actions';
 import {
   DevelopedSkillsForm
-} from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/developed-skills-form';
+} from './_components/developed-skills-form';
+import { PriceForm } from './_components/price-form';
 
 /**
  * Course Configuration Page.
@@ -75,9 +77,11 @@ export default async function CourseIdPage(
     course.description,
     course.level,
     course.previousSkills,
+    course.developedSkills,
     course.imageUrl,
     course.categoryId,
     course.chapters.some((chapter: { isPublished: boolean }) => chapter.isPublished),
+    course.price,
   ];
 
   const totalFields = requiredFields.length;
@@ -136,6 +140,13 @@ export default async function CourseIdPage(
                   <h2 className="text-xl">Módulos del curso</h2>
                 </div>
                 <ChaptersForm initialData={course} courseId={course.id} />
+              </div>
+              <div>
+                <div className="flex items-center gap-x-2">
+                  <IconBadge icon={CircleDollarSign} />
+                  <h2 className="text-xl">Precio del curso</h2>
+                </div>
+                <PriceForm initialData={course} courseId={params.courseId} />
               </div>
               <div>
                 <div className="flex items-center gap-x-2">

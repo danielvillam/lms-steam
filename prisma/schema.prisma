@@ -8,93 +8,96 @@ datasource db {
 }
 
 model Course {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String
-  title       String
-  description String?
-  imageUrl    String?
-  skills      String?
-  level       String?
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  title           String
+  description     String?
+  imageUrl        String?
+  previousSkills  String?
+  developedSkills String?
+  level           String?
+  price           Float?
+
   isPublished Boolean @default(false)
 
-  categoryId String?   @db.ObjectId
-  category   Category? @relation(fields: [categoryId], references: [id])
+  categoryId      String?   @db.ObjectId
+  category        Category? @relation(fields: [categoryId], references: [id])
 
-  chapters    Chapter[]
-  attachments Attachment[]
-  registered  Registration[]
+  chapters        Chapter[]
+  attachments     Attachment[]
+  registered      Registration[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Category {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String   @unique
-  courses Course[]
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String   @unique
+  courses         Course[]
 }
 
 model Attachment {
-  id   String @id @default(auto()) @map("_id") @db.ObjectId
-  name String
-  url  String
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  url             String
 
-  courseId String @db.ObjectId
-  course   Course @relation(fields: [courseId], references: [id])
+  courseId        String @db.ObjectId
+  course          Course @relation(fields: [courseId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Chapter {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String?
-  videoUrl    String?
-  position    Int
-  isPublished Boolean @default(false)
-  isEnabled   Boolean @default(false)
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String?
+  videoUrl        String?
+  position        Int
+  isPublished     Boolean @default(false)
+  isEnabled       Boolean @default(false)
 
-  muxData MuxData?
+  muxData         MuxData?
 
-  courseId String  @db.ObjectId
-  course   Course? @relation(fields: [courseId], references: [id])
+  courseId        String  @db.ObjectId
+  course          Course? @relation(fields: [courseId], references: [id])
 
-  userProgress UserProgress[]
+  userProgress    UserProgress[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model MuxData {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  assetId    String
-  playbackId String?
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  assetId         String
+  playbackId      String?
 
-  chapterId String  @unique @db.ObjectId
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  chapterId       String  @unique @db.ObjectId
+  chapter         Chapter @relation(fields: [chapterId], references: [id])
 }
 
 model UserProgress {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
 
-  chapterId String  @db.ObjectId
-  chapter   Chapter @relation(fields: [chapterId], references: [id])
+  chapterId       String  @db.ObjectId
+  chapter         Chapter @relation(fields: [chapterId], references: [id])
 
-  isCompleted Boolean @default(false)
+  isCompleted     Boolean @default(false)
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model Registration {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
 
-  courseId String @db.ObjectId
-  course Course? @relation(fields: [courseId], references: [id])
+  courseId        String @db.ObjectId
+  course          Course? @relation(fields: [courseId], references: [id])
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
