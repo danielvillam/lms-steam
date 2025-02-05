@@ -61,7 +61,7 @@ export const ChapterAccessForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Capítulo actualizado exitosamente");
+      toast.success("Módulo actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
@@ -72,7 +72,7 @@ export const ChapterAccessForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Acceso al capítulo
+        Acceso al módulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
@@ -92,9 +92,9 @@ export const ChapterAccessForm = ({
           )}
         >
           {initialData.isEnabled ? (
-            <>Este capítulo esta activo para vista previa.</>
+            <>Este Módulo esta activo para vista previa.</>
           ) : (
-            <>Este capitulo no esta activo para vista previa..</>
+            <>Este Módulo no esta activo para vista previa..</>
           )}
         </p>
       )}
@@ -117,7 +117,7 @@ export const ChapterAccessForm = ({
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormDescription>
-                      Marque esta casilla si desea que este capítulo esté activo para obtener una vista
+                      Marque esta casilla si desea que este módulo esté activo para obtener una vista
                       previa.
                     </FormDescription>
                   </div>

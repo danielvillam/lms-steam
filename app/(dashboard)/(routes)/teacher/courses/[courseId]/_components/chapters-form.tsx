@@ -58,7 +58,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.post(`/api/courses/${courseId}/chapters`, values);
-      toast.success("Capítulo creado exitosamente");
+      toast.success("Módulo creado exitosamente");
       toggleCreating();
       router.refresh();
     } catch {
@@ -72,7 +72,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
         list: updateData,
       });
-      toast.success("Capítulos reordenados exitosamente");
+      toast.success("Módulos reordenados exitosamente");
       router.refresh();
     } catch {
       toast.error("Algo salió mal");
@@ -93,14 +93,14 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
         </div>
       )}
       <div className="font-medium flex items-center justify-between">
-        Capítulos del curso
+        Módulos del curso
         <Button onClick={toggleCreating} variant="ghost">
           {isCreating ? (
             <>Cancelar</>
           ) : (
             <>
               <PlusCircle className="h-4 w-4 mr-2" />
-              Añadir un capítulo
+              Añadir un módulo
             </>
           )}
         </Button>
@@ -140,7 +140,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
             !initialData.chapters.length && "text-slate-500 italic"
           )}
         >
-          {!initialData.chapters.length && "Sin capítulos"}
+          {!initialData.chapters.length && "Sin módulos"}
           <ChaptersList
             onEdit={onEdit}
             onReorder={onReorder}
@@ -150,7 +150,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
       )}
       {!isCreating && (
         <p className="text-xs text-muted-foreground mt-4">
-          Arrastra y suelta para reordenar los capítulos.
+          Arrastra y suelta para reordenar los módulos.
         </p>
       )}
     </div>

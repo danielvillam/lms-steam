@@ -35,10 +35,10 @@ export const ChapterActions = ({
 
             if (isPublished) {
                 await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/unpublish`);
-                toast.success("Capítulo despublicado exitosamente");
+                toast.success("Módulo despublicado exitosamente");
             } else {
                 await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}/publish`);
-                toast.success("Capítulo publicado exitosamente");
+                toast.success("Módulo publicado exitosamente");
             }
 
             router.refresh();
@@ -54,7 +54,7 @@ export const ChapterActions = ({
             setIsLoaded(true);
 
             await axios.delete(`/api/courses/${courseId}/chapters/${chapterId}`);
-            toast.success("Capítulo eliminado exitosamente");
+            toast.success("Módulo eliminado exitosamente");
             router.refresh();
             router.push(`/teacher/courses/${courseId}`);
         } catch {

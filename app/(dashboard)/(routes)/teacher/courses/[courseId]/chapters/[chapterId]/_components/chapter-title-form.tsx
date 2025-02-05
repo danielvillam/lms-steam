@@ -59,7 +59,7 @@ export const ChapterTitleForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Capítulo actualizado exitosamente");
+      toast.success("Módulo actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
@@ -70,7 +70,7 @@ export const ChapterTitleForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Título del capítulo
+        Título del módulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>

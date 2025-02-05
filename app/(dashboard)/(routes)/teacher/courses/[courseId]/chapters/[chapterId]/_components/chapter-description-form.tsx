@@ -61,7 +61,7 @@ export const ChapterDescriptionForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Capítulo actualizado correctamente");
+      toast.success("Módulo actualizado correctamente");
       toggleEdit();
       router.refresh();
     } catch {
@@ -72,7 +72,7 @@ export const ChapterDescriptionForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Descripción del capítulo
+        Descripción del módulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
@@ -108,7 +108,7 @@ export const ChapterDescriptionForm = ({
                   <FormControl>
                     <Textarea
                         disabled={isSubmitting}
-                        placeholder="p.ej. 'Este capítulo trata sobre...'"
+                        placeholder="p.ej. 'Este módulo trata sobre...'"
                         {...field}
                     />
                   </FormControl>

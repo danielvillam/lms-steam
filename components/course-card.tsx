@@ -51,7 +51,7 @@ export const CourseCard = ({
                         text-slate-500">
                             <IconBadge size="sm" icon={BookOpen}/>
                             <span>
-                                {chaptersLength} {chaptersLength === 1 ? "Capítulo" : "Capítulos"}
+                                {chaptersLength} {chaptersLength === 1 ? "Módulo" : "Módulos"}
                             </span>
                         </div>
                     </div>

@@ -21,7 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
-interface SkillsFormProps {
+interface PreviousSkillsFormProps {
   initialData: Course;
   courseId: string;
 }
@@ -31,15 +31,15 @@ interface SkillsFormProps {
  * It allows toggling between viewing the current skills and editing them.
  */
 const formSchema = z.object({
-  skills: z.string().min(1, {
+  previousSkills: z.string().min(1, {
     message: "Se requiere habilidades previas",
   }),
 });
 
-export const SkillsForm = ({
+export const PreviousSkillsForm = ({
   initialData,
   courseId,
-}: SkillsFormProps) => {
+}: PreviousSkillsFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -49,7 +49,7 @@ export const SkillsForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      skills: initialData?.skills || "",
+      previousSkills: initialData?.previousSkills || "",
     },
   });
 
@@ -69,7 +69,7 @@ export const SkillsForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Habilidades previas del curso
+        Habilidades previas para el curso
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
@@ -85,10 +85,10 @@ export const SkillsForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.skills && "text-slate-500 italic"
+            !initialData.previousSkills && "text-slate-500 italic"
           )}
         >
-          {initialData.skills || "Sin habilidades previas"}
+          {initialData.previousSkills || "Sin habilidades previas"}
         </p>
       )}
       {isEditing && (
@@ -99,7 +99,7 @@ export const SkillsForm = ({
           >
             <FormField
               control={form.control}
-              name="skills"
+              name="previousSkills"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

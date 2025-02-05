@@ -16,9 +16,12 @@ import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
-import { SkillsForm } from './_components/skills-form';
+import { PreviousSkillsForm } from './_components/previous-skills-form';
 import { LevelForm } from './_components/level-form';
 import { Actions } from './_components/actions';
+import {
+  DevelopedSkillsForm
+} from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/_components/developed-skills-form';
 
 /**
  * Course Configuration Page.
@@ -71,7 +74,7 @@ export default async function CourseIdPage(
     course.title,
     course.description,
     course.level,
-    course.skills,
+    course.previousSkills,
     course.imageUrl,
     course.categoryId,
     course.chapters.some((chapter: { isPublished: boolean }) => chapter.isPublished),
@@ -113,9 +116,8 @@ export default async function CourseIdPage(
               </div>
               <TitleForm initialData={course} courseId={course.id} />
               <DescriptionForm initialData={course} courseId={course.id} />
-              <LevelForm initialData={course} courseId={course.id} />
-              <SkillsForm initialData={course} courseId={course.id} />
               <ImageForm initialData={course} courseId={course.id} />
+              <LevelForm initialData={course} courseId={course.id} />
               <CategoryForm
                 initialData={course}
                 courseId={course.id}
@@ -129,7 +131,7 @@ export default async function CourseIdPage(
               <div>
                 <div className="flex items-center gap-x-2">
                   <IconBadge icon={ListChecks} />
-                  <h2 className="text-xl">Capítulos del curso</h2>
+                  <h2 className="text-xl">Módulos del curso</h2>
                 </div>
                 <ChaptersForm initialData={course} courseId={course.id} />
               </div>

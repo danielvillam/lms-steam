@@ -43,7 +43,7 @@ export const ChapterVideoForm = ({
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Capítulo actualizado exitosamente");
+      toast.success("Módulo actualizado exitosamente");
       toggleEdit();
       router.refresh();
     } catch {
@@ -54,7 +54,7 @@ export const ChapterVideoForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Vídeo del capítulo
+        Vídeo del módulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing && <>Cancelar</>}
           {!isEditing && !initialData.videoUrl && (
@@ -92,7 +92,7 @@ export const ChapterVideoForm = ({
             }}
           />
           <div className="text-xs text-muted-foreground mt-4">
-            Sube el vídeo de este capítulo.
+            Sube el vídeo de este módulo.
           </div>
         </div>
       )}

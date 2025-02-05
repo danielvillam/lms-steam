@@ -56,7 +56,7 @@ export default async function ChapterIdPage(
         {!chapter.isPublished && (
             <Banner
                 variant="warning"
-                label="Este capítulo no está publicado. No será visible en el curso."
+                label="Este módulo no está publicado. No será visible en el curso."
             />
         )}
         <div className="p-6">
@@ -71,7 +71,7 @@ export default async function ChapterIdPage(
               </Link>
               <div className="flex items-center justify-between w-full">
                 <div className="flex flex-col gap-y-2">
-                  <h1 className="text-2xl font-medium">Creación de capítulos</h1>
+                  <h1 className="text-2xl font-medium">Creación de módulos</h1>
                   <span className="text-sm text-slate-700">
                     Completa todos los campos {completionText}
                   </span>
@@ -90,7 +90,7 @@ export default async function ChapterIdPage(
               <div>
                 <div className="flex items-center gap-x-2">
                   <IconBadge icon={LayoutDashboard} />
-                  <h2 className="text-xl">Personaliza tu capítulo</h2>
+                  <h2 className="text-xl">Personaliza tu módulo</h2>
                 </div>
                 <ChapterTitleForm
                   initialData={chapter}
