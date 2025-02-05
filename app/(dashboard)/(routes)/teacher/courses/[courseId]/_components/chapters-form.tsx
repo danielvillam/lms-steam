@@ -21,6 +21,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { ChaptersList } from "./chapters-list";
+import { Loading } from '@/components/loading';
 
 interface ChaptersFormProps {
   initialData: Course & { chapters: Chapter[] };
@@ -128,6 +129,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
               )}
             />
             <Button disabled={!isValid || isSubmitting} type="submit">
+              {isSubmitting && <Loading />}
               Crear
             </Button>
           </form>

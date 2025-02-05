@@ -20,6 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import { Loading } from '@/components/loading';
 
 interface PreviousSkillsFormProps {
   initialData: Course;
@@ -115,6 +116,7 @@ export const PreviousSkillsForm = ({
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
+                {isSubmitting && <Loading />}
                 Guardar
               </Button>
             </div>

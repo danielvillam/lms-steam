@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Loading } from '@/components/loading';
 
 interface TitleFormProps {
   initialData: {
@@ -101,6 +102,7 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
+                {isSubmitting && <Loading />}
                 Guardar
               </Button>
             </div>
