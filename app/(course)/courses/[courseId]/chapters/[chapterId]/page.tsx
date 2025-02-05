@@ -46,7 +46,7 @@ export default async function ChapterIdPage(
     return (
         <div>
             {userProgress?.isCompleted && (
-                <Banner label="Has completado este capítulo" variant="success" />
+                <Banner label="Has completado este módulo" variant="success" />
             )}
             {isLocked && (
                 <Banner

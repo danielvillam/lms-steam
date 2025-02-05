@@ -118,6 +118,8 @@ export default async function CourseIdPage(
               <DescriptionForm initialData={course} courseId={course.id} />
               <ImageForm initialData={course} courseId={course.id} />
               <LevelForm initialData={course} courseId={course.id} />
+              <PreviousSkillsForm initialData={course} courseId={course.id} />
+              <DevelopedSkillsForm initialData={course} courseId={course.id} />
               <CategoryForm
                 initialData={course}
                 courseId={course.id}
