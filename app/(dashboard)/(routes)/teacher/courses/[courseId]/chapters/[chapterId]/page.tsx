@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Eye, LayoutDashboard, Video } from "lucide-react";
+import { ArrowLeft, Eye, LayoutDashboard, Video, Clapperboard } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -10,13 +10,13 @@ import { Banner } from '@/components/banner';
 import { ChapterTitleForm } from "./_components/chapter-title-form";
 import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
-import { ChapterVideoForm } from "./_components/chapter-video-form";
+import { ChapterVideoUrlForm } from './_components/chapter-videoUrl-form';
+import { ChapterVideoYoutubeForm } from './_components/chapter-videoYoutube-form';
 import { ChapterActions } from './_components/chapter-actions';
 
 /**
  * Chapter Edit Page for Course.
  * Displays and allows the editing of chapter title, description, access settings, and video.
- * Checks user authentication and chapter completion before allowing certain actions.
  */
 export default async function ChapterIdPage(
   props: {
@@ -32,9 +32,6 @@ export default async function ChapterIdPage(
     where: {
       id: params.chapterId,
       courseId: params.courseId,
-    },
-    include: {
-      muxData: true,
     },
   });
 
@@ -93,14 +90,14 @@ export default async function ChapterIdPage(
                   <h2 className="text-xl">Personaliza tu módulo</h2>
                 </div>
                 <ChapterTitleForm
-                  initialData={chapter}
-                  courseId={params.courseId}
-                  chapterId={params.chapterId}
+                    initialData={chapter}
+                    courseId={params.courseId}
+                    chapterId={params.chapterId}
                 />
                 <ChapterDescriptionForm
-                  initialData={chapter}
-                  courseId={params.courseId}
-                  chapterId={params.chapterId}
+                    initialData={chapter}
+                    courseId={params.courseId}
+                    chapterId={params.chapterId}
                 />
               </div>
               <div>
@@ -109,22 +106,33 @@ export default async function ChapterIdPage(
                   <h2 className="text-xl">Configuración de acceso</h2>
                 </div>
                 <ChapterAccessForm
-                  initialData={chapter}
-                  courseId={params.courseId}
-                  chapterId={params.chapterId}
+                    initialData={chapter}
+                    courseId={params.courseId}
+                    chapterId={params.chapterId}
                 />
               </div>
             </div>
-            <div>
-              <div className="flex items-center gap-x-2">
-                <IconBadge icon={Video} />
-                <h2 className="text-xl">Añadir un vídeo</h2>
+            <div className="space-y-4">
+              <div>
+                <div className="flex items-center gap-x-2">
+                  <IconBadge icon={Video} />
+                  <h2 className="text-xl">Añadir un video</h2>
+                </div>
+                <ChapterVideoUrlForm
+                    initialData={chapter}
+                    courseId={params.courseId}
+                    chapterId={params.chapterId}
+                />
               </div>
-              <ChapterVideoForm
-                initialData={chapter}
-                courseId={params.courseId}
-                chapterId={params.chapterId}
-              />
+              <div>
+                <div className="flex items-center gap-x-2">
+                  <IconBadge icon={Clapperboard} />
+                  <h2 className="text-xl">Video del módulo</h2>
+                </div>
+                <ChapterVideoYoutubeForm
+                    initialData={chapter}
+                />
+              </div>
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import { Separator } from '@/components/ui/separator';
 import { auth } from '@clerk/nextjs/server';
 import { CourseEnrollButton } from './_components/course-enroll-button';
 import { CourseProgressButton } from './_components/course-progress-button';
-import { VideoPlayer } from './_components/video-player';
+import { VideoPlayerYoutube } from './_components/video-player-youtube';
 
 /**
  * Page component for displaying a specific chapter.
@@ -26,7 +26,6 @@ export default async function ChapterIdPage(
         attachments,
         chapter,
         course,
-        muxData,
         nextChapter,
         registration,
         userProgress,
@@ -41,8 +40,6 @@ export default async function ChapterIdPage(
     }
 
     const isLocked = !chapter.isEnabled && !registration;
-    const completeOnEnd = !!registration && !userProgress?.isCompleted;
-    console.log(attachments);
     return (
         <div>
             {userProgress?.isCompleted && (
@@ -56,14 +53,10 @@ export default async function ChapterIdPage(
             )}
             <div className="flex flex-col max-w-4xl pb-20 mx-auto">
                 <div className="p-4">
-                    <VideoPlayer
-                        chapterId={params.chapterId}
+                    <VideoPlayerYoutube
+                        videoUrl={chapter.videoUrl || ""}
                         title={chapter.title}
-                        courseId={params.courseId}
-                        nextChapterId={nextChapter?.id}
-                        playbackId={muxData?.playbackId!}
                         isLocked={isLocked}
-                        completeOnEnd={completeOnEnd}
                     />
                 </div>
                 <div>

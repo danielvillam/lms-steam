@@ -81,7 +81,7 @@ export default async function CourseIdPage(
     course.imageUrl,
     course.categoryId,
     course.chapters.some((chapter: { isPublished: boolean }) => chapter.isPublished),
-    course.price,
+    course.price !== null,
   ];
 
   const totalFields = requiredFields.length;

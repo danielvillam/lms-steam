@@ -40,13 +40,15 @@ export async function PATCH(
             }
         });
 
+        /**S
         const muxData = await db.muxData.findUnique({
             where: {
                 chapterId: params.chapterId,
             }
         });
+        */
 
-        if(!chapter || !muxData || !chapter.title || !chapter.description || !chapter.videoUrl) {
+        if(!chapter || !chapter.title || !chapter.description || !chapter.videoUrl) {
             return new NextResponse('Faltan campos obligatorios', { status: 400 });
         }
 

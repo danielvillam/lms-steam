@@ -113,7 +113,12 @@ const PriceForm: FC<PriceFormProps> = ({ courseId, initialData }) => {
                         !initialData.price && 'text-slate-500 italic'
                     )}
                 >
-                    {initialData.price ? formatPrice(initialData.price) : 'Sin precio'}
+                    {initialData.price === null || initialData.price === undefined
+                        ? 'Sin precio'
+                        : initialData.price === 0
+                            ? 'Gratis'
+                            : formatPrice(initialData.price)}
+
                 </p>
             )}
         </div>

@@ -16,6 +16,8 @@ const mux = new Mux({
  * If the chapter has an associated video, it will also be deleted from Mux.
  * Additionally, if no chapters are left published in the course, the course itself will be unpublished.
  */
+
+// TODO: Cambiar la funcion DELETE, ya no es necesario eliminar el MUX ( sería inexistente )
 export async function DELETE(
     req: Request,
     props: { params: Promise<{ courseId: string; chapterId: string }> }
@@ -106,6 +108,7 @@ export async function DELETE(
  * If the chapter's video URL is updated, it will delete the old video from Mux
  * and upload the new video to Mux.
  */
+/**
 export async function PATCH(
   req: Request,
   props: { params: Promise<{ courseId: string; chapterId: string }> }
@@ -171,6 +174,53 @@ export async function PATCH(
         },
       });
     }
+
+    return NextResponse.json(chapter);
+  } catch (error) {
+    console.log("[COURSES_CHAPTER_ID]", error);
+    return new NextResponse("Internal error", { status: 500 });
+  }
+}
+ */
+
+/**
+ * PATCH Request Handler for Updating a Chapter and Associated Video.
+ *
+ * This function handles PATCH requests to update the details of a specific chapter in a course.
+ */
+export async function PATCH(
+    req: Request,
+    props: { params: Promise<{ courseId: string; chapterId: string }> }
+) {
+  try {
+    const { userId } = await auth();
+    const params = await props.params;
+    const { isPublished, ...values } = await req.json();
+
+    if (!userId) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const courseOwner = await db.course.findUnique({
+      where: {
+        id: params.courseId,
+        userId,
+      },
+    });
+
+    if (!courseOwner) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const chapter = await db.chapter.update({
+      where: {
+        id: params.chapterId,
+        courseId: params.courseId,
+      },
+      data: {
+        ...values,
+      },
+    });
 
     return NextResponse.json(chapter);
   } catch (error) {

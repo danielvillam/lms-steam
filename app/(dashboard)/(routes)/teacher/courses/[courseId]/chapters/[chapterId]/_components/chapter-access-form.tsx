@@ -93,9 +93,9 @@ export const ChapterAccessForm = ({
           )}
         >
           {initialData.isEnabled ? (
-            <>Este Módulo esta activo para vista previa.</>
+            <>Este módulo esta activo para vista previa.</>
           ) : (
-            <>Este Módulo no esta activo para vista previa..</>
+            <>Este módulo no esta activo para vista previa..</>
           )}
         </p>
       )}
