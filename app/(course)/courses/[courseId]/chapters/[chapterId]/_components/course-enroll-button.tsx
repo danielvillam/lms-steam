@@ -5,15 +5,17 @@ import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 import { Button } from '@/components/ui/button';
+import { formatPrice } from '@/lib/format';
 
 interface CourseEnrollButtonProps {
+    price: number;
     courseId: string;
 }
 
 /**
  * Button to enroll in a course.
  */
-const CourseEnrollButton = ({ courseId }: CourseEnrollButtonProps) => {
+const CourseEnrollButton = ({ courseId, price }: CourseEnrollButtonProps) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const onClick = async () => {
@@ -37,7 +39,7 @@ const CourseEnrollButton = ({ courseId }: CourseEnrollButtonProps) => {
             size="sm"
             className="w-full md:w-auto"
         >
-            Inscribirse
+            Inscribirse por {formatPrice(price)}
         </Button>
     );
 };

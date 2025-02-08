@@ -72,6 +72,7 @@ export default async function ChapterIdPage(
                         ) : (
                             <CourseEnrollButton
                                 courseId={params.courseId}
+                                price={course.price!}
                             />
                         )}
                     </div>
