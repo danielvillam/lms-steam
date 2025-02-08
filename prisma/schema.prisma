@@ -58,8 +58,6 @@ model Chapter {
   isPublished     Boolean @default(false)
   isEnabled       Boolean @default(false)
 
-  muxData         MuxData?
-
   courseId        String  @db.ObjectId
   course          Course? @relation(fields: [courseId], references: [id])
 
@@ -67,15 +65,6 @@ model Chapter {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
-}
-
-model MuxData {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
-  assetId         String
-  playbackId      String?
-
-  chapterId       String  @unique @db.ObjectId
-  chapter         Chapter @relation(fields: [chapterId], references: [id])
 }
 
 model UserProgress {

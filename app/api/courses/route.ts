@@ -25,8 +25,6 @@ export async function POST(req: Request) {
       },
     });
 
-    console.log("Course data:", course); // Inspecciona el valor
-
     return NextResponse.json(course);
   } catch (error) {
     console.log("[COURSES]", error);

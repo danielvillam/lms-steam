@@ -10,7 +10,8 @@ type RegistrationWithCourse = Registration & {
         title: string;
         description: string | null;
         imageUrl: string | null;
-        skills: string | null;
+        previousSkills: string | null;
+        developedSkills: string | null;
         level: string | null;
         isPublished: boolean;
         categoryId: string | null;

@@ -1,13 +1,7 @@
-import Mux from "@mux/mux-node";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
 import { db } from "@/lib/db";
-
-const mux = new Mux({
-  tokenId: process.env.MUX_TOKEN_ID!,
-  tokenSecret: process.env.MUX_TOKEN_SECRET!,
-});
 
 /**
  * DELETE Request Handler for Deleting a Course and its Related Data.
@@ -34,11 +28,7 @@ export async function DELETE(
         userId: userId,
       },
       include: {
-        chapters: {
-          include: {
-            muxData: true,
-          },
-        },
+        chapters: true
       },
     });
 
@@ -48,20 +38,8 @@ export async function DELETE(
 
     // Delete all chapters related to the course
     for (const chapter of course.chapters) {
-      // If Mux data exists for the chapter, delete it from Mux
-      if (chapter.muxData?.assetId) {
-        await mux.video.assets.delete(chapter.muxData.assetId);
-      }
-
       // Delete user progress related to the chapter
       await db.userProgress.deleteMany({
-        where: {
-          chapterId: chapter.id,
-        },
-      });
-
-      // Delete Mux data related to the chapter
-      await db.muxData.deleteMany({
         where: {
           chapterId: chapter.id,
         },
@@ -77,6 +55,13 @@ export async function DELETE(
 
     // Delete any attachments related to the course
     await db.attachment.deleteMany({
+      where: {
+        courseId: params.courseId,
+      },
+    });
+
+    // Delete the registrations related to the course
+    await db.registration.deleteMany({
       where: {
         courseId: params.courseId,
       },

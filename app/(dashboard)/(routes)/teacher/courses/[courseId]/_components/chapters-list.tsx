@@ -97,7 +97,7 @@ export const ChaptersList = ({
                     </div>
                     {chapter.title}
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
-                      {chapter.isEnabled && <Badge>Enabled</Badge>}
+                      {chapter.isEnabled && <Badge>Activado</Badge>}
                       <Badge
                         className={cn(
                           "bg-slate-500",
