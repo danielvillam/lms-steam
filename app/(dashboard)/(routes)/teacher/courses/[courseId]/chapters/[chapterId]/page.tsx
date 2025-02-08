@@ -12,6 +12,7 @@ import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterVideoUrlForm } from './_components/chapter-videoUrl-form';
 import { ChapterVideoYoutubeForm } from './_components/chapter-videoYoutube-form';
+import { ChapterVideoTranscriptForm } from './_components/chapter-videoTranscript-form';
 import { ChapterActions } from './_components/chapter-actions';
 
 /**
@@ -123,16 +124,17 @@ export default async function ChapterIdPage(
                     courseId={params.courseId}
                     chapterId={params.chapterId}
                 />
-              </div>
-              <div>
-                <div className="flex items-center gap-x-2">
-                  <IconBadge icon={Clapperboard} />
-                  <h2 className="text-xl">Video del módulo</h2>
-                </div>
                 <ChapterVideoYoutubeForm
                     initialData={chapter}
                 />
-              </div>
+               {chapter.videoUrl && (
+                   <ChapterVideoTranscriptForm
+                       initialData={chapter}
+                       courseId={params.courseId}
+                       chapterId={params.chapterId}
+                   />
+                )}
+            </div>
             </div>
           </div>
         </div>

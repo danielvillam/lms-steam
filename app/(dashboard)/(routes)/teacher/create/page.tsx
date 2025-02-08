@@ -27,7 +27,7 @@ import { Input } from "@/components/ui/input";
  */
 const formSchema = z.object({
   title: z.string().min(1, {
-    message: "Title is required",
+    message: "El título es obligatorio",
   }),
 });
 
@@ -48,7 +48,7 @@ const CreatePage = () => {
       router.push(`/teacher/courses/${response.data.id}`);
       toast.success("Curso creado");
     } catch {
-      toast.error("Something went wrong");
+      toast.error("Algo salió mal");
     }
   };
 

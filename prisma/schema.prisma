@@ -54,6 +54,7 @@ model Chapter {
   title           String
   description     String?
   videoUrl        String?
+  videoTranscript String?
   position        Int
   isPublished     Boolean @default(false)
   isEnabled       Boolean @default(false)
