@@ -1,21 +1,24 @@
 'use client';
 
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Legend, Tooltip } from 'recharts';
 
 import { Card } from '@/components/ui/card';
 
+interface ChartData {
+    name: string;
+    [key: string]: number | string;
+}
+
 interface ChartProps {
-    data: {
-        name: string;
-        total: number;
-    }[];
+    data: ChartData[];
+    dataKey: keyof Omit<ChartData, "name">;
+    label: string;
 }
 
 /**
- * Displays a responsive bar chart within a card, showing the total values
- * for each item in the provided data.
+ * Displays a reusable bar chart for different datasets.
  */
-export const Chart = ({ data }: ChartProps) => {
+export const Chart = ({ data, dataKey, label }: ChartProps) => {
     return (
         <Card>
             <ResponsiveContainer width="100%" height={350}>
@@ -34,7 +37,9 @@ export const Chart = ({ data }: ChartProps) => {
                         axisLine={false}
                         allowDecimals={false}
                     />
-                    <Bar dataKey="total" fill="#0369a1" radius={[4, 4, 0, 0]} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey={dataKey} fill="#0369a1" radius={[4, 4, 0, 0]} name={label} />
                 </BarChart>
             </ResponsiveContainer>
         </Card>
