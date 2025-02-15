@@ -64,6 +64,7 @@ export function DataTable<TData, TValue>({
 
     return (
         <div>
+            {/* Filters and creation button */}
             <div className="flex items-center py-4 justify-between">
                 <Input
                     placeholder="Filtrar cursos..."
@@ -80,6 +81,8 @@ export function DataTable<TData, TValue>({
                     </Button>
                 </Link>
             </div>
+
+            {/* Board */}
             <div className="rounded-md border">
                 <Table>
                     <TableHeader>
@@ -108,7 +111,7 @@ export function DataTable<TData, TValue>({
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
-                                        <TableCell key={cell.id}>
+                                        <TableCell key={cell.id} className="px-4 py-3">
                                             {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                         </TableCell>
                                     ))}
@@ -124,6 +127,8 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
+
+            {/* Pagination */}
             <div className="flex items-center justify-end space-x-2 py-4">
                 <Button
                     variant="outline"

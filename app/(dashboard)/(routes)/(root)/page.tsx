@@ -23,6 +23,8 @@ export default async function Dashboard() {
 
         return (
             <div className="p-6 space-y-4">
+
+                {/* Summary cards */}
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <InfoCard
                         icon={Clock}
@@ -36,6 +38,8 @@ export default async function Dashboard() {
                         variant="success"
                     />
                 </div>
+
+                {/* List of courses */}
                 <CoursesList items={[...coursesInProgress, ...completedCourses]} />
             </div>
         );
@@ -52,7 +56,7 @@ export default async function Dashboard() {
 
         return (
             <div
-                className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br" >
+                className="min-h-screen flex flex-col justify-center items-center bg-white" >
                 <div className="text-center space-y-6 px-6">
                     <h1 className="text-4xl md:text-6xl font-extrabold">
                         Aprende, Crece y Conquista 🚀
@@ -64,14 +68,14 @@ export default async function Dashboard() {
 
                     <div className="space-x-4">
                         <Link href="/sign-up">
-                            <Button size="sm" variant="ghost">
-                                <CircleUserRound className="h-4 w-4 mr-2" />
+                            <Button size="sm" variant="outline">
+                                <CircleUserRound className="h-4 w-4 mr-2 text-blue-500" />
                                 Regístrate Gratis
                             </Button>
                         </Link>
                         <Link href="/sign-in">
-                            <Button size="sm" variant="ghost">
-                                <LogIn className="h-4 w-4 mr-2" />
+                            <Button size="sm" variant="outline">
+                                <LogIn className="h-4 w-4 mr-2 text-green-500" />
                                 Iniciar sesión
                             </Button>
                         </Link>
@@ -96,7 +100,7 @@ export default async function Dashboard() {
 
                 {/* Footer */}
                 <footer className="mt-16 py-6 text-center text-gray-600">
-                    <p>© {new Date().getFullYear()} Tu Plataforma de Cursos. Todos los derechos reservados.</p>
+                    <p>© {new Date().getFullYear()} Plataforma de cursos del Aula STEAM. Todos los derechos reservados.</p>
                 </footer>
             </div>
         );

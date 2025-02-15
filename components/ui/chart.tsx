@@ -20,18 +20,18 @@ interface ChartProps {
  */
 export const Chart = ({ data, dataKey, label }: ChartProps) => {
     return (
-        <Card>
+        <Card className="p-4 rounded-xl shadow-md bg-white dark:bg-gray-900">
             <ResponsiveContainer width="100%" height={350}>
                 <BarChart data={data}>
                     <XAxis
                         dataKey="name"
-                        stroke="#888888"
+                        stroke="#888"
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
                     />
                     <YAxis
-                        stroke="#888888"
+                        stroke="#888"
                         fontSize={12}
                         tickLine={false}
                         axisLine={false}
@@ -39,7 +39,14 @@ export const Chart = ({ data, dataKey, label }: ChartProps) => {
                     />
                     <Tooltip />
                     <Legend />
-                    <Bar dataKey={dataKey} fill="#0369a1" radius={[4, 4, 0, 0]} name={label} />
+                    <Bar
+                        dataKey={dataKey}
+                        fill="#0369a1"
+                        radius={[6, 6, 0, 0]}
+                        name={label}
+                        animationBegin={200}
+                        animationDuration={800}
+                    />
                 </BarChart>
             </ResponsiveContainer>
         </Card>

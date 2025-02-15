@@ -5,7 +5,7 @@ import Image from "next/image";
  */
 export default function AboutPage() {
     return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br p-6 space-y-12">
+        <div className="min-h-screen flex flex-col justify-center items-center bg-white p-6 space-y-12">
             {/* Introduction section */}
             <div className="text-center max-w-3xl">
                 <h1 className="text-4xl md:text-5xl font-extrabold">Quiénes Somos</h1>
@@ -54,7 +54,7 @@ export default function AboutPage() {
 
             {/* Footer */}
             <footer className="mt-12 text-center text-gray-600">
-                <p>© {new Date().getFullYear()} Tu Plataforma de Cursos. Todos los derechos reservados.</p>
+                <p>© {new Date().getFullYear()} Plataforma de cursos del Aula STEAM. Todos los derechos reservados.</p>
             </footer>
         </div>
     );
