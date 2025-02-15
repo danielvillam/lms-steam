@@ -62,7 +62,11 @@
 
   export const SidebarRoutes = () => {
     const pathname = usePathname();
-    const { userId } = useAuth();
+    const { userId, isLoaded } = useAuth();
+
+    if (!isLoaded) {
+      return null;
+    }
 
     const isOnTeacherPage = pathname?.includes("/teacher");
     const isUserTeacher = isTeacher(userId);
