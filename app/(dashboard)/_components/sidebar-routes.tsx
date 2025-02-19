@@ -19,7 +19,7 @@
     },
     {
       icon: Search,
-      label: "Buscar",
+      label: "Explorar cursos",
       href: "/search",
     },
     {
@@ -31,13 +31,18 @@
 
   const authenticatedRoutes = [
     {
-      icon: List,
-      label: "Cursos",
+      icon: Newspaper,
+      label: "Inicio",
       href: "/",
     },
     {
+      icon: List,
+      label: "Mis cursos",
+      href: "/mycourses",
+    },
+    {
       icon: Search,
-      label: "Buscar",
+      label: "Explorar cursos",
       href: "/search",
     },
     {
@@ -71,15 +76,9 @@
     const isOnTeacherPage = pathname?.includes("/teacher");
     const isUserTeacher = isTeacher(userId);
 
-    let routes;
-
-    if (isOnTeacherPage && isUserTeacher) {
-      routes = teacherRoutes;
-    } else if (userId) {
-      routes = authenticatedRoutes;
-    } else {
-      routes = guestRoutes;
-    }
+  let routes = isOnTeacherPage && isUserTeacher ? teacherRoutes
+      : userId ? authenticatedRoutes
+          : guestRoutes;
 
     return (
       <div className="flex flex-col w-full">
