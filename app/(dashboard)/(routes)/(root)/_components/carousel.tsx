@@ -15,14 +15,14 @@ import {
 const images = [
     "/images/Slide_01.jpg",
     "/images/Slide_02.jpg",
-    "/images/Slide_01.jpg",
-    "/images/Slide_02.jpg",
-    "/images/Slide_01.jpg"
+    "/images/Slide_03.jpg",
+    "/images/Slide_04.jpg",
+    "/images/Slide_05.jpg"
 ];
 
 export function CarouselHome() {
     const plugin = React.useRef(
-        Autoplay({ delay: 2000, stopOnInteraction: true })
+        Autoplay({ delay: 3000, stopOnInteraction: true })
     )
 
     return (
