@@ -1,6 +1,6 @@
   "use client";
 
-  import { Search, List, Contact, BarChart, Newspaper } from "lucide-react";
+  import { Search, List, Contact, BarChart, Newspaper, Calendar } from "lucide-react";
   import { usePathname } from "next/navigation";
   import { SidebarItem } from "./sidebar-item";
   import { isTeacher } from '@/lib/teacher';
@@ -27,6 +27,11 @@
       label: "Quienes Somos",
       href: "/about",
     },
+    {
+      icon: Calendar,
+      label: "Agendate",
+      href: "/feed",
+    },
   ];
 
   const authenticatedRoutes = [
@@ -50,6 +55,11 @@
       label: "Quienes Somos",
       href: "/about",
     },
+    {
+      icon: Calendar,
+      label: "Agendate",
+      href: "/feed",
+    },
   ];
 
   const teacherRoutes = [
@@ -62,6 +72,11 @@
       icon: BarChart,
       label: "Analítica",
       href: "/teacher/analytics",
+    },
+    {
+      icon: Calendar,
+      label: "Agendate",
+      href: "/teacher/feed",
     },
   ];
 
