@@ -21,13 +21,13 @@ export default async function CourseLayout(
 
     if (!userId) return redirectToSignIn()
 
-    // Fetches the course, including only published chapters and tracking user progress
+    // Fetches the course, including only published modules and tracking user progress
     const course = await db.course.findUnique({
         where: {
             id: params.courseId,
         },
         include: {
-            chapters: {
+            modules: {
                 where: {
                     isPublished: true,
                 },

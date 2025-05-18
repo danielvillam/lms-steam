@@ -29,7 +29,7 @@ export const ourFileRouter = {
         })
         .onUploadComplete(async ({ metadata, file }) => {
             console.log("Upload complete for userId:", metadata.userId);
-            console.log("File URL:", file.url);
+            console.log("File URL:", file.ufsUrl);
         }),
 
     // Route for course attachments (multiple file types allowed)
@@ -40,18 +40,18 @@ export const ourFileRouter = {
         })
         .onUploadComplete(async ({ metadata, file }) => {
             console.log("Upload complete for userId:", metadata.userId);
-            console.log("File URL:", file.url);
+            console.log("File URL:", file.ufsUrl);
         }),
 
-    // Route for chapter videos
-    chapterVideo: f({ video: { maxFileSize: "512GB", maxFileCount: 1 } })
+    // Route for module videos
+    moduleVideo: f({ video: { maxFileSize: "512GB", maxFileCount: 1 } })
         .middleware(async ({ req }) => {
             const userId = await handleAuth(req);
             return { userId: userId };
         })
         .onUploadComplete(async ({ metadata, file }) => {
             console.log("Upload complete for userId:", metadata.userId);
-            console.log("File URL:", file.url);
+            console.log("File URL:", file.ufsUrl);
         }),
 } satisfies FileRouter;
 

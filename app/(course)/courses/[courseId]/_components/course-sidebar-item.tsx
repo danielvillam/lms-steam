@@ -13,7 +13,7 @@ interface CourseSidebarItemProps {
 }
 
 /**
- * Sidebar item representing a course chapter.
+ * Sidebar item representing a course module.
  */
 const CourseSidebarItem = ({
                                courseId,
@@ -28,7 +28,7 @@ const CourseSidebarItem = ({
     const Icon = isLocked ? Lock : isCompleted ? CheckCircle : PlayCircle;
     const isActive = pathname?.includes(id);
     const onClick = () => {
-        router.push(`/courses/${courseId}/chapters/${id}`);
+        router.push(`/courses/${courseId}/modules/${id}`);
     };
 
     return (

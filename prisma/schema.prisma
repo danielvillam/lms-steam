@@ -7,6 +7,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//model User {
+  //id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  //email           String
+  //name            String?
+  //role            String? // admin, student, instructor
+
+  //registrations   Registration[]
+  //certificates    Certificate[]
+  //progress        UserProgress[]
+  //ratings         Rating[]
+  //evaluationResults EvaluationResult[]
+
+  //createdAt       DateTime @default(now())
+//}
+
 model Course {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId
   userId          String
@@ -22,10 +37,11 @@ model Course {
 
   categoryId      String?   @db.ObjectId
   category        Category? @relation(fields: [categoryId], references: [id])
-
-  chapters        Chapter[]
+  modules         Module[]
   attachments     Attachment[]
   registered      Registration[]
+  certificates    Certificate[]
+  ratings         Rating[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -49,7 +65,7 @@ model Attachment {
   updatedAt       DateTime @updatedAt
 }
 
-model Chapter {
+model Module {
   id              String  @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   description     String?
@@ -63,6 +79,7 @@ model Chapter {
   course          Course? @relation(fields: [courseId], references: [id])
 
   userProgress    UserProgress[]
+  evaluations     Evaluation[]
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -72,8 +89,8 @@ model UserProgress {
   id              String @id @default(auto()) @map("_id") @db.ObjectId
   userId          String
 
-  chapterId       String  @db.ObjectId
-  chapter         Chapter @relation(fields: [chapterId], references: [id])
+  moduleId        String  @db.ObjectId
+  module          Module @relation(fields: [moduleId], references: [id])
 
   isCompleted     Boolean @default(false)
 
@@ -90,4 +107,51 @@ model Registration {
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+}
+
+model Rating {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  courseId        String   @db.ObjectId                   // ID del curso calificado
+  course          Course    @relation(fields: [courseId], references: [id]) // Relación con el curso
+
+  rating          Int                                     // Calificación numérica (1 a 5)
+  comment         String?                                 // Comentario opcional del estudiante
+
+  createdAt       DateTime @default(now())                // Fecha de creación
+  updatedAt       DateTime @updatedAt                     // Fecha de última actualización
+}
+
+
+model Evaluation {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String?
+  type            String   // "interactive", "quiz", etc.
+  moduleId        String   @db.ObjectId
+  module          Module   @relation(fields: [moduleId], references: [id])
+  questions       Json     // Almacena estructura dinámica según tipo
+
+  evaluationResults EvaluationResult[]
+
+  createdAt       DateTime @default(now())
+}
+
+model EvaluationResult {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  evaluationId    String   @db.ObjectId
+  evaluation      Evaluation @relation(fields: [evaluationId], references: [id])
+  score           Float    @default(0)
+  result          Json      // Puede almacenar respuestas, paso a paso, etc.
+  completedAt     DateTime @default(now())
+}
+
+model Certificate {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  courseId        String   @db.ObjectId
+  course          Course   @relation(fields: [courseId], references: [id])
+  issuedAt        DateTime @default(now())
+  certificateUrl  String?
 }

@@ -28,7 +28,7 @@ export async function PATCH(
                 userId,
             },
             include: {
-                chapters: true
+                modules: true
             }
         });
 
@@ -36,9 +36,9 @@ export async function PATCH(
             return new NextResponse("Not found", { status: 404 });
         }
 
-        const hasPublishedChapter = course.chapters.some((chapter) => chapter.isPublished);
+        const hasPublishedModule = course.modules.some((module) => module.isPublished);
 
-        if (!course.title || !course.description || !course.level || !course.previousSkills || !course.developedSkills || !course.imageUrl || !course.categoryId || !hasPublishedChapter || !course.price == null) {
+        if (!course.title || !course.description || !course.level || !course.previousSkills || !course.developedSkills || !course.imageUrl || !course.categoryId || !hasPublishedModule || !course.price == null) {
             return new NextResponse("Missing required fields", { status:401 });
         }
 

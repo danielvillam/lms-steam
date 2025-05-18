@@ -14,13 +14,13 @@ export default async function CourseIdPage(
 ) {
     const params = await props.params;
 
-    // Fetches the course and includes only published chapters, ordered by position
+    // Fetches the course and includes only published modules, ordered by position
     const course = await db.course.findUnique({
         where: {
             id: params.courseId,
         },
         include: {
-            chapters: {
+            modules: {
                 where: {
                     isPublished: true,
                 },
@@ -35,9 +35,9 @@ export default async function CourseIdPage(
         return redirect('/');
     }
 
-    if (course.chapters.length === 0) {
+    if (course.modules.length === 0) {
         return redirect('/');
     }
 
-    return redirect(`/courses/${course.id}/chapters/${course.chapters[0].id}`);
+    return redirect(`/courses/${course.id}/modules/${course.modules[0].id}`);
 };

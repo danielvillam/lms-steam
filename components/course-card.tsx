@@ -1,25 +1,25 @@
-import Image from "next/image";
-import Link from "next/link";
-import { BookOpen } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { BookOpen } from 'lucide-react';
 
-import { IconBadge } from "@/components/icon-badge";
-import { CourseProgress } from "@/components/course-progress";
+import { IconBadge } from '@/components/icon-badge';
+import { CourseProgress } from '@/components/course-progress';
 
 interface CourseCardProps {
-    id: string;
-    title: string;
-    imageUrl: string;
-    chaptersLength: number;
-    progress: number | null;
-    category: string;
-    level: string;
+    id: string,
+    title: string,
+    imageUrl: string,
+    modulesLength?: number
+    progress: number | null,
+    category: string,
+    level: string,
 }
 
 export const CourseCard = ({
                                id,
                                title,
                                imageUrl,
-                               chaptersLength,
+                               modulesLength,
                                progress,
                                category,
                                level,
@@ -57,14 +57,14 @@ export const CourseCard = ({
                     <div className="flex items-center gap-x-2 text-sm text-gray-600">
                         <IconBadge size="sm" icon={BookOpen} />
                         <span>
-                            {chaptersLength} {chaptersLength === 1 ? "Módulo" : "Módulos"}
+                            {modulesLength} {modulesLength === 1 ? 'Módulo' : 'Módulos'}
                         </span>
                     </div>
 
                     {/* Progress or Level */}
                     {progress !== null ? (
                         <CourseProgress
-                            variant={progress === 100 ? "success" : "default"}
+                            variant={progress === 100 ? 'success' : 'default'}
                             size="sm"
                             value={progress}
                         />
@@ -79,10 +79,10 @@ export const CourseCard = ({
                 {progress !== null && (
                     <div
                         className={`absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-full ${
-                            progress === 100 ? "bg-green-700 text-white" : "bg-gray-200 text-gray-700"
+                            progress === 100 ? 'bg-green-700 text-white' : 'bg-gray-200 text-gray-700'
                         }`}
                     >
-                        {progress === 100 ? "Completado" : `${progress}%`}
+                        {progress === 100 ? 'Completado' : `${progress}%`}
                     </div>
                 )}
             </div>

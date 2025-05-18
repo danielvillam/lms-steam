@@ -81,7 +81,7 @@ npm run dev
 lms-steam/
 ├── actions/                # Acciones específicas del proyecto
 │   ├── get-all-courses.tsx  
-│   ├── get-chapter.ts      
+│   ├── get-module.ts      
 │   ├── get-dashboard-courses.ts  
 │   ├── get-analytics.ts    
 │   ├── get-courses.ts      
@@ -104,8 +104,8 @@ lms-steam/
 │   │   │   │   │   ├── course-navbar.tsx
 │   │   │   │   │   ├── course-sidebar.tsx
 │   │   │   │   │   └── course-sidebar-item.tsx
-│   │   │   │   ├── chapters/
-│   │   │   │   │   ├── [chapterId]/
+│   │   │   │   ├── modules/
+│   │   │   │   │   ├── [moduleId]/
 │   │   │   │   │   │   ├── _components/
 │   │   │   │   │   │   │   ├── course-enroll-button.tsx
 │   │   │   │   │   │   │   ├── course-progress-button.tsx
@@ -146,7 +146,8 @@ lms-steam/
 │   │   │   │   │   │   │   ├── actions.tsx
 │   │   │   │   │   │   │   ├── attachment-form.tsx
 │   │   │   │   │   │   │   ├── category-form.tsx
-│   │   │   │   │   │   │   ├── chapters-form.tsx
+│   │   │   │   │   │   │   ├── modules-form.tsx
+│   │   │   │   │   │   │   ├── modules-list.tsx
 │   │   │   │   │   │   │   ├── description-form.tsx
 │   │   │   │   │   │   │   ├── developed-skills-form.tsx
 │   │   │   │   │   │   │   ├── image-form.tsx
@@ -154,23 +155,23 @@ lms-steam/
 │   │   │   │   │   │   │   ├── previous-skills-form.tsx
 │   │   │   │   │   │   │   ├── price-form.tsx
 │   │   │   │   │   │   │   └── title-form.tsx
-│   │   │   │   │   │   ├── chapters/
-│   │   │   │   │   │   │   ├── [chapterId]/
+│   │   │   │   │   │   ├── modules/
+│   │   │   │   │   │   │   ├── [moduleId]/
 │   │   │   │   │   │   │   │   ├── _components/
-│   │   │   │   │   │   │   │   │   ├── chapter-access-form.tsx
-│   │   │   │   │   │   │   │   │   ├── chapter-actions.tsx
-│   │   │   │   │   │   │   │   │   ├── chapter-description-form.tsx
-│   │   │   │   │   │   │   │   │   ├── chapter-title-form.tsx
-│   │   │   │   │   │   │   │   │   ├── chapter-video-form.tsx
-│   │   │   │   │   │   │   │   │   ├── chapter-videoTranscript-form.tsx
-│   │   │   │   │   │   │   │   │   ├── chapter-videoUrl-form.tsx
-│   │   │   │   │   │   │   │   │   └── chapter-videoYoutube-form.tsx
+│   │   │   │   │   │   │   │   │   ├── module-access-form.tsx
+│   │   │   │   │   │   │   │   │   ├── module-actions.tsx
+│   │   │   │   │   │   │   │   │   ├── module-description-form.tsx
+│   │   │   │   │   │   │   │   │   ├── module-title-form.tsx
+│   │   │   │   │   │   │   │   │   ├── module-video-form.tsx
+│   │   │   │   │   │   │   │   │   ├── module-videoTranscript-form.tsx
+│   │   │   │   │   │   │   │   │   ├── module-videoUrl-form.tsx
+│   │   │   │   │   │   │   │   │   └── module-videoYoutube-form.tsx
 │   │   │   │   │   │   │   │   └── page.tsx
 │   ├── api/                # Rutas API del backend
 │   │   ├── courses/
 │   │   │   ├── [courseId]/
 │   │   │   │   ├── attachments/
-│   │   │   │   ├── chapters/
+│   │   │   │   ├── modules/
 │   │   │   │   ├── enroll/
 │   │   │   │   ├── publish/
 │   │   │   │   ├── unpublish/

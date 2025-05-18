@@ -28,7 +28,7 @@ export async function DELETE(
         userId: userId,
       },
       include: {
-        chapters: true
+        modules: true
       },
     });
 
@@ -36,18 +36,18 @@ export async function DELETE(
       return new NextResponse("Not Found", { status: 404 });
     }
 
-    // Delete all chapters related to the course
-    for (const chapter of course.chapters) {
-      // Delete user progress related to the chapter
+    // Delete all modules related to the course
+    for (const module of course.modules) {
+      // Delete user progress related to the module
       await db.userProgress.deleteMany({
         where: {
-          chapterId: chapter.id,
+          moduleId: module.id,
         },
       });
     }
 
-    // Delete the chapters from the database
-    await db.chapter.deleteMany({
+    // Delete the modules from the database
+    await db.module.deleteMany({
       where: {
         courseId: params.courseId,
       },

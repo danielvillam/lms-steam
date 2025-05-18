@@ -16,7 +16,7 @@ import { DescriptionForm } from "./_components/description-form";
 import { ImageForm } from "./_components/image-form";
 import { CategoryForm } from "./_components/category-form";
 import { AttachmentForm } from "./_components/attachment-form";
-import { ChaptersForm } from "./_components/chapters-form";
+import { ModulesForm } from "./_components/modules-form";
 import { PreviousSkillsForm } from './_components/previous-skills-form';
 import { LevelForm } from './_components/level-form';
 import { Actions } from './_components/actions';
@@ -27,7 +27,7 @@ import { PriceForm } from './_components/price-form';
 
 /**
  * Course Configuration Page.
- * Displays and allows the editing of a course's title, description, image, category, level, skills, chapters, and attachments.
+ * Displays and allows the editing of a course's title, description, image, category, level, skills, modules, and attachments.
  */
 export default async function CourseIdPage(
   props: {
@@ -49,7 +49,7 @@ export default async function CourseIdPage(
       userId,
     },
     include: {
-      chapters: {
+      modules: {
         orderBy: {
           position: "asc",
         },
@@ -80,7 +80,7 @@ export default async function CourseIdPage(
     course.developedSkills,
     course.imageUrl,
     course.categoryId,
-    course.chapters.some((chapter: { isPublished: boolean }) => chapter.isPublished),
+    course.modules.some((module: { isPublished: boolean }) => module.isPublished),
     course.price !== null,
   ];
 
@@ -139,7 +139,7 @@ export default async function CourseIdPage(
                   <IconBadge icon={ListChecks} />
                   <h2 className="text-xl">Módulos del curso</h2>
                 </div>
-                <ChaptersForm initialData={course} courseId={course.id} />
+                <ModulesForm initialData={course} courseId={course.id} />
               </div>
               <div>
                 <div className="flex items-center gap-x-2">

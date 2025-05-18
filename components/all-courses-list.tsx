@@ -3,7 +3,7 @@ import { AllCourseCard } from '@/components/all-course-card';
 
 type CourseWithCategory = Course & {
     category: Category | null;
-    chapters: { id: string }[];
+    modules: { id: string }[];
 };
 
 interface CoursesListProps {
@@ -23,7 +23,7 @@ export const AllCoursesList = ({
                         id={item.id}
                         title={item.title}
                         imageUrl={item.imageUrl!}
-                        chaptersLength={item.chapters.length}
+                        modulesLength={item.modules.length}
                         category={item?.category?.name!}
                         level={item.level!}
                     />

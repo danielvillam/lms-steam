@@ -1,4 +1,4 @@
-import { Chapter, Course, UserProgress } from '@prisma/client';
+import { Module, Course, UserProgress } from '@prisma/client';
 
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs/server';
@@ -7,7 +7,7 @@ import { CourseSidebarItem } from './course-sidebar-item';
 
 interface CourseSidebarProps {
     course: Course & {
-        chapters: (Chapter & {
+        modules: (Module & {
             userProgress: UserProgress[] | null;
         })[];
     };
@@ -15,7 +15,7 @@ interface CourseSidebarProps {
 }
 
 /**
- * Sidebar component for displaying course details and chapters.
+ * Sidebar component for displaying course details and modules.
  */
 const CourseSidebar = async ({
     course,
@@ -46,7 +46,7 @@ const CourseSidebar = async ({
                 )}
             </div>
             <div className="flex flex-col w-full">
-                {course.chapters.map((item) => (
+                {course.modules.map((item) => (
                     <CourseSidebarItem
                         key={item.id}
                         id={item.id}

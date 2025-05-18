@@ -4,7 +4,7 @@ import { db } from '@/lib/db';
 
 type CourseWithCategory = Course & {
     category: Category | null;
-    chapters: { id: string }[];
+    modules: { id: string }[];
 };
 
 type GetCourses = {
@@ -27,7 +27,7 @@ export const getAllCourses = async ({
             },
             include: {
                 category: true,
-                chapters: {
+                modules: {
                     where: {
                         isPublished: true,
                     },

@@ -5,21 +5,21 @@ import { BookOpen } from 'lucide-react';
 import { IconBadge } from '@/components/icon-badge';
 
 interface CourseCardProps {
-    id: string;
-    title: string;
-    imageUrl: string;
-    chaptersLength: number;
-    category: string;
-    level: string;
+    id: string,
+    title: string,
+    imageUrl: string,
+    modulesLength: number,
+    category: string,
+    level: string,
 }
 
 export const AllCourseCard = ({
                                   id,
                                   title,
                                   imageUrl,
-                                  chaptersLength,
+                                  modulesLength,
                                   category,
-                                  level
+                                  level,
                               }: CourseCardProps) => {
     return (
         <Link href={`/courses/${id}`}>
@@ -46,9 +46,9 @@ export const AllCourseCard = ({
                     <div className="my-3 flex items-center gap-x-s text-sm">
                         <div className="flex item-center gap-x-1
                         text-slate-500">
-                            <IconBadge size="sm" icon={BookOpen}/>
+                            <IconBadge size="sm" icon={BookOpen} />
                             <span>
-                                {chaptersLength} {chaptersLength === 1 ? "Módulo" : "Módulos"}
+                                {modulesLength} {modulesLength === 1 ? 'Módulo' : 'Módulos'}
                             </span>
                         </div>
                     </div>
@@ -58,5 +58,5 @@ export const AllCourseCard = ({
                 </div>
             </div>
         </Link>
-    )
-}
+    );
+};
