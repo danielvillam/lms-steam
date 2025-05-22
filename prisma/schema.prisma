@@ -66,20 +66,23 @@ model Attachment {
 }
 
 model Module {
-  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
   title           String
   description     String?
   videoUrl        String?
   videoTranscript String?
   position        Int
-  isPublished     Boolean @default(false)
-  isEnabled       Boolean @default(false)
+  isPublished     Boolean  @default(false)
+  isEnabled       Boolean  @default(false)
 
-  courseId        String  @db.ObjectId
-  course          Course? @relation(fields: [courseId], references: [id])
+  isEvaluable     Boolean  @default(false)
+  evaluationMethod EvaluationType?
+
+  courseId        String   @db.ObjectId
+  course          Course   @relation(fields: [courseId], references: [id])
 
   userProgress    UserProgress[]
-  evaluations     Evaluation[]
+  evaluation      Evaluation?
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -103,7 +106,7 @@ model Registration {
   userId          String
 
   courseId        String @db.ObjectId
-  course          Course? @relation(fields: [courseId], references: [id])
+  course          Course @relation(fields: [courseId], references: [id])
 
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
@@ -112,39 +115,90 @@ model Registration {
 model Rating {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   userId          String
-  courseId        String   @db.ObjectId                   // ID del curso calificado
-  course          Course    @relation(fields: [courseId], references: [id]) // Relación con el curso
+  courseId        String   @db.ObjectId
+  course          Course   @relation(fields: [courseId], references: [id])
 
-  rating          Int                                     // Calificación numérica (1 a 5)
-  comment         String?                                 // Comentario opcional del estudiante
+  rating          Int
+  comment         String?
 
-  createdAt       DateTime @default(now())                // Fecha de creación
-  updatedAt       DateTime @updatedAt                     // Fecha de última actualización
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
+enum EvaluationType {
+  sequence
+  locate
+  single
+  multiple
+  open
+}
 
 model Evaluation {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  title           String
-  description     String?
-  type            String   // "interactive", "quiz", etc.
-  moduleId        String   @db.ObjectId
-  module          Module   @relation(fields: [moduleId], references: [id])
-  questions       Json     // Almacena estructura dinámica según tipo
+  type            EvaluationType
 
+  moduleId        String   @unique @db.ObjectId
+  module          Module   @relation(fields: [moduleId], references: [id])
+
+  isPublished     Boolean  @default(false)
+
+  questions       Question[]
   evaluationResults EvaluationResult[]
 
   createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Question {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+
+  evaluationId    String   @db.ObjectId
+  evaluation      Evaluation   @relation(fields: [evaluationId], references: [id])
+
+  answers         Answer[]
+  selectedAnswers SelectedAnswer[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Answer {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+
+  questionId      String     @db.ObjectId
+  question        Question   @relation(fields: [questionId], references: [id])
+  isCorrect       Boolean    @default(false)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
 
 model EvaluationResult {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId          String
-  evaluationId    String   @db.ObjectId
-  evaluation      Evaluation @relation(fields: [evaluationId], references: [id])
-  score           Float    @default(0)
-  result          Json      // Puede almacenar respuestas, paso a paso, etc.
-  completedAt     DateTime @default(now())
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String
+
+  evaluationId        String   @db.ObjectId
+  evaluation          Evaluation @relation(fields: [evaluationId], references: [id])
+
+  answers             SelectedAnswer[]
+
+  attempt             Int
+  score               Float    @default(0)
+  completedAt         DateTime @default(now())
+}
+
+model SelectedAnswer {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  title               String
+  evaluationResultId  String @db.ObjectId
+  evaluationResult    EvaluationResult @relation(fields: [evaluationResultId], references: [id])
+
+  questionId          String @db.ObjectId
+  question            Question @relation(fields: [questionId], references: [id])
+
+  isCorrect           Boolean
 }
 
 model Certificate {
@@ -154,4 +208,7 @@ model Certificate {
   course          Course   @relation(fields: [courseId], references: [id])
   issuedAt        DateTime @default(now())
   certificateUrl  String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }

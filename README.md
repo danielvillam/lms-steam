@@ -82,10 +82,11 @@ lms-steam/
 ├── actions/                # Acciones específicas del proyecto
 │   ├── get-all-courses.tsx  
 │   ├── get-module.ts      
-│   ├── get-dashboard-courses.ts  
+│   ├── get-dashboard-courses.ts
+│   ├── get-courses.ts  
 │   ├── get-analytics.ts    
 │   ├── get-courses.ts      
-│   └── get-progress.ts     
+│   └── get-progress-batch.ts     
 ├── app/                    # Carpeta principal de la aplicación
 │   ├── (auth)/             # Rutas relacionadas con la autenticación
 │   │   ├── (routes)/
