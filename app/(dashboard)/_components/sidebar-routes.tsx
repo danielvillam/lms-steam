@@ -24,7 +24,7 @@
     },
     {
       icon: Contact,
-      label: "Quienes Somos",
+      label: "Quienes somos",
       href: "/about",
     },
   ];
@@ -47,7 +47,7 @@
     },
     {
       icon: Contact,
-      label: "Quienes Somos",
+      label: "Quienes somos",
       href: "/about",
     },
   ];

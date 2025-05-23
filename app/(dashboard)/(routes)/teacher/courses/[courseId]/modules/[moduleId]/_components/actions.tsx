@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { ConfirmModal } from '@/components/modals/confirm-modal';
 
-interface ModuleActionsProps {
+interface ActionsProps {
     disabled: boolean;
     courseId: string;
     moduleId: string;
@@ -20,12 +20,12 @@ interface ModuleActionsProps {
  * Component for managing module actions.
  * Allows publishing, unpublishing, or deleting a module.
  */
-export const ModuleActions = ({
+export const Actions = ({
     disabled,
     courseId,
     moduleId,
     isPublished
-}: ModuleActionsProps) => {
+}: ActionsProps) => {
     const router = useRouter();
     const [isLoading, setIsLoaded] = useState(false);
 

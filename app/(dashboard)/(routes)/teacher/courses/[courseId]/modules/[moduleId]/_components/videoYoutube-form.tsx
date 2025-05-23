@@ -3,7 +3,7 @@
 import { Clapperboard } from "lucide-react";
 import { Module } from "@prisma/client";
 
-interface ModuleVideoYoutubeFormProps {
+interface VideoYoutubeFormProps {
     initialData: Module;
 }
 
@@ -17,9 +17,9 @@ const getEmbedUrl = (url: string | null): string | undefined => {
 /**
  * A form for viewing a module's video.
  */
-export const ModuleVideoYoutubeForm = ({
+export const VideoYoutubeForm = ({
                                      initialData,
-                                 }: ModuleVideoYoutubeFormProps) => {
+                                 }: VideoYoutubeFormProps) => {
 
     return (
         <div>

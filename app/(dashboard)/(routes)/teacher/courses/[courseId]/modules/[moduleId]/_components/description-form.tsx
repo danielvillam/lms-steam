@@ -13,34 +13,33 @@ import { Module } from "@prisma/client";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
+  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Loading } from '@/components/loading';
+import { Textarea } from "@/components/ui/textarea";
 
-interface ModuleAccessFormProps {
+interface DescriptionFormProps {
   initialData: Module;
   courseId: string;
   moduleId: string;
 }
 
 /**
- * Form to manage module access.
- * Allows toggling preview availability via a checkbox.
+ * Form for editing module description in a course.
+ * Allows toggling between viewing and editing the description.
  */
 const formSchema = z.object({
-  isEnabled: z.boolean().default(false),
+  description: z.string().min(1),
 });
 
-export const ModuleAccessForm = ({
+export const DescriptionForm = ({
   initialData,
   courseId,
   moduleId,
-}: ModuleAccessFormProps) => {
+}: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -50,7 +49,7 @@ export const ModuleAccessForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isEnabled: !!initialData.isEnabled,
+      description: initialData?.description || "",
     },
   });
 
@@ -62,7 +61,7 @@ export const ModuleAccessForm = ({
         `/api/courses/${courseId}/modules/${moduleId}`,
         values
       );
-      toast.success("Módulo actualizado exitosamente");
+      toast.success("Módulo actualizado correctamente");
       toggleEdit();
       router.refresh();
     } catch {
@@ -73,14 +72,14 @@ export const ModuleAccessForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
-        Acceso al módulo
+        Descripción del módulo
         <Button onClick={toggleEdit} variant="ghost">
           {isEditing ? (
             <>Cancelar</>
           ) : (
             <>
               <Pencil className="h-4 w-4 mr-2" />
-              Editar acceso
+              Editar descripción
             </>
           )}
         </Button>
@@ -89,14 +88,10 @@ export const ModuleAccessForm = ({
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.isEnabled && "text-slate-500 italic"
+            !initialData.description && "text-slate-500 italic"
           )}
         >
-          {initialData.isEnabled ? (
-            <>Este módulo esta activo para vista previa.</>
-          ) : (
-            <>Este módulo no esta activo para vista previa..</>
-          )}
+          {initialData.description || "Sin descripción"}
         </p>
       )}
       {isEditing && (
@@ -107,27 +102,22 @@ export const ModuleAccessForm = ({
           >
             <FormField
               control={form.control}
-              name="isEnabled"
+              name="description"
               render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-4">
+                <FormItem>
                   <FormControl>
-                    <Checkbox
-                      checked={field.value}
-                      onCheckedChange={field.onChange}
+                    <Textarea
+                        disabled={isSubmitting}
+                        placeholder="p.ej. 'Este módulo trata sobre...'"
+                        {...field}
                     />
                   </FormControl>
-                  <div className="space-y-1 leading-none">
-                    <FormDescription>
-                      Marque esta casilla si desea que este módulo esté activo para obtener una vista
-                      previa.
-                    </FormDescription>
-                  </div>
+                  <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex items-center gap-x-2">
               <Button disabled={!isValid || isSubmitting} type="submit">
-                {isSubmitting && <Loading />}
                 Guardar
               </Button>
             </div>

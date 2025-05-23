@@ -22,27 +22,27 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import { Loading } from '@/components/loading';
 
-interface ModuleVideoYoutubeFormProps {
+interface VideoYoutubeFormProps {
     initialData: Module;
     courseId: string;
     moduleId: string;
 }
 
 /**
- * A form to upload or edit a module's video transcript.
- * Allows you to toggle between viewing and editing the transcript
+ * A form to upload or edit a module's video. (via a YouTube link)
+ * Allows you to toggle between viewing and editing the video.
  */
 const formSchema = z.object({
-    videoTranscript: z.string().min(1, {
-        message: "Se requiere transcripción del video",
+    videoUrl: z.string().min(1, {
+        message: "Se requiere código del video",
     }),
 });
 
-export const ModuleVideoTranscriptForm = ({
+export const VideoUrlForm = ({
                                     initialData,
                                     courseId,
                                     moduleId,
-                                        }: ModuleVideoYoutubeFormProps) => {
+                                        }: VideoYoutubeFormProps) => {
     const [isEditing, setIsEditing] = useState(false);
 
     const toggleEdit = () => setIsEditing((current) => !current);
@@ -52,7 +52,7 @@ export const ModuleVideoTranscriptForm = ({
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            videoTranscript: initialData?.videoTranscript || "",
+            videoUrl: initialData?.videoUrl || "",
         },
     });
 
@@ -75,14 +75,14 @@ export const ModuleVideoTranscriptForm = ({
     return (
         <div className="mt-6 border bg-slate-100 rounded-md p-4">
             <div className="font-medium flex items-center justify-between">
-                Transcripción del video
+                Video del módulo
                 <Button onClick={toggleEdit} variant="ghost">
                     {isEditing ? (
                         <>Cancelar</>
                     ) : (
                         <>
                             <Pencil className="h-4 w-4 mr-2" />
-                            Editar transcripción
+                            Editar enlace
                         </>
                     )}
                 </Button>
@@ -91,10 +91,10 @@ export const ModuleVideoTranscriptForm = ({
                 <p
                     className={cn(
                         "text-sm mt-2",
-                        !initialData.videoTranscript && "text-slate-500 italic"
+                        !initialData.videoUrl && "text-slate-500 italic"
                     )}
                 >
-                    {initialData.videoTranscript || "Sin transcripción del video"}
+                    {initialData.videoUrl || "Sin enlace de video"}
                 </p>
             )}
             {isEditing && (
@@ -105,13 +105,13 @@ export const ModuleVideoTranscriptForm = ({
                     >
                         <FormField
                             control={form.control}
-                            name="videoTranscript"
+                            name="videoUrl"
                             render={({ field }) => (
                                 <FormItem>
                                     <FormControl>
                                         <Textarea
                                             disabled={isSubmitting}
-                                            placeholder="p.ej. 'En este video se explicará el uso de...'"
+                                            placeholder="p.ej. 'https://www.youtube.com/watch?...'"
                                             {...field}
                                         />
                                     </FormControl>

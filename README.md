@@ -159,14 +159,14 @@ lms-steam/
 │   │   │   │   │   │   ├── modules/
 │   │   │   │   │   │   │   ├── [moduleId]/
 │   │   │   │   │   │   │   │   ├── _components/
-│   │   │   │   │   │   │   │   │   ├── module-access-form.tsx
-│   │   │   │   │   │   │   │   │   ├── module-actions.tsx
-│   │   │   │   │   │   │   │   │   ├── module-description-form.tsx
-│   │   │   │   │   │   │   │   │   ├── module-title-form.tsx
-│   │   │   │   │   │   │   │   │   ├── module-video-form.tsx
-│   │   │   │   │   │   │   │   │   ├── module-videoTranscript-form.tsx
-│   │   │   │   │   │   │   │   │   ├── module-videoUrl-form.tsx
-│   │   │   │   │   │   │   │   │   └── module-videoYoutube-form.tsx
+│   │   │   │   │   │   │   │   │   ├── access-form.tsx
+│   │   │   │   │   │   │   │   │   ├── actions.tsx
+│   │   │   │   │   │   │   │   │   ├── description-form.tsx
+│   │   │   │   │   │   │   │   │   ├── title-form.tsx
+│   │   │   │   │   │   │   │   │   ├── video-form.tsx
+│   │   │   │   │   │   │   │   │   ├── videoTranscript-form.tsx
+│   │   │   │   │   │   │   │   │   ├── videoUrl-form.tsx
+│   │   │   │   │   │   │   │   │   └── videoYoutube-form.tsx
 │   │   │   │   │   │   │   │   └── page.tsx
 │   ├── api/                # Rutas API del backend
 │   │   ├── courses/

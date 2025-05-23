@@ -11,7 +11,7 @@ import { Module } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
-interface ModuleVideoFormProps {
+interface VideoFormProps {
   initialData: Module;
   courseId: string;
   moduleId: string;
@@ -25,11 +25,11 @@ const formSchema = z.object({
   videoUrl: z.string().min(1),
 });
 
-export const ModuleVideoForm = ({
+export const VideoForm = ({
   initialData,
   courseId,
   moduleId,
-}: ModuleVideoFormProps) => {
+}: VideoFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);

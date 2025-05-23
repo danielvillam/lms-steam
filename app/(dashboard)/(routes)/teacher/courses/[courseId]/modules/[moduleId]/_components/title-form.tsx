@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-interface ModuleTitleFormProps {
+interface TitleFormProps {
   initialData: {
     title: string;
   };
@@ -35,11 +35,11 @@ const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const ModuleTitleForm = ({
+export const TitleForm = ({
   initialData,
   courseId,
   moduleId,
-}: ModuleTitleFormProps) => {
+}: TitleFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);

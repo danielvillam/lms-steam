@@ -1,7 +1,7 @@
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 
-import { getProgress } from '@/actions/get-progress';
+import { getProgressBatch } from '@/actions/get-progress-batch';
 import { db } from '@/lib/db';
 
 import { CourseSidebar } from './_components/course-sidebar';
@@ -17,9 +17,9 @@ export default async function CourseLayout(
     }
 ) {
     const params = await props.params;
-    const { userId, redirectToSignIn } = await auth()
+    const { userId, redirectToSignIn } = await auth();
 
-    if (!userId) return redirectToSignIn()
+    if (!userId) return redirectToSignIn();
 
     // Fetches the course, including only published modules and tracking user progress
     const course = await db.course.findUnique({
@@ -48,8 +48,10 @@ export default async function CourseLayout(
     if (!course) {
         return redirect('/');
     }
+
     // Retrieves the user's progress in the course
-    const progressCount = await getProgress(userId, course.id);
+    const progressMap = await getProgressBatch(userId, [course.id]);
+    const progressCount = progressMap[course.id] ?? 0;
 
     return (
         <div className="h-full">
@@ -62,4 +64,4 @@ export default async function CourseLayout(
             <main className="md:pl-80 pt-[80px] h-full">{props.children}</main>
         </div>
     );
-};
+}
