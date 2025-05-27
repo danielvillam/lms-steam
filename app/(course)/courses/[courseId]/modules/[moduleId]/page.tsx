@@ -9,11 +9,6 @@ import { auth } from '@clerk/nextjs/server';
 import { CourseEnrollButton } from './_components/course-enroll-button';
 import { CourseProgressButton } from './_components/course-progress-button';
 import { VideoPlayerYoutube } from './_components/video-player-youtube';
-import EvaluationTask from './_components/evaluation-task';
-import PrinterEvaluation from './_components/evaluation-task2';
-import SingleChoiceQuiz from './_components/quiz-unica-respuesta';
-import MultiChoiceQuiz
-    from '@/app/(course)/courses/[courseId]/modules/[moduleId]/_components/quiz-multiple-respuesta';
 
 /**
  * Page component for displaying a specific module.
@@ -103,11 +98,6 @@ export default async function ModuleIdPage(
                             </div>
                         </>
                     )}
-                </div>
-                <div className="p-4">
-                    <MultiChoiceQuiz
-
-                    />
                 </div>
             </div>
         </div>

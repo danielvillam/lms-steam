@@ -1,4 +1,3 @@
-import Mux from "@mux/mux-node";
 import { auth } from "@clerk/nextjs/server";
 import { NextResponse } from "next/server";
 
