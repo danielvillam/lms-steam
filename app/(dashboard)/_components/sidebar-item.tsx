@@ -29,24 +29,29 @@ export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
       [pathname, href]
   );
 
-  return (
-      <Link
-          href={href}
-          className={cn(
-              "flex items-center gap-x-3 px-4 py-3 rounded-lg transition-all",
-              "text-slate-600 hover:text-sky-700 hover:bg-sky-100",
-              isActive && "bg-sky-100 text-sky-800 font-semibold"
-          )}
-          aria-current={isActive ? "page" : undefined}
-      >
-        <div
+    return (
+        <Link
+            href={href}
             className={cn(
-                "w-1 h-6 rounded-full transition-all",
-                isActive ? "bg-sky-700" : "bg-transparent"
+                "flex items-center gap-x-3 px-4 py-2.5 rounded-xl transition-all group",
+                "text-slate-600 hover:text-sky-600 hover:bg-sky-50/70",
+                isActive && "bg-sky-50 text-sky-600 font-medium"
             )}
-        />
-        <Icon size={22} className={cn("text-slate-500", isActive && "text-sky-700")} />
-        <span className="text-sm">{label}</span>
-      </Link>
-  );
+            aria-current={isActive ? "page" : undefined}
+        >
+            <div className={cn(
+                "p-2 rounded-lg transition-all group-hover:bg-white",
+                isActive ? "bg-white shadow-xs" : "bg-transparent"
+            )}>
+                <Icon size={20} className={cn(
+                    "transition-transform group-hover:scale-[1.05]",
+                    isActive ? "text-sky-600" : "text-slate-500"
+                )} />
+            </div>
+
+            <span className="text-sm font-medium transition-all duration-300">
+        {label}
+      </span>
+        </Link>
+    );
 };

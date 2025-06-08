@@ -9,17 +9,17 @@ import { Sidebar } from "./sidebar";
  * This component renders a sidebar navigation menu for mobile devices.
  */
 export const MobileSidebar = () => {
-  return (
-    <Sheet>
-      <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
-        <Menu />
-      </SheetTrigger>
-      <SheetContent side="left" className="p-0 bg-white">
-          <SheetHeader>
-              <SheetTitle className="sr-only">Menú de navegación</SheetTitle>
-          </SheetHeader>
-          <Sidebar />
-      </SheetContent>
-    </Sheet>
-  );
+    return (
+        <Sheet>
+            <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
+                <Menu />
+            </SheetTrigger>
+            <SheetContent
+                side="left"
+                className="p-0 bg-white w-[260px]"
+            >
+                <Sidebar />
+            </SheetContent>
+        </Sheet>
+    );
 };
