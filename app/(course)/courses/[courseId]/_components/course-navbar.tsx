@@ -7,6 +7,10 @@ interface CourseNavbarProps {
     course: Course & {
         modules: (Module & {
             userProgress: UserProgress[] | null;
+            evaluation: {
+                id: string;
+                isPublished: boolean;
+            } | null;
         })[];
     };
     progressCount: number;

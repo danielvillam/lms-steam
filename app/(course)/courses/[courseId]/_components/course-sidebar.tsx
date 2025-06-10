@@ -4,11 +4,16 @@ import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs/server';
 import { CourseProgress } from '@/components/course-progress';
 import { CourseSidebarItem } from './course-sidebar-item';
+import { ModuleEvaluationItem } from './module-evaluation-item';
 
 interface CourseSidebarProps {
     course: Course & {
         modules: (Module & {
             userProgress: UserProgress[] | null;
+            evaluation: {
+                id: string;
+                isPublished: boolean;
+            } | null;
         })[];
     };
     progressCount: number;
@@ -47,14 +52,23 @@ const CourseSidebar = async ({
             </div>
             <div className="flex flex-col w-full">
                 {course.modules.map((item) => (
-                    <CourseSidebarItem
-                        key={item.id}
-                        id={item.id}
-                        label={item.title}
-                        isCompleted={!!item.userProgress?.[0]?.isCompleted}
-                        courseId={course.id}
-                        isLocked={!item.isEnabled && !purchase}
-                    />
+                    <div key={item.id}>
+                        <CourseSidebarItem
+                            id={item.id}
+                            label={item.title}
+                            isCompleted={!!item.userProgress?.[0]?.isCompleted}
+                            courseId={course.id}
+                            isLocked={!item.isEnabled && !purchase}
+                        />
+                        {item.evaluation?.isPublished && (
+                            <ModuleEvaluationItem
+                                courseId={course.id}
+                                moduleId={item.id}
+                                evaluationId={item.evaluation.id}
+                                isModuleCompleted={!!item.userProgress?.[0]?.isCompleted}
+                            />
+                        )}
+                    </div>
                 ))}
             </div>
         </div>
