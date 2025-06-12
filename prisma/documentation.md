@@ -184,14 +184,15 @@ Define los tipos de evaluación disponibles para los módulos del curso. Este `e
 
 ## Modelo: `Evaluation`
 
-| Campo       | Tipo           | Descripción              |
-|-------------|----------------|--------------------------|
-| id          | String         | Identificador único      |
-| type        | EvaluationType | Tipo de evaluación       |
-| moduleId    | String         | ID del módulo            |
-| isPublished | Boolean        | Estado de la publicación |
-| createdAt   | DateTime       | Fecha de creación        |
-| updatedAt   | DateTime       | Fecha de actualización   |
+| Campo        | Tipo           | Descripción                                        |
+|--------------|----------------|----------------------------------------------------|
+| id           | String         | Identificador único                                |
+| type         | EvaluationType | Tipo de evaluación                                 |
+| maxAttempts  | Int?           | Número máximo de intentos para pasar la evaluación |
+| moduleId     | String         | ID del módulo                                      |
+| isPublished  | Boolean        | Estado de la publicación                           |
+| createdAt    | DateTime       | Fecha de creación                                  |
+| updatedAt    | DateTime       | Fecha de actualización                             |
 
 
 **Relaciones:**

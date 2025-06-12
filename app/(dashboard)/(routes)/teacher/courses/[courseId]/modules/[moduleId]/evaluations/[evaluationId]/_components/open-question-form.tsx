@@ -26,6 +26,9 @@ interface OpenQuestionFormProps {
     evaluationId: string;
 }
 
+/**
+ * A form component for managing open-ended evaluations
+ */
 const formSchema = z.object({
     question: z.string().min(5, "La pregunta debe tener al menos 5 caracteres"),
     expectedAnswer: z.string().min(1, "La respuesta correcta no puede estar vacía"),

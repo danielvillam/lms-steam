@@ -14,6 +14,7 @@ import { MultipleChoiceForm } from "./_components/multiple-choice-form";
 import { QuestionsPreviewForm } from "./_components/question-preview-form";
 import { TypeForm } from "./_components/type-form";
 import { OpenQuestionForm } from './_components/open-question-form';
+import { MaxAttemptsForm } from './_components/maxAttempts-form';
 
 /**
  * Evaluation Configuration Page.
@@ -48,7 +49,7 @@ export default async function EvaluationIdPage({
         value: type,
     }));
 
-    const requiredFields = [evaluation.type, questions.length > 0];
+    const requiredFields = [evaluation.type, questions.length > 0, evaluation.maxAttempts];
     const totalFields = requiredFields.length;
     const completedFields = requiredFields.filter(Boolean).length;
     const completionText = `(${completedFields}/${totalFields})`;
@@ -101,6 +102,11 @@ export default async function EvaluationIdPage({
                                 courseId={course.id}
                                 moduleId={module.id}
                                 evaluationTypes={evaluationTypes}
+                            />
+                            <MaxAttemptsForm
+                                initialData={evaluation}
+                                courseId={course.id}
+                                moduleId={module.id}
                             />
                             {evaluation.type === "single" && (
                                 <SingleChoiceForm

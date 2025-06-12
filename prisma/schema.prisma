@@ -136,6 +136,7 @@ enum EvaluationType {
 model Evaluation {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   type            EvaluationType
+  maxAttempts     Int?
 
   moduleId        String   @unique @db.ObjectId
   module          Module   @relation(fields: [moduleId], references: [id])
@@ -184,7 +185,7 @@ model EvaluationResult {
 
   answers             SelectedAnswer[]
 
-  attempt             Int
+  attempt             Int      @default(0)
   score               Float    @default(0)
   completedAt         DateTime @default(now())
 }

@@ -26,6 +26,9 @@ interface SingleChoiceFormProps {
     evaluationId: string;
 }
 
+/**
+ * A form component to manage single-choice evaluations
+ */
 const answerSchema = z.object({
     title: z.string().min(1, "La respuesta no puede estar vacía"),
     isCorrect: z.boolean(),

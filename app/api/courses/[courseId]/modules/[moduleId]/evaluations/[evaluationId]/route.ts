@@ -28,7 +28,9 @@ export async function POST(
             select: { type: true },
         });
 
-        const typeChanged = currentEvaluation?.type !== values.type;
+        const typeChanged =
+            typeof values.type !== "undefined" &&
+            currentEvaluation?.type !== values.type;
 
         const result = await db.$transaction(async (tx) => {
             if (typeChanged) {
@@ -47,15 +49,31 @@ export async function POST(
                 });
             }
 
+            // Get the current evaluation from the database
+            const existingEvaluation = await tx.evaluation.findUnique({
+                where: {
+                    id: params.evaluationId,
+                    moduleId: params.moduleId,
+                },
+            });
+
+            // Construct the update object
+            const updateData: any = {
+                ...values,
+            };
+
+            // Only change isPublished if the type changed
+            if (values.type && values.type !== existingEvaluation?.type) {
+                updateData.isPublished = false;
+            }
+
+            // Make the update
             const updatedEvaluation = await tx.evaluation.update({
                 where: {
                     id: params.evaluationId,
                     moduleId: params.moduleId,
                 },
-                data: {
-                    ...values,
-                    isPublished: false,
-                },
+                data: updateData,
             });
 
             await tx.module.update({

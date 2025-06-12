@@ -11,6 +11,9 @@ interface QuestionsPreviewFormProps {
     questions: QuestionWithAnswers[];
 }
 
+/**
+ * A form component for displaying questionnaires
+ */
 export const QuestionsPreviewForm = ({
                                                questions,
                                            }: QuestionsPreviewFormProps) => {

@@ -26,6 +26,9 @@ interface EvaluationQuestionsFormProps {
     evaluationId: string;
 }
 
+/**
+ * A form component for managing multiple-choice evaluation
+ */
 const answerSchema = z.object({
     title: z.string().min(1, "La respuesta no puede estar vacía"),
     isCorrect: z.boolean(),
