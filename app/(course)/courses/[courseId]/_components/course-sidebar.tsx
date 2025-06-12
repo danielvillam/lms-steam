@@ -1,10 +1,10 @@
-import { Module, Course, UserProgress } from '@prisma/client';
+import { Module, Course, UserProgress, EvaluationType } from '@prisma/client';
 
 import { db } from '@/lib/db';
 import { auth } from '@clerk/nextjs/server';
 import { CourseProgress } from '@/components/course-progress';
 import { CourseSidebarItem } from './course-sidebar-item';
-import { ModuleEvaluationItem } from './module-evaluation-item';
+import { CourseEvaluationItem } from './course-evaluation-item';
 
 interface CourseSidebarProps {
     course: Course & {
@@ -13,6 +13,7 @@ interface CourseSidebarProps {
             evaluation: {
                 id: string;
                 isPublished: boolean;
+                type: EvaluationType;
             } | null;
         })[];
     };
@@ -40,6 +41,8 @@ const CourseSidebar = async ({
         },
     });
 
+    let previousCompleted = true; // El primer módulo está habilitado por defecto
+
     return (
         <div className="flex flex-col h-full overflow-y-auto border-r shadow-sm">
             <div className="flex flex-col p-8 border-b">
@@ -51,25 +54,37 @@ const CourseSidebar = async ({
                 )}
             </div>
             <div className="flex flex-col w-full">
-                {course.modules.map((item) => (
-                    <div key={item.id}>
-                        <CourseSidebarItem
-                            id={item.id}
-                            label={item.title}
-                            isCompleted={!!item.userProgress?.[0]?.isCompleted}
-                            courseId={course.id}
-                            isLocked={!item.isEnabled && !purchase}
-                        />
-                        {item.evaluation?.isPublished && (
-                            <ModuleEvaluationItem
+                {course.modules.map((item) => {
+                    const isCompleted = !!item.userProgress?.[0]?.isCompleted;
+                    const isUnlocked = previousCompleted && purchase;
+
+                    const moduleComponent = (
+                        <div key={item.id}>
+                            <CourseSidebarItem
+                                id={item.id}
+                                label={item.title}
+                                isCompleted={isCompleted}
                                 courseId={course.id}
-                                moduleId={item.id}
-                                evaluationId={item.evaluation.id}
-                                isModuleCompleted={!!item.userProgress?.[0]?.isCompleted}
+                                isLocked={!isUnlocked}
                             />
-                        )}
-                    </div>
-                ))}
+                            {item.evaluation?.isPublished && isUnlocked && (
+                                <CourseEvaluationItem
+                                    courseId={course.id}
+                                    moduleId={item.id}
+                                    evaluationId={item.evaluation.id}
+                                    isLocked={!isUnlocked}
+                                    type={item.evaluation.type}
+                                />
+
+                            )}
+                        </div>
+                    );
+
+                    // Update the status for the next module
+                    previousCompleted = isCompleted;
+
+                    return moduleComponent;
+                })}
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import { Module, Course, UserProgress } from '@prisma/client';
+import { Module, Course, UserProgress, EvaluationType } from '@prisma/client';
 
 import { NavbarRoutes } from '@/components/navbar-routes';
 import { CourseMobileSidebar } from './course-mobile-sidebar';
@@ -10,6 +10,7 @@ interface CourseNavbarProps {
             evaluation: {
                 id: string;
                 isPublished: boolean;
+                type: EvaluationType;
             } | null;
         })[];
     };

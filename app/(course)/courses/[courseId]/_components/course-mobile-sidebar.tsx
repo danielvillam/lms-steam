@@ -1,4 +1,4 @@
-import { Module, Course, UserProgress } from '@prisma/client';
+import { Module, Course, UserProgress, EvaluationType } from '@prisma/client';
 import { Menu } from 'lucide-react';
 
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -12,6 +12,7 @@ interface CourseMobileSidebarProps {
             evaluation: {
                 id: string;
                 isPublished: boolean;
+                type: EvaluationType;
             } | null;
         })[];
     };
