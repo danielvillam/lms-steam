@@ -37,6 +37,13 @@ export default async function CourseLayout(
                             userId,
                         },
                     },
+                    evaluation: {
+                        select: {
+                            id: true,
+                            isPublished: true,
+                            type: true,
+                        },
+                    },
                 },
                 orderBy: {
                     position: 'asc',

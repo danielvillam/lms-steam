@@ -5,9 +5,11 @@ interface GetModuleProps {
     userId: string;
     moduleId: string;
     courseId: string;
+    evaluationId: string;
 }
 
 export const getModule = async ({
+                                     evaluationId,
                                      moduleId,
                                      courseId,
                                      userId,
@@ -36,8 +38,16 @@ export const getModule = async ({
             },
         });
 
-        if (!module || !course) {
-            throw new Error('Module or course not found');
+        const evaluation = await db.evaluation.findUnique({
+            where: {
+                id: evaluationId,
+                isPublished: true,
+                moduleId: moduleId,
+            },
+        });
+
+        if (!module || !course || !evaluation) {
+            throw new Error('Module, evaluation or course not found');
         }
 
         let attachments: Attachment[] = [];
@@ -75,6 +85,7 @@ export const getModule = async ({
         });
 
         return {
+            evaluation,
             module,
             course,
             attachments,
@@ -85,6 +96,7 @@ export const getModule = async ({
     } catch (error) {
         console.log('[GET_MODULE_ERROR]', error);
         return {
+            evaluation: null,
             module: null,
             course: null,
             attachments: [],
