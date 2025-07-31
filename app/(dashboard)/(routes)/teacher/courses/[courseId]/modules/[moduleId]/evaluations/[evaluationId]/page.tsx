@@ -15,6 +15,12 @@ import { QuestionsPreviewForm } from "./_components/question-preview-form";
 import { TypeForm } from "./_components/type-form";
 import { OpenQuestionForm } from './_components/open-question-form';
 import { MaxAttemptsForm } from './_components/maxAttempts-form';
+import {
+    SequenceChoiceForm
+} from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/modules/[moduleId]/evaluations/[evaluationId]/_components/sequence-choice-form';
+import {
+    LocateChoiceForm
+} from '@/app/(dashboard)/(routes)/teacher/courses/[courseId]/modules/[moduleId]/evaluations/[evaluationId]/_components/locate-choice-form';
 
 /**
  * Evaluation Configuration Page.
@@ -124,6 +130,20 @@ export default async function EvaluationIdPage({
                             )}
                             {evaluation.type === "open" && (
                                 <OpenQuestionForm
+                                    courseId={courseId}
+                                    moduleId={moduleId}
+                                    evaluationId={evaluationId}
+                                />
+                            )}
+                            {evaluation.type === "sequence" && (
+                                <SequenceChoiceForm
+                                    courseId={courseId}
+                                    moduleId={moduleId}
+                                    evaluationId={evaluationId}
+                                />
+                            )}
+                            {evaluation.type === "locate" && (
+                                <LocateChoiceForm
                                     courseId={courseId}
                                     moduleId={moduleId}
                                     evaluationId={evaluationId}
