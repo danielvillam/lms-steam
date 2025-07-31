@@ -166,6 +166,24 @@ export function EvaluationForm({
                     });
                     break;
 
+                case 'sequence':
+                    if (Array.isArray(resp)) {
+                        const correctOrder = correctAnswers.map(a => a.id);
+                        const isCorrect = JSON.stringify(resp) === JSON.stringify(correctOrder);
+
+                        if (isCorrect) correctCount++;
+
+                        resp.forEach((id: string, idx: number) => {
+                            const answer = ques.answers.find(a => a.id === id);
+                            selectedAnswers.push({
+                                title: answer?.title || "Paso " + (idx + 1),
+                                questionId: ques.id,
+                                isCorrect: answer?.isCorrect || false,
+                            });
+                        });
+                    }
+                    break;
+
                 default:
                     console.warn(`Tipo de evaluación no soportado: ${evaluationType}`);
                     break;

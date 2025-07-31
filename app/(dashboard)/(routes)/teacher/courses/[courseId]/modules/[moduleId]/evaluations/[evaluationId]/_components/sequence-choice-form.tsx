@@ -29,7 +29,7 @@ interface SequenceChoiceFormProps {
 /**
  * A form component to manage sequence-choice evaluations
  */
-//TODO: The answers are all saved as (isCorrect = false) and the sequence is evaluated in the order in which they are saved. Is this correct?
+//TODO: The answers are all saved as (isCorrect = true) and the sequence is evaluated in the order in which they are saved. Is this correct?
 
 // Cada paso tendrá un título y un orden
 const stepSchema = z.object({
@@ -72,7 +72,11 @@ export const SequenceChoiceForm = ({
             // Ordenamos los pasos por su orden antes de enviarlos
             const orderedSteps = values.steps
                 .sort((a, b) => a.order - b.order)
-                .map((step) => ({ title: step.title, order: step.order }));
+                .map((step) => ({
+                    title: step.title,
+                    order: step.order,
+                    isCorrect: true, // <- Aquí marcamos todos los pasos como correctos
+                }));
 
             await axios.post(
                 `/api/courses/${courseId}/modules/${moduleId}/evaluations/${evaluationId}/questions`,

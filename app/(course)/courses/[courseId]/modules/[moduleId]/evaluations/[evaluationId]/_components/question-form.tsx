@@ -8,7 +8,10 @@ import { Progress } from "@/components/ui/progress";
 import { Label } from "@/components/ui/label";
 import { ChevronLeft, ChevronRight, Send } from "lucide-react";
 import { EvaluationType } from '@prisma/client';
-import { useMemo } from "react";
+import { Key, useMemo } from 'react';
+import { ReactSortable } from 'react-sortablejs';
+import { GripVertical } from 'lucide-react';
+
 
 type Answer = {
     id: string;
@@ -55,9 +58,16 @@ const QuestionForm = ({
                           prev,
                           next,
                           onSubmit,
-                          total
+                          total,
                       }: QuestionFormProps) => {
     const q = questions[index];
+    let answerOrder = responses[q.id];
+
+    if (!answerOrder) {
+        answerOrder = shuffleArray(q.answers.map((a) => a.id));
+    }
+    const list = answerOrder.map((id: string) => ({ id }));
+
 
     // Verify if all questions are complete
     const isFormComplete = useMemo(() => {
@@ -87,8 +97,18 @@ const QuestionForm = ({
         return (answeredQuestions.length / total) * 100;
     }, [responses, questions, total, evaluationType]);
 
+    function shuffleArray<T>(array: T[]): T[] {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
     return (
-        <div className="mt-6 space-y-8 max-w-3xl mx-auto p-6 border border-slate-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
+        <div
+            className="mt-6 space-y-8 max-w-3xl mx-auto p-6 border border-slate-200 rounded-xl shadow-md hover:shadow-lg transition-shadow">
             <div className="space-y-4">
                 <div className="space-y-2">
                     <div className="flex justify-between items-center">
@@ -110,7 +130,7 @@ const QuestionForm = ({
             <div className="py-4">
                 {evaluationType === 'single' ? (
                     <RadioGroup
-                        value={responses[q.id] || ""}
+                        value={responses[q.id] || ''}
                         onValueChange={onChange}
                         className="space-y-3"
                     >
@@ -154,6 +174,37 @@ const QuestionForm = ({
                             </div>
                         ))}
                     </div>
+                ) : evaluationType === 'sequence' ? (
+                    <div className="space-y-2">
+                        <Label>Ordena los pasos correctamente:</Label>
+                        <ReactSortable
+                            tag="ul"
+                            list={list}
+                            setList={(newList) => {
+                                onChange(newList.map(item => item.id));
+                            }}
+                        >
+                            {list.map((item: { id: Key | null | undefined; }) => {
+                                const answer = q.answers.find(a => a.id === item.id);
+                                return (
+                                    <li
+                                        key={item.id}
+                                        data-id={item.id}
+                                        className="p-3 bg-white flex items-center justify-between gap-4 border rounded-md shadow hover:bg-gray-50 cursor-move"
+                                    >
+                                        <div className="flex items-center gap-3">
+                                            <GripVertical className="text-gray-400" />
+                                            <span>{answer?.title}</span>
+                                        </div>
+                                    </li>
+                                );
+                            })}
+                        </ReactSortable>
+
+
+                    </div>
+
+
                 ) : (
                     <div className="space-y-2">
                         <Label htmlFor={`open-answer-${q.id}`} className="text-gray-700">
