@@ -1,73 +1,109 @@
-import Image from "next/image";
+'use client'
 
-/**
- * About us page
- */
-export default function AboutPage() {
-    return (
-        <div className="min-h-screen flex flex-col justify-center items-center bg-white p-6 space-y-12">
-            {/* Introduction section */}
-            <div className="text-center max-w-3xl">
-                <h1 className="text-4xl md:text-5xl font-extrabold">Quiénes Somos</h1>
-                <p className="text-base md:text-lg text-gray-600 mt-4">
-                El aula STEAM es un entorno interdisciplinario en el que convergen las ciencias,
-                    la tecnología, la ingeniería, el arte y las matemáticas para fomentar principalmente
-                    en los estudiantes la cocreación, la experimentación y la exploración, mediante recursos
-                    y herramientas que impulsan el aprendizaje basado en proyectos.
-                </p>
-            </div>
+import React, { useState, useMemo } from 'react'
+import Link from 'next/link'
+import EventCard from '@/app/(dashboard)/(routes)/feed/_components/event-card'
+import { CustomCalendar } from '@/app/(dashboard)/(routes)/feed/_components/custom-calendar'
+import { isSameDay, parseISO, compareAsc } from 'date-fns'
+import { Button } from '@/components/ui/button'
 
-            {/* Mission section with image */}
-            <div className="flex flex-col md:flex-row items-center gap-8 max-w-5xl">
-                <Image
-                    src="/images/team.jpg"
-                    alt="Nuestro equipo"
-                    width={500}
-                    height={350}
-                    className="rounded-lg shadow-lg"
-                />
-                <div className="flex-1 text-center md:text-left">
-                    <h2 className="text-2xl md:text-3xl font-semibold">¿Por qué se llama Sonny Jiménez?</h2>
-                    <p className="text-base md:text-lg text-gray-700 mt-4">
-                        El Aula STEAM de la sede Medellín lleva el nombre de Sonny Jiménez como primera egresada
-                        del pregrado de ingeniería Civil y de Minas en 1946 de la Facultad de Minas de la Universidad
-                        Nacional de Colombia. La participación activa de Sonny en la política, la educación y la
-                        vinculación laboral de las mujeres, demostraron la importancia del género femenino en los
-                        diferentes sectores sociales y que sus capacidades van más allá de la formación de una familia.
-                    </p>
+interface Event {
+  id: string
+  title: string
+  description: string
+  location: string
+  imageUrl: string
+  startDateTime: string // ISO
+  endDateTime: string   // ISO
+}
+
+// Datos de ejemplo; en producción venían de una llamada a tu API
+const EVENTS: Event[] = [
+  {
+    id: '1',
+    title: 'Charla de Ingeniería',
+    description: 'Un conversatorio sobre sistemas sostenibles.',
+    location: 'Aula Máxima Pedro Nel Gómez',
+    imageUrl: '/images/event1.jpg',
+    startDateTime: '2025-04-21T10:00:00.000Z',
+    endDateTime: '2025-04-21T12:00:00.000Z',
+  },
+  {
+    id: '2',
+    title: 'Workshop de React',
+    description: 'Taller práctico de React y Next.js.',
+    location: 'Sala de cómputo 3',
+    imageUrl: '/images/event2.jpg',
+    startDateTime: '2025-04-25T14:00:00.000Z',
+    endDateTime: '2025-04-25T16:00:00.000Z',
+  },
+  {
+    id: '3',
+    title: 'Reto Steam',
+    description: 'Reto de la semana steam',
+    location: 'Aula Steam M3 - 120',
+    imageUrl: '/images/Reto setam.png',
+    startDateTime: '2025-04-25T19:00:00.000Z',
+    endDateTime: '2025-04-25T21:00:00.000Z',
+  },
+  // …otros eventos
+]
+
+export default function EventsPage() {
+  const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
+
+  const eventDates = useMemo(
+    () => EVENTS.map(e => parseISO(e.startDateTime)),
+    []
+  )
+
+  const displayedEvents = useMemo(() => {
+    if (selectedDay) {
+      return EVENTS.filter(e =>
+        isSameDay(parseISO(e.startDateTime), selectedDay)
+      )
+    }
+    const today = new Date()
+    const future = EVENTS
+      .filter(e => compareAsc(parseISO(e.startDateTime), today) >= 0)
+      .sort((a, b) =>
+        compareAsc(parseISO(a.startDateTime), parseISO(b.startDateTime))
+      )
+    return future.slice(0, 1)
+  }, [selectedDay])
+
+return (
+    <div className="h-screen flex flex-col">
+      {/* Contenedor con fondo común */}
+      <div className="flex flex-1 overflow-hidden bg-gray-50">
+        {/* Columna izquierda: eventos */}
+        <div className="w-2/3 overflow-y-auto p-6">
+          {displayedEvents.length > 0 ? (
+            <div className="flex flex-wrap justify-center gap-14">
+              {displayedEvents.map((e) => (
+                <div key={e.id} className="w-full md:w-1/2">
+                  <EventCard event={e} />
                 </div>
+              ))}
             </div>
-
-            {/* Vision and values cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl">
-                <div className="bg-white text-black p-6 rounded-lg shadow-lg text-center">
-                    <h3 className="text-xl font-bold">🌍 ¿Qué buscamos?</h3>
-                    <p className="text-gray-600 mt-2">
-                        El aula busca brindar un espacio abierto para la comunidad universitaria,
-                        pero de igual forma está dispuesta para otras universidades, entidades estatales y organizaciones sociales
-                        de la región. Permitiendo que los distintos saberes, conocimientos y experiencias de las personas que hagan
-                        uso tanto del espacio físico del aula, como de la metodología STEAM, se integren para planear y ejecutar
-                        proyectos que respondan a los desafíos de la sociedad.
-                    </p>
-                </div>
-                <div className="bg-white text-black p-6 rounded-lg shadow-lg text-center">
-                    <h3 className="text-xl font-bold">💡 Nuestros 7 principios</h3>
-                    <ul className="list-disc list-inside text-gray-600 mt-3 space-y-1 text-left">
-                        <li>🤝 Las alianzas y la multidisciplinariedad enriquecen</li>
-                        <li>☁️ El conocimiento se comparte</li>
-                        <li>🔧 Aprender haciendo y del error</li>
-                        <li>🔒 El acceso genera apropiación</li>
-                        <li>💡 Toda idea es buena</li>
-                        <li>⚙️ Tecnología de vanguardia no es sinónimo de solución</li>
-                        <li>📖 Innovación, ¿es igual a nuevo?</li>
-                    </ul>
-                </div>
-            </div>
-
-            {/* Footer */}
-            <footer className="mt-12 text-center text-gray-600">
-                <p>© {new Date().getFullYear()} Plataforma de cursos del Aula STEAM. Todos los derechos reservados.</p>
-            </footer>
+          ) : (
+            <p className="text-center text-gray-500 mt-20">
+              No hay eventos para esta fecha.
+            </p>
+          )}
         </div>
-    );
+
+        {/* Columna derecha: calendario (fijo en su lugar) */}
+        <div className="w-1/3 border-l p-12 sticky top-16 bg-white">
+          <CustomCalendar
+            mode="single"
+            selected={selectedDay}
+            onSelect={setSelectedDay}
+            className="rounded-md shadow"
+            eventDates={eventDates}
+          />
+        </div>
+      </div>
+    </div>
+  )
 }

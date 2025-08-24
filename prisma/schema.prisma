@@ -95,6 +95,7 @@ model Registration {
 model Event {
   id            String    @id @default(uuid()) @map("_id")
   title         String
+  userId        String
   description   String?   @db.String
   imageUrl      String?
   startDateTime DateTime
