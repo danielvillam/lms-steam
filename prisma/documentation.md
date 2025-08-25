@@ -21,7 +21,9 @@ Este documento describe la estructura actual de la base de datos del aplicativo 
 - `Answer`
 - `EvaluationResult`
 - `SelectedAnswer`
-
+  
+## Eventos
+- `Event`
 ---
 
 ## Modelo: `Course`
@@ -289,6 +291,22 @@ Define los tipos de evaluación disponibles para los módulos del curso. Este `e
 **Relaciones:**
 
 * `course`: curso a la que pertenece el certificado
+
+---
+  
+## Modelo: `Event`
+---
+| Campo          | Tipo       | Descripción                             |
+|----------------|------------|-----------------------------------------|
+| id             | String     | Identificador único                     |
+| title          | String     | titulo del evento                       |
+| userId         | String     | ID del usuario que creó el curso        |
+| description    | String?    | Descripción del evento                  |
+| imageUrl       | String?    | URL de la imagen promocional del evento |
+| startDateTime  | DateTime   | Fecha de inicio del evento              |
+| endDateTime    | DateTime   | Fecha de fin del evento                 |
+| location       | String     | Localización del evento                 |
+| createdAt      | DateTime   | Fecha de creación del evento            |
 
 ---
 
