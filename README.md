@@ -123,6 +123,11 @@ lms-steam/
 │   │   │   │   └── page.tsx
 │   │   │   ├── about/
 │   │   │   │   └── page.tsx
+|   |   |   ├── feed/
+│   │   │   │   ├── _components/
+│   │   │   │   │   └── custom-calendar.tsx
+│   │   │   │   │   └── event-card.tsx
+│   │   │   │   └── page.tsx
 │   │   │   ├── mycourses/
 │   │   │   │   ├── _components/
 │   │   │   │   │   └── info-card.tsx
@@ -131,6 +136,10 @@ lms-steam/
 │   │   │   │   ├── _components/
 │   │   │   │   │   ├── categories.tsx
 │   │   │   │   │   └── category-item.tsx
+│   │   │   │   └── page.tsx
+│   │   │   ├── feed/
+|   │   │   │   ├── create/
+│   │   │   │   │   └── page.tsx
 │   │   │   │   └── page.tsx
 │   │   │   ├── teacher/
 │   │   │   │   ├── analytics/
@@ -176,6 +185,8 @@ lms-steam/
 │   │   │   │   ├── enroll/
 │   │   │   │   ├── publish/
 │   │   │   │   ├── unpublish/
+│   │   ├── courses/
+│   │   │   └── route.ts
 │   │   ├── uploadthing/
 │   │   │   ├── core.ts
 │   │   │   └── route.ts
@@ -287,6 +298,7 @@ Se recomienda realizar revisiones periódicas en la base de datos, seguridad y a
 ## 👥 Autores
 
 - Juan D. Villa ( https://github.com/danielvillam ) - _Desarrollador_
+- Nicolás Ruiz (https://github.com/Nicorb72) - _Desarrollador_
 
 ---
 
