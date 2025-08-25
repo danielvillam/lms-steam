@@ -93,7 +93,7 @@ model Registration {
 }
 
 model Event {
-  id            String    @id @default(uuid()) @map("_id")
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
   title         String
   userId        String
   description   String?   @db.String
