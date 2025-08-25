@@ -137,3 +137,57 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+
+// Método DELETE para borrar un evento
+export async function DELETE(req: NextRequest) {
+  try {
+    const { userId } = await auth()
+
+    if (!userId) {
+      return NextResponse.json({ error: 'No estás autenticado' }, { status: 401 })
+    }
+
+    const url = new URL(req.url)
+    const eventId = url.searchParams.get('id')
+
+    if (!eventId) {
+      return NextResponse.json(
+        { error: 'ID del evento es requerido' }, 
+        { status: 400 }
+      )
+    }
+
+    // Verificar que el evento existe y pertenece al usuario
+    const existingEvent = await db.event.findFirst({
+      where: {
+        id: eventId,
+        userId: userId
+      }
+    })
+
+    if (!existingEvent) {
+      return NextResponse.json(
+        { error: 'Evento no encontrado o no tienes permisos para eliminarlo' }, 
+        { status: 404 }
+      )
+    }
+
+    // Eliminar el evento
+    await db.event.delete({
+      where: {
+        id: eventId
+      }
+    })
+
+    return NextResponse.json({ 
+      message: 'Evento eliminado correctamente',
+      eventId: eventId 
+    })
+  } catch (error) {
+    console.error('Error deleting event:', error)
+    return NextResponse.json(
+      { error: 'Error al eliminar el evento' }, 
+      { status: 500 }
+    )
+  }
+}

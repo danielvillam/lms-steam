@@ -44,9 +44,37 @@ const formSchema = z.object({
 }, {
   message: "La hora de fin debe ser posterior a la hora de inicio",
   path: ["endTime"]
+}).refine((data) => {
+  // Validación: hora de inicio debe estar entre 8 AM y 6 PM
+  const startHour = data.startTime.getHours()
+  return startHour >= 8 && startHour < 18
+}, {
+  message: "La hora de inicio debe estar entre las 8:00 AM y las 6:00 PM",
+  path: ["startTime"]
+}).refine((data) => {
+  // Validación: hora de fin debe estar entre 8 AM y 6 PM
+  const endHour = data.endTime.getHours()
+  const endMinutes = data.endTime.getMinutes()
+  return endHour >= 8 && (endHour < 18 || (endHour === 18 && endMinutes === 0))
+}, {
+  message: "La hora de fin debe estar entre las 8:00 AM y las 6:00 PM",
+  path: ["endTime"]
 })
 
 type FormValues = z.infer<typeof formSchema>
+
+// Función para crear fechas con horas específicas para los time pickers
+const createTimeWithHour = (hour: number, minute: number = 0) => {
+  const date = new Date()
+  date.setHours(hour, minute, 0, 0)
+  return date
+}
+
+// Función para filtrar las horas disponibles (8 AM a 6 PM)
+const filterTime = (time: Date) => {
+  const hour = time.getHours()
+  return hour >= 8 && hour <= 18
+}
 
 export default function CreateEventPage() {
   const [imageUrl, setImageUrl] = useState<string>('')
@@ -60,8 +88,8 @@ export default function CreateEventPage() {
       description: '',
       location: '',
       date: new Date(),
-      startTime: new Date(),
-      endTime: new Date(Date.now() + 2 * 60 * 60 * 1000), // 2 horas después por defecto
+      startTime: createTimeWithHour(9), // 9 AM por defecto
+      endTime: createTimeWithHour(11), // 11 AM por defecto (2 horas después)
       imageUrl: '',
     },
   })
@@ -85,6 +113,21 @@ export default function CreateEventPage() {
 
       if (startDateTime <= new Date()) {
         toast.error('La fecha y hora del evento debe ser futura')
+        return
+      }
+
+      // Validación de horario laboral
+      const startHour = data.startTime.getHours()
+      const endHour = data.endTime.getHours()
+      const endMinutes = data.endTime.getMinutes()
+
+      if (startHour < 8 || startHour >= 18) {
+        toast.error('La hora de inicio debe estar entre las 8:00 AM y las 6:00 PM')
+        return
+      }
+
+      if (endHour < 8 || endHour > 18 || (endHour === 18 && endMinutes > 0)) {
+        toast.error('La hora de fin debe estar entre las 8:00 AM y las 6:00 PM')
         return
       }
 
@@ -186,7 +229,7 @@ export default function CreateEventPage() {
                 <FormControl>
                   <Input
                     {...field}
-                    placeholder="Ej: Aula Máxima Pedro Nel Gómez"
+                    placeholder="Ej: M3 - 119 Aula STEAM"
                     disabled={isSubmitting}
                   />
                 </FormControl>
@@ -241,9 +284,15 @@ export default function CreateEventPage() {
                       timeCaption="Hora"
                       dateFormat="HH:mm"
                       disabled={isSubmitting}
+                      minTime={createTimeWithHour(8)} // 8:00 AM
+                      maxTime={createTimeWithHour(17, 30)} // 5:30 PM (última hora de inicio posible)
+                      filterTime={filterTime}
                     />
                   </FormControl>
                   <FormMessage />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Disponible de 8:00 AM a 5:30 PM
+                  </p>
                 </FormItem>
               )}
             />
@@ -268,9 +317,15 @@ export default function CreateEventPage() {
                       timeCaption="Hora"
                       dateFormat="HH:mm"
                       disabled={isSubmitting}
+                      minTime={createTimeWithHour(8, 30)} // 8:30 AM (mínimo 30 min después del inicio más temprano)
+                      maxTime={createTimeWithHour(18)} // 6:00 PM
+                      filterTime={filterTime}
                     />
                   </FormControl>
                   <FormMessage />
+                  <p className="text-xs text-gray-500 mt-1">
+                    Disponible de 8:30 AM a 6:00 PM
+                  </p>
                 </FormItem>
               )}
             />
@@ -304,6 +359,22 @@ export default function CreateEventPage() {
                 />
               </div>
             )}
+          </div>
+
+          {/* Información adicional sobre horarios */}
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="flex items-start space-x-2">
+              <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <h4 className="text-sm font-medium text-blue-800">Horarios disponibles</h4>
+                <p className="text-sm text-blue-700 mt-1">
+                  Los eventos pueden programarse únicamente entre las <strong>8:00 AM y las 6:00 PM</strong>. 
+                  Asegúrate de que tu evento termine antes de las 6:00 PM.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Botones */}

@@ -12,16 +12,20 @@ interface Event {
   startDateTime: string // ISO
   endDateTime: string   // ISO
   location: string
+  userId: string
 }
 
 interface EventCardProps {
   event: Event
+  onEventDeleted?: (eventId: string) => void
 }
 
 const MONTHS_ABBR = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
 
-export default function EventCard({ event }: EventCardProps) {
+export default function EventCard({ event, onEventDeleted }: EventCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   
   const start = new Date(event.startDateTime)
   const end = new Date(event.endDateTime)
@@ -37,6 +41,39 @@ export default function EventCard({ event }: EventCardProps) {
   const openModal = () => setIsModalOpen(true)
   const closeModal = () => setIsModalOpen(false)
 
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowDeleteConfirm(true)
+  }
+
+  const handleDeleteConfirm = async () => {
+    setIsDeleting(true)
+    try {
+      const response = await fetch(`/api/event?id=${event.id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.error || 'Error al eliminar el evento')
+      }
+
+      // Notificar al componente padre que el evento fue eliminado
+      onEventDeleted?.(event.id)
+      setShowDeleteConfirm(false)
+    } catch (error) {
+      console.error('Error deleting event:', error)
+      alert(error instanceof Error ? error.message : 'Error al eliminar el evento')
+    } finally {
+      setIsDeleting(false)
+    }
+  }
+
+  const handleDeleteCancel = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setShowDeleteConfirm(false)
+  }
+
   return (
     <>
       <div className="relative bg-white border border-gray-200 rounded-lg shadow-md overflow-hidden max-w-md mx-auto">
@@ -44,6 +81,45 @@ export default function EventCard({ event }: EventCardProps) {
         <div className="absolute top-3 left-3 bg-yellow-400 px-2 py-1 rounded-md text-center z-10 shadow-sm">
           <span className="block text-xs font-bold text-gray-800">{month}</span>
           <span className="block text-lg font-bold text-gray-800">{day}</span>
+        </div>
+
+        {/* Botón de eliminar */}
+        <div className="absolute bottom-3 right-3 z-10">
+          {showDeleteConfirm ? (
+            <div className="flex space-x-1">
+              <button
+                onClick={handleDeleteCancel}
+                className="bg-gray-500 hover:bg-gray-600 text-white rounded-full p-1.5 shadow-sm transition-colors"
+                disabled={isDeleting}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <button
+                onClick={handleDeleteConfirm}
+                disabled={isDeleting}
+                className="bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isDeleting ? (
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                ) : (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={handleDeleteClick}
+              className="bg-red-500 hover:bg-red-600 text-white rounded-full p-1.5 shadow-sm transition-colors"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          )}
         </div>
 
         {/* Imagen clickeable */}
