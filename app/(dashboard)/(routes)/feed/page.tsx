@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
 import EventCard from '@/app/(dashboard)/(routes)/feed/_components/event-card'
 import { CustomCalendar } from '@/app/(dashboard)/(routes)/feed/_components/custom-calendar'
@@ -15,62 +15,83 @@ interface Event {
   imageUrl: string
   startDateTime: string // ISO
   endDateTime: string   // ISO
+  userId: string
 }
-
-// Datos de ejemplo; en producción venían de una llamada a tu API
-const EVENTS: Event[] = [
-  {
-    id: '1',
-    title: 'Charla de Ingeniería',
-    description: 'Un conversatorio sobre sistemas sostenibles.',
-    location: 'Aula Máxima Pedro Nel Gómez',
-    imageUrl: '/images/event1.jpg',
-    startDateTime: '2025-04-21T10:00:00.000Z',
-    endDateTime: '2025-04-21T12:00:00.000Z',
-  },
-  {
-    id: '2',
-    title: 'Workshop de React',
-    description: 'Taller práctico de React y Next.js.',
-    location: 'Sala de cómputo 3',
-    imageUrl: '/images/event2.jpg',
-    startDateTime: '2025-04-25T14:00:00.000Z',
-    endDateTime: '2025-04-25T16:00:00.000Z',
-  },
-  {
-    id: '3',
-    title: 'Reto Steam',
-    description: 'Reto de la semana steam',
-    location: 'Aula Steam M3 - 120',
-    imageUrl: '/images/Reto setam.png',
-    startDateTime: '2025-04-25T19:00:00.000Z',
-    endDateTime: '2025-04-25T21:00:00.000Z',
-  },
-  // …otros eventos
-]
 
 export default function EventsPage() {
   const [selectedDay, setSelectedDay] = useState<Date | undefined>(undefined)
+  const [events, setEvents] = useState<Event[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
+
+  // Fetch events from API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch('/api/event')
+        
+        if (!response.ok) {
+          throw new Error('Error al cargar los eventos')
+        }
+        
+        const data = await response.json()
+        setEvents(data)
+        setError(null)
+      } catch (err) {
+        console.error('Error fetching events:', err)
+        setError(err instanceof Error ? err.message : 'Error desconocido')
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchEvents()
+  }, [])
 
   const eventDates = useMemo(
-    () => EVENTS.map(e => parseISO(e.startDateTime)),
-    []
+    () => events.map(e => parseISO(e.startDateTime)),
+    [events]
   )
 
   const displayedEvents = useMemo(() => {
     if (selectedDay) {
-      return EVENTS.filter(e =>
+      return events.filter(e =>
         isSameDay(parseISO(e.startDateTime), selectedDay)
       )
     }
     const today = new Date()
-    const future = EVENTS
+    const future = events
       .filter(e => compareAsc(parseISO(e.startDateTime), today) >= 0)
       .sort((a, b) =>
         compareAsc(parseISO(a.startDateTime), parseISO(b.startDateTime))
       )
-    return future.slice(0, 1)
-  }, [selectedDay])
+    return future
+  }, [selectedDay, events])
+
+  if (loading) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Cargando eventos...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (error) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-red-500 mb-4">Error: {error}</p>
+          <Button onClick={() => window.location.reload()}>
+            Reintentar
+          </Button>
+        </div>
+      </div>
+    )
+  }
 
 return (
     <div className="h-screen flex flex-col">
