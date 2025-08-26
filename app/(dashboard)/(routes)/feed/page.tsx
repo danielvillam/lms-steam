@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import EventCard from '@/app/(dashboard)/(routes)/feed/_components/event-card'
+import EventCardReadOnly from '@/app/(dashboard)/(routes)/feed/_components/EventCardReadOnly'
 import { CustomCalendar } from '@/app/(dashboard)/(routes)/feed/_components/custom-calendar'
 import { isSameDay, parseISO, compareAsc } from 'date-fns'
 import { Button } from '@/components/ui/button'
@@ -103,7 +103,7 @@ return (
             <div className="flex flex-wrap justify-center gap-14">
               {displayedEvents.map((e) => (
                 <div key={e.id} className="w-full md:w-1/2">
-                  <EventCard event={e} />
+                  <EventCardReadOnly event={e} />
                 </div>
               ))}
             </div>

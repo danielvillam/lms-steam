@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import EventCard from '@/app/(dashboard)/(routes)/feed/_components/event-card'
+import EventCard from '@/app/(dashboard)/(routes)/teacher/feed/_components/EventCard'
 import { CustomCalendar } from '@/app/(dashboard)/(routes)/feed/_components/custom-calendar'
 import { isSameDay, parseISO, compareAsc } from 'date-fns'
 import { Button } from '@/components/ui/button'
