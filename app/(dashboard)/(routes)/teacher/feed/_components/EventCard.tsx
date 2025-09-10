@@ -17,18 +17,31 @@ interface Event {
 
 interface EventCardProps {
   event: Event
+  selectedDate?: Date // Nueva prop para la fecha seleccionada
   onEventDeleted?: (eventId: string) => void
 }
 
 const MONTHS_ABBR = ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC']
 
-export default function EventCard({ event, onEventDeleted }: EventCardProps) {
+// Función helper para comparar si dos fechas son del mismo día
+const isSameDay = (date1: Date, date2: Date): boolean => {
+  return date1.getFullYear() === date2.getFullYear() &&
+         date1.getMonth() === date2.getMonth() &&
+         date1.getDate() === date2.getDate()
+}
+
+export default function EventCard({ event, selectedDate, onEventDeleted }: EventCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [isDeleting, setIsDeleting] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   
   const start = new Date(event.startDateTime)
   const end = new Date(event.endDateTime)
+
+  // Si hay una fecha seleccionada, verificar si el evento corresponde a ese día
+  if (selectedDate && !isSameDay(start, selectedDate)) {
+    return null // No renderizar el evento si no es del día seleccionado
+  }
 
   const month = MONTHS_ABBR[start.getMonth()]
   const day = start.getDate()

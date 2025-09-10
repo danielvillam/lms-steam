@@ -71,7 +71,7 @@ export default function EventsPage() {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
           <p className="text-gray-600">Cargando eventos...</p>
@@ -82,7 +82,7 @@ export default function EventsPage() {
 
   if (error) {
     return (
-      <div className="h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-red-500 mb-4">Error: {error}</p>
           <Button onClick={() => window.location.reload()}>
@@ -94,9 +94,9 @@ export default function EventsPage() {
   }
 
   return (
-    <div className="h-screen flex flex-col">
-      {/* Botón superior */}
-      <div className="p-4 border-b bg-white flex justify-between items-center">
+    <div className="min-h-screen flex flex-col">
+      {/* Botón superior - Fijo */}
+      <div className="flex-shrink-0 p-4 border-b bg-white flex justify-between items-center">
         <h1 className="text-2xl font-semibold text-gray-800">
           Eventos {events.length > 0 && `(${events.length})`}
         </h1>
@@ -105,62 +105,67 @@ export default function EventsPage() {
         </Link>
       </div>
 
-      {/* Contenido principal */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Columna izquierda: eventos */}
-        <div className="w-2/3 overflow-y-auto p-6 bg-gray-50">
-          {displayedEvents.length > 0 ? (
-            <div className="space-y-6">
-              {displayedEvents.map((e) => (
-                <div key={e.id} className="max-w-2xl mx-auto">
-                  <EventCard event={e} />
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center mt-20">
-              {events.length === 0 ? (
-                <div>
-                  <h3 className="text-xl text-gray-600 mb-2">No hay eventos creados</h3>
-                  <p className="text-gray-500 mb-6">Comienza creando tu primer evento</p>
-                  <Link href="/teacher/feed/create">
-                    <Button>Crear mi primer evento</Button>
-                  </Link>
-                </div>
-              ) : (
-                <div>
-                  <h3 className="text-xl text-gray-600 mb-2">
-                    {selectedDay 
-                      ? "No hay eventos para esta fecha" 
-                      : "No hay eventos próximos"
-                    }
-                  </h3>
-                  {selectedDay && (
-                    <Button 
-                      variant="outline" 
-                      onClick={() => setSelectedDay(undefined)}
-                      className="mt-4"
-                    >
-                      Ver todos los eventos
-                    </Button>
-                  )}
-                </div>
-              )}
-            </div>
-          )}
+      {/* Contenido principal - Flexible */}
+      <div className="flex flex-1 min-h-0">
+        {/* Columna izquierda: eventos - Solo esta columna hace scroll */}
+        <div className="w-2/3 overflow-y-auto">
+          <div className="p-6 bg-gray-50">
+            {displayedEvents.length > 0 ? (
+              <div className="space-y-6">
+                {displayedEvents.map((e) => (
+                  <div key={e.id} className="max-w-2xl mx-auto">
+                    <EventCard event={e} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center mt-20">
+                {events.length === 0 ? (
+                  <div>
+                    <h3 className="text-xl text-gray-600 mb-2">No hay eventos creados</h3>
+                    <p className="text-gray-500 mb-6">Comienza creando tu primer evento</p>
+                    <Link href="/teacher/feed/create">
+                      <Button>Crear mi primer evento</Button>
+                    </Link>
+                  </div>
+                ) : (
+                  <div>
+                    <h3 className="text-xl text-gray-600 mb-2">
+                      {selectedDay 
+                        ? "No hay eventos para esta fecha" 
+                        : "No hay eventos próximos"
+                      }
+                    </h3>
+                    {selectedDay && (
+                      <Button 
+                        variant="outline" 
+                        onClick={() => setSelectedDay(undefined)}
+                        className="mt-4"
+                      >
+                        Ver todos los eventos
+                      </Button>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
 
-        {/* Columna derecha: calendario */}
-        <div className="w-1/3 border-l p-6 bg-white">
-          <div className="sticky top-6">
+        {/* Columna derecha: calendario - Fijo, sin scroll propio */}
+        <div className="w-1/3 border-l bg-white flex flex-col">
+          <div className="p-6">
             <h2 className="text-lg font-semibold mb-4 text-gray-800">Calendario</h2>
-            <CustomCalendar
-              mode="single"
-              selected={selectedDay}
-              onSelect={setSelectedDay}
-              className="rounded-md shadow-sm border"
-              eventDates={eventDates}
-            />
+            <div className="space-y-4">
+              <CustomCalendar
+                selected={selectedDay}
+                onSelect={setSelectedDay}
+                className="rounded-md shadow-sm border"
+                eventDates={eventDates}
+                showEventDetails={true}
+              />
+            </div>
+            
             {selectedDay && (
               <div className="mt-4 p-3 bg-blue-50 rounded-lg">
                 <p className="text-sm text-blue-800 font-medium">

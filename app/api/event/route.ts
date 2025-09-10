@@ -62,12 +62,14 @@ export async function GET(req: NextRequest) {
     if (!userId) {
       return NextResponse.json({ error: 'No estás autenticado' }, { status: 401 })
     }
+    const lastThirtyDays = new Date()
+    lastThirtyDays.setDate(lastThirtyDays.getDate() - 30)
 
     // Obtener solo eventos futuros, ordenados por fecha
     const events = await db.event.findMany({
       where: {
         startDateTime: {
-          gte: new Date()
+          gte: lastThirtyDays
         }
       },
       orderBy: {

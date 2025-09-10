@@ -337,7 +337,7 @@ export default function CreateEventPage() {
               Imagen del evento <span className="text-red-500">*</span>
             </FormLabel>
             <FileUpload
-              endpoint="eventImage"
+              endpoint="courseImage"
               action={(url) => {
                 if (url) {
                   setImageUrl(url)
