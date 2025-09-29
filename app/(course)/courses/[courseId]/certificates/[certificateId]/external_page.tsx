@@ -1,55 +1,65 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
-import CourseCertificateUser from "./_components/course-certificate-user";
-import { randomUUID } from "crypto";
+import { notFound } from "next/navigation";
+import { PDFViewer } from "@react-pdf/renderer";
+import CertificateTemplate from "./_components/course-certificate-template";
+import { Button } from "@/components/ui/button";
 
-interface CertificatePageProps {
-  params: { courseId: string };
+interface ExternalPageProps {
+  params: {
+    courseId: string;
+    certificateId: string;
+  };
 }
 
-const CertificatePage = async ({ params }: CertificatePageProps) => {
-  const { userId } = await auth();
-  if (!userId) return redirect("/sign-in");
+const ExternalCertificatePage = async ({ params }: ExternalPageProps) => {
+  const { certificateId } = params;
 
-  const user = await currentUser();
-  if (!user) return redirect("/sign-in");
-
-  const course = await db.course.findUnique({ where: { id: params.courseId } });
-  if (!course) return <p>No existe el curso</p>;
-
-  const completionDate = new Date();
-  const userFullName =
-    `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "Usuario";
-
-  let certificate = await db.certificate.findFirst({
-    where: { courseId: course.id, userId },
+  // Buscar certificado por ID
+  const certificate = await db.certificate.findUnique({
+    where: { id: certificateId },
+    include: { course: true },
   });
 
-  if (!certificate) {
-    const certificateToken = randomUUID();
-    certificate = await db.certificate.create({
-      data: {
-        courseId: course.id,
-        userId,
-        certificateUrl: certificateToken,
-      },
-    });
-  }
+  if (!certificate) return notFound();
+
+  const course = certificate.course;
+  const completionDate = certificate.issuedAt ?? new Date();
+
+  // Como no guardamos nombre de usuario en DB
+  const userFullName = "Usuario";
+
+  const publicUrl = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}/certificates/${certificate.id}/external_page`;
 
   return (
-    <CourseCertificateUser
-      course={{
-        id: course.id,
-        title: course.title,
-        level: course.level ?? undefined,
-      }}
-      userId={userId}
-      completionDate={completionDate}
-      userFullName={userFullName}
-      certificateToken={certificate.certificateUrl!}
-    />
+    <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center">
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">
+        Certificado público
+      </h1>
+
+      <div className="w-full max-w-4xl h-[600px] border rounded-lg overflow-hidden">
+        <PDFViewer width="100%" height="100%">
+          <CertificateTemplate
+            certificateId={certificate.id}
+            courseId={course.id}
+            userId={certificate.userId}
+            courseTitle={course.title}
+            level={course.level ?? undefined}
+            completionDate={completionDate}
+            userName={userFullName}
+          />
+        </PDFViewer>
+      </div>
+
+      <div className="mt-4 flex gap-2 items-center">
+        <Button
+          onClick={() => navigator.clipboard.writeText(publicUrl)}
+        >
+          Copiar link público
+        </Button>
+        <span className="text-gray-600 break-all">{publicUrl}</span>
+      </div>
+    </div>
   );
 };
 
-export default CertificatePage;
+export default ExternalCertificatePage;

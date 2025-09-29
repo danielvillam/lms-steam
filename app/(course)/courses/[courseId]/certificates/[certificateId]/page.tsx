@@ -2,15 +2,12 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 import CourseCertificateUser from "./_components/course-certificate-user";
-import { randomUUID } from "crypto";
 
 interface CertificatePageProps {
   params: {
     courseId: string;
   };
 }
-
-
 
 const CertificatePage = async ({ params }: CertificatePageProps) => {
   console.log("Params:", params);
@@ -31,23 +28,15 @@ const CertificatePage = async ({ params }: CertificatePageProps) => {
   const userFullName =
     `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "Usuario";
 
-  let certificate = await db.certificate.findFirst({
+  // 🔹 Solo buscamos certificado, sin crear nada
+  const certificate = await db.certificate.findFirst({
     where: { courseId: course.id, userId },
   });
 
-  console.log("Certificate before create:", certificate);
+  console.log("Certificate found:", certificate);
 
   if (!certificate) {
-    const certificateToken = randomUUID();
-
-    certificate = await db.certificate.create({
-      data: {
-        courseId: course.id,
-        userId,
-        certificateUrl: certificateToken,
-      },
-    });
-    console.log("Certificate created:", certificate);
+    return <p>No tienes certificado aún</p>;
   }
 
   return (
