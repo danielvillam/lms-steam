@@ -1,0 +1,17 @@
+# Dirs
+build
+node_modules
+.husky
+
+# Environent
+.env
+.env.example
+
+# General
+README.md
+.npmcheckrc.json
+.depcheckrc.json
+.gitignore
+.gitmodules
+.nvmrc
+eslint.config.mjs

@@ -1,0 +1,215 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+//model User {
+  //id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  //email           String
+  //name            String?
+  //role            String? // admin, student, instructor
+
+  //registrations   Registration[]
+  //certificates    Certificate[]
+  //progress        UserProgress[]
+  //ratings         Rating[]
+  //evaluationResults EvaluationResult[]
+
+  //createdAt       DateTime @default(now())
+//}
+
+model Course {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  title           String
+  description     String?
+  imageUrl        String?
+  previousSkills  String?
+  developedSkills String?
+  level           String?
+  price           Float?
+
+  isPublished Boolean @default(false)
+
+  categoryId      String?   @db.ObjectId
+  category        Category? @relation(fields: [categoryId], references: [id])
+  modules         Module[]
+  attachments     Attachment[]
+  registered      Registration[]
+  certificates    Certificate[]
+  ratings         Rating[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Category {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  name            String   @unique
+  courses         Course[]
+}
+
+model Attachment {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  name            String
+  url             String
+
+  courseId        String @db.ObjectId
+  course          Course @relation(fields: [courseId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Module {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+  description     String?
+  videoUrl        String?
+  videoTranscript String?
+  position        Int
+  isPublished     Boolean  @default(false)
+  isEnabled       Boolean  @default(false)
+
+  isEvaluable     Boolean  @default(false)
+  evaluationMethod EvaluationType?
+
+  courseId        String   @db.ObjectId
+  course          Course   @relation(fields: [courseId], references: [id])
+
+  userProgress    UserProgress[]
+  evaluation      Evaluation?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model UserProgress {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+
+  moduleId        String  @db.ObjectId
+  module          Module @relation(fields: [moduleId], references: [id])
+
+  isCompleted     Boolean @default(false)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Registration {
+  id              String @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+
+  courseId        String @db.ObjectId
+  course          Course @relation(fields: [courseId], references: [id])
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Rating {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String
+  courseId        String   @db.ObjectId
+  course          Course   @relation(fields: [courseId], references: [id])
+
+  rating          Int
+  comment         String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum EvaluationType {
+  sequence
+  locate
+  single
+  multiple
+  open
+}
+
+model Evaluation {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  type            EvaluationType
+  maxAttempts     Int?
+
+  moduleId        String   @unique @db.ObjectId
+  module          Module   @relation(fields: [moduleId], references: [id])
+
+  isPublished     Boolean  @default(false)
+
+  questions       Question[]
+  evaluationResults EvaluationResult[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Question {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+
+  evaluationId    String   @db.ObjectId
+  evaluation      Evaluation   @relation(fields: [evaluationId], references: [id])
+
+  answers         Answer[]
+  selectedAnswers SelectedAnswer[]
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model Answer {
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
+  title           String
+
+  questionId      String     @db.ObjectId
+  question        Question   @relation(fields: [questionId], references: [id])
+  isCorrect       Boolean    @default(false)
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model EvaluationResult {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId              String
+
+  evaluationId        String   @db.ObjectId
+  evaluation          Evaluation @relation(fields: [evaluationId], references: [id])
+
+  answers             SelectedAnswer[]
+
+  attempt             Int      @default(0)
+  score               Float    @default(0)
+  completedAt         DateTime @default(now())
+}
+
+model SelectedAnswer {
+  id                  String   @id @default(auto()) @map("_id") @db.ObjectId
+  title               String
+  evaluationResultId  String @db.ObjectId
+  evaluationResult    EvaluationResult @relation(fields: [evaluationResultId], references: [id])
+
+  questionId          String @db.ObjectId
+  question            Question @relation(fields: [questionId], references: [id])
+
+  isCorrect           Boolean
+}
+
+model Certificate {
+  id                    String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId                String
+  courseId              String   @db.ObjectId
+  course                Course   @relation(fields: [courseId], references: [id])
+  issuedAt              DateTime @default(now())
+  certificateUrl        String?
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
