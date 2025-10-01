@@ -80,9 +80,10 @@ const CourseCertificateUser: React.FC<Props> = ({
               <Button
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
                 onClick={() =>
-                  console.log("Botón de compartir clickeado")}
-                  
-                
+                  router.push(
+                    `/courses/${course.id}/certificates/${certificateToken}/external_page`
+                  )
+                }
               >
                 <Share2 className="w-4 h-4 mr-2" />
                 Compartir certificado

@@ -1,65 +1,53 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
-import { PDFViewer } from "@react-pdf/renderer";
-import CertificateTemplate from "./_components/course-certificate-template";
-import { Button } from "@/components/ui/button";
+import dynamic from "next/dynamic";
+
+
+const CourseCertificatePreview = dynamic(
+  () => import("./_components/course-certificate-preview"),
+  { ssr: false }
+);
 
 interface ExternalPageProps {
-  params: {
-    courseId: string;
-    certificateId: string;
-  };
+  params: { certificateId: string; courseId: string };
 }
 
-const ExternalCertificatePage = async ({ params }: ExternalPageProps) => {
-  const { certificateId } = params;
+export default async function ExternalCertificatePage({ params }: ExternalPageProps) {
+  const { certificateId, courseId } = params;
 
-  // Buscar certificado por ID
-  const certificate = await db.certificate.findUnique({
-    where: { id: certificateId },
+  const certificate = await db.certificate.findFirst({
+    where: { certificateUrl: certificateId },
     include: { course: true },
   });
 
-  if (!certificate) return notFound();
-
-  const course = certificate.course;
-  const completionDate = certificate.issuedAt ?? new Date();
-
-  // Como no guardamos nombre de usuario en DB
-  const userFullName = "Usuario";
-
-  const publicUrl = `${process.env.NEXT_PUBLIC_APP_URL}/courses/${course.id}/certificates/${certificate.id}/external_page`;
+  if (!certificate || !certificate.certificateUrl) return notFound();
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 flex flex-col items-center">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">
-        Certificado público
-      </h1>
+      <h1 className="text-3xl font-bold text-gray-900 mb-6">Certificado Verificado</h1>
 
-      <div className="w-full max-w-4xl h-[600px] border rounded-lg overflow-hidden">
-        <PDFViewer width="100%" height="100%">
-          <CertificateTemplate
-            certificateId={certificate.id}
-            courseId={course.id}
-            userId={certificate.userId}
-            courseTitle={course.title}
-            level={course.level ?? undefined}
-            completionDate={completionDate}
-            userName={userFullName}
-          />
-        </PDFViewer>
-      </div>
+      <CourseCertificatePreview
+        certificateId={certificate.certificateUrl}
+        courseId={certificate.course.id}
+        userId={certificate.userId}
+        courseTitle={certificate.course.title}
+        level={certificate.course.level ?? "Nivel no especificado"}
+        completionDate={certificate.issuedAt}
+        userName="Usuario"
+      />
 
       <div className="mt-4 flex gap-2 items-center">
-        <Button
-          onClick={() => navigator.clipboard.writeText(publicUrl)}
+        <button
+          className="bg-esmerald-600 text-white px-4 py-2 rounded hover:bg-esmerald-700"
+          onClick={() =>
+            navigator.clipboard.writeText(
+              `${process.env.NEXT_PUBLIC_APP_URL}/courses/${courseId}/certificates/${certificateId}/external_page`
+            )
+          }
         >
           Copiar link público
-        </Button>
-        <span className="text-gray-600 break-all">{publicUrl}</span>
+        </button>
       </div>
     </div>
   );
-};
-
-export default ExternalCertificatePage;
+}
