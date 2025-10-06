@@ -7,6 +7,7 @@ import { randomUUID } from "crypto";
 interface CertificatePageProps {
   params: {
     courseId: string;
+    completionDate: Date;
   };
 }
 
@@ -25,7 +26,21 @@ const CertificatePage = async ({ params }: CertificatePageProps) => {
   console.log("Course found:", course);
   if (!course) return <p>No existe el curso</p>;
 
-  const completionDate = new Date();
+  const userProgress = await db.userProgress. findFirst({
+
+    where:{
+      userId,
+      module:{
+        courseId: course.id,
+      },
+    },
+    orderBy:{
+      updatedAt: "desc",
+    },
+  });
+
+  const completionDate = userProgress?.updatedAt ?? new Date();
+
   const userFullName =
     `${user?.firstName || ""} ${user?.lastName || ""}`.trim() || "Usuario";
 
@@ -33,6 +48,7 @@ const CertificatePage = async ({ params }: CertificatePageProps) => {
   let certificate = await db.certificate.findFirst({
     where: { courseId: course.id, userId },
   });
+
 
   // Si no existe, creamos uno nuevo con un token único
   if (!certificate) {

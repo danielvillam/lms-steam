@@ -1,13 +1,14 @@
 "use client";
 
 import React from "react";
-import { PDFDownloadLink, PDFViewer } from "@react-pdf/renderer";
+import { PDFDownloadLink} from "@react-pdf/renderer";
 import { useRouter } from "next/navigation";
 import  {CourseCertificateCard}  from "./course-certificate-card";
 import  CourseCertificatePreview  from "./course-certificate-preview";
 import CertificateTemplate from "./course-certificate-template";
 import { Button } from "@/components/ui/button";
-import { Download, Share2 } from "lucide-react";
+import { Download} from "lucide-react";
+
 
 
 interface Props {
@@ -28,7 +29,6 @@ const CourseCertificateUser: React.FC<Props> = ({
   userId,
   completionDate,
   userFullName,
-  userEmail,
   certificateToken
   
 }) => {
@@ -74,21 +74,9 @@ const CourseCertificateUser: React.FC<Props> = ({
                 userName={userFullName}
               />
             </div>
-
+              
             {/* Action Buttons */}
             <div className="bg-gray-50 px-8 py-4 border-t flex gap-4">
-              <Button
-                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
-                onClick={() =>
-                  router.push(
-                    `/courses/${course.id}/certificates/${certificateToken}/external_page`
-                  )
-                }
-              >
-                <Share2 className="w-4 h-4 mr-2" />
-                Compartir certificado
-              </Button>
-
 
               {/* Descargar el pdf */}
               <PDFDownloadLink
@@ -105,7 +93,8 @@ const CourseCertificateUser: React.FC<Props> = ({
               }
               fileName={`certificado-${course.title}.pdf`}>
               {({ loading }) => (
-                <Button variant="outline" className="flex-1">
+                <Button variant="outline" 
+                className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white">
                   <Download className="w-4 h-4 mr-2" />
                    {loading ? "Generando..." : "Descargar certificado"}
                 </Button>
@@ -125,7 +114,7 @@ const CourseCertificateUser: React.FC<Props> = ({
               <h4 className="font-medium text-gray-900 mb-2">Verificación</h4>
               <p>
                 Este certificado puede ser verificado en línea utilizando el 
-                link único proporcionado. La verificación confirma que el estudiante 
+                id único proporcionado. La verificación confirma que el estudiante 
                 completó exitosamente el curso.
               </p>
             </div>

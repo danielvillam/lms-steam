@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle, ExternalLink } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { format } from "date-fns";
 
 
