@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "db:seed": "tsx scripts/seed.ts",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
