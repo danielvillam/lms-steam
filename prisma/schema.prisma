@@ -213,3 +213,15 @@ model Certificate {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 }
+
+model Event {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  title         String
+  userId        String
+  description   String?
+  imageUrl      String?
+  startDateTime DateTime
+  endDateTime   DateTime
+  location      String
+  createdAt     DateTime  @default(now())
+}

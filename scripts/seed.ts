@@ -1,111 +1,119 @@
-const { PrismaClient } = require("@prisma/client");
+// scripts/seed.ts
+import { PrismaClient } from "@prisma/client";
+const prisma = new PrismaClient();
 
-const database = new PrismaClient();
+const categories = [
+    "Ciencias de la Computación",
+    "Inteligencia Artificial",
+    "Ciberseguridad",
+    "Desarrollo Web",
+    "Desarrollo Móvil",
+    "Bases de Datos",
+    "Robótica",
+    "Internet de las Cosas (IoT)",
+    "Matemáticas",
+    "Física",
+    "Química",
+    "Biología",
+    "Astronomía",
+    "Administración de Empresas",
+    "Emprendimiento",
+    "Finanzas Personales",
+    "Contabilidad",
+    "Marketing Digital",
+    "Recursos Humanos",
+    "Liderazgo y Gestión",
+    "Comercio Electrónico",
+    "Economía",
+    "Diseño Gráfico",
+    "Fotografía",
+    "Dibujo y Pintura",
+    "Filmación y Video",
+    "Edición de Video",
+    "Animación",
+    "Música",
+    "Producción Musical",
+    "Historia del Arte",
+    "Inglés",
+    "Español",
+    "Francés",
+    "Portugués",
+    "Historia",
+    "Filosofía",
+    "Literatura",
+    "Comunicación",
+    "Lingüística",
+    "Aptitud Física",
+    "Nutrición",
+    "Yoga",
+    "Meditación",
+    "Primeros Auxilios",
+    "Psicología",
+    "Salud Mental",
+    "Sexualidad y Educación",
+    "Ingeniería Civil",
+    "Ingeniería Eléctrica",
+    "Ingeniería Electrónica",
+    "Ingeniería Mecánica",
+    "Automatización",
+    "CAD/CAM",
+    "Procesos Industriales",
+    "Cocina",
+    "Repostería",
+    "Jardinería",
+    "Cuidado del Hogar",
+    "Manualidades",
+    "Moda y Estilo",
+    "Pedagogía",
+    "Didáctica Digital",
+    "Enseñanza de STEM",
+    "Diseño Instruccional",
+    "Educación Inclusiva",
+    "Gamificación del Aprendizaje",
+    "Soporte Técnico",
+    "Redes de Computadores",
+    "Cloud Computing",
+    "DevOps",
+    "Sistemas Operativos",
+    "Administración de Sistemas",
+];
 
 async function main() {
-  try {
-    await database.category.createMany({
-      data: [
-        //Ciencias y Tecnología
-        { name: "Ciencias de la Computación" },
-        { name: "Inteligencia Artificial" },
-        { name: "Ciberseguridad" },
-        { name: "Desarrollo Web" },
-        { name: "Desarrollo Móvil" },
-        { name: "Bases de Datos" },
-        { name: "Robótica" },
-        { name: "Internet de las Cosas (IoT)" },
-        { name: "Matemáticas" },
-        { name: "Física" },
-        { name: "Química" },
-        { name: "Biología" },
-        { name: "Astronomía" },
+    // Normaliza (evita duplicados por espacios accidentales)
+    const unique = Array.from(new Set(categories.map((c) => c.trim())));
 
-        //Negocios y Emprendimiento
-        { name: "Administración de Empresas" },
-        { name: "Emprendimiento" },
-        { name: "Finanzas Personales" },
-        { name: "Contabilidad" },
-        { name: "Marketing Digital" },
-        { name: "Recursos Humanos" },
-        { name: "Liderazgo y Gestión" },
-        { name: "Comercio Electrónico" },
-        { name: "Economía" },
+    // upsert idempotente por nombre único (Mongo requiere que "where" use un campo único)
+    await prisma.$transaction(
+        unique.map((name) =>
+            prisma.category.upsert({
+                where: { name },   // ← requiere name @unique (ya lo tienes)
+                update: {},        // no cambies nada si ya existe
+                create: { name },
+            })
+        ),
+        // Nota: en Mongo los $transaction requieren cluster con transacciones habilitadas (>=4.2).
+        // Si tu clúster no soporta transacciones, comenta la línea de $transaction y usa un for-await secuencial abajo.
+    );
 
-        //Arte y Creatividad
-        { name: "Diseño Gráfico" },
-        { name: "Fotografía" },
-        { name: "Dibujo y Pintura" },
-        { name: "Filmación y Video" },
-        { name: "Edición de Video" },
-        { name: "Animación" },
-        { name: "Música" },
-        { name: "Producción Musical" },
-        { name: "Historia del Arte" },
-
-        //Idiomas y Humanidades
-        { name: "Inglés" },
-        { name: "Español" },
-        { name: "Francés" },
-        { name: "Portugués" },
-        { name: "Historia" },
-        { name: "Filosofía" },
-        { name: "Literatura" },
-        { name: "Comunicación" },
-        { name: "Lingüística" },
-
-        //Salud y Bienestar
-        { name: "Aptitud Física" },
-        { name: "Nutrición" },
-        { name: "Yoga" },
-        { name: "Meditación" },
-        { name: "Primeros Auxilios" },
-        { name: "Psicología" },
-        { name: "Salud Mental" },
-        { name: "Sexualidad y Educación" },
-
-        //Ingeniería y Manufactura
-        { name: "Ingeniería Civil" },
-        { name: "Ingeniería Eléctrica" },
-        { name: "Ingeniería Electrónica" },
-        { name: "Ingeniería Mecánica" },
-        { name: "Automatización" },
-        { name: "CAD/CAM" },
-        { name: "Procesos Industriales" },
-
-        //Vida y Estilo
-        { name: "Cocina" },
-        { name: "Repostería" },
-        { name: "Jardinería" },
-        { name: "Cuidado del Hogar" },
-        { name: "Manualidades" },
-        { name: "Moda y Estilo" },
-
-        //Educación y Formación
-        { name: "Pedagogía" },
-        { name: "Didáctica Digital" },
-        { name: "Enseñanza de STEM" },
-        { name: "Diseño Instruccional" },
-        { name: "Educación Inclusiva" },
-        { name: "Gamificación del Aprendizaje" },
-
-        //Tecnología de la Información
-        { name: "Soporte Técnico" },
-        { name: "Redes de Computadores" },
-        { name: "Cloud Computing" },
-        { name: "DevOps" },
-        { name: "Sistemas Operativos" },
-        { name: "Administración de Sistemas" },
-      ],
-      skipDuplicates: true, // evita errores por nombres duplicados si ya se insertaron
-    });
-
-    console.log("Categorías insertadas con éxito");
-  } catch (error) {
-    console.error("Error al inicializar las categorías:", error);
-  } finally {
-    await database.$disconnect();
-  }
+    console.log(`✅ Categorías aseguradas: ${unique.length}`);
 }
 
-main();
+/*
+// Alternativa segura sin transacciones (por si tu cluster no las soporta):
+async function main() {
+  const unique = Array.from(new Set(categories.map((c) => c.trim())));
+  for (const name of unique) {
+    await prisma.category.upsert({ where: { name }, update: {}, create: { name } });
+  }
+  console.log(`✅ Categorías aseguradas: ${unique.length}`);
+}
+*/
+
+main()
+    .catch((e) => {
+        console.error("❌ Error al inicializar las categorías:", e);
+        process.exit(1);
+    })
+    .finally(async () => {
+        await prisma.$disconnect();
+    });
