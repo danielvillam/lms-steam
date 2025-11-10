@@ -1,6 +1,6 @@
   "use client";
 
-  import { Search, List, Contact, BarChart, Newspaper } from "lucide-react";
+  import { Search, List, Contact, BarChart, Newspaper, Award } from "lucide-react";
   import { usePathname } from "next/navigation";
   import { SidebarItem } from "./sidebar-item";
   import { isTeacher } from '@/lib/teacher';
@@ -63,6 +63,12 @@
       label: "Analítica",
       href: "/teacher/analytics",
     },
+    {
+      icon: Award,
+      label: "Certificados",
+      href: "/teacher/certificates",
+    },
+
   ];
 
   export const SidebarRoutes = () => {

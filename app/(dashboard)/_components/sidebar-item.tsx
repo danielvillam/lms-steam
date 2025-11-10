@@ -40,18 +40,21 @@ export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
             aria-current={isActive ? "page" : undefined}
         >
             <div className={cn(
-                "p-2 rounded-lg transition-all group-hover:bg-white",
+                "p-2 rounded-lg transition-all group-hover:bg-white group-hover:scale-[1.05]",
                 isActive ? "bg-white shadow-xs" : "bg-transparent"
             )}>
-                <Icon size={20} className={cn(
-                    "transition-transform group-hover:scale-[1.05]",
-                    isActive ? "text-sky-600" : "text-slate-500"
-                )} />
+                <Icon 
+                    size={20} 
+                    className={cn(
+                        "transition-transform",
+                        isActive ? "text-sky-600" : "text-slate-500"
+                    )} 
+                />
             </div>
 
             <span className="text-sm font-medium transition-all duration-300">
-        {label}
-      </span>
+                {label}
+            </span>
         </Link>
     );
 };
