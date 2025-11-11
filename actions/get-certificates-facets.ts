@@ -5,7 +5,8 @@ import { auth, currentUser, clerkClient } from "@clerk/nextjs/server";
 
 type FacetYear = { year: number; count: number };
 type FacetStudent = {
-  id: string;
+  certificateId: string;
+  userId: string;
   fullName: string;
   certificateUrl?: string | null;
   issuedAt: Date;
@@ -13,6 +14,7 @@ type FacetStudent = {
 type FacetCourse = {
   id: string;
   title: string;
+  level?: string;
   certificateCount: number;
   years: FacetYear[];
   students: FacetStudent[];
@@ -32,9 +34,14 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
       return [];
     }
 
+    // Obtener cursos con level incluido
     const courses = await db.course.findMany({
       where: { isPublished: true },
-      select: { id: true, title: true },
+      select: { 
+        id: true, 
+        title: true,
+        level: true,  // 👈 Incluir level
+      },
     });
 
     if (courses.length === 0) return [];
@@ -46,7 +53,7 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
     const certificates = await db.certificate.findMany({
       where: { courseId: { in: courseIds } },
       select: {
-        id: true,
+        id: true,          // 👈 ID del certificado
         courseId: true,
         userId: true,
         issuedAt: true,
@@ -56,7 +63,7 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
 
     if (certificates.length === 0) return [];
 
-    // ✅ Obtener los IDs únicos de los usuarios certificados sin usar Set ni for...of
+    // Obtener IDs únicos de usuarios
     const uniqueUserIds: string[] = [];
     for (var i = 0; i < certificates.length; i++) {
       var uid = certificates[i].userId;
@@ -65,10 +72,9 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
       }
     }
 
-    // ✅ Obtener la instancia de clerkClient
+    // Obtener usuarios de Clerk
     const client = await clerkClient();
 
-    // ⚠️ Clerk limita 100 usuarios por llamada → hacemos llamadas en lotes
     const BATCH_SIZE = 100;
     const userPromises: Promise<any>[] = [];
     for (var j = 0; j < uniqueUserIds.length; j += BATCH_SIZE) {
@@ -89,7 +95,7 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
       }
     }
 
-    // ✅ Crear mapa { userId → fullName }
+    // Crear mapa de usuarios
     const userMap: { [key: string]: string } = {};
     for (var u = 0; u < allUsers.length; u++) {
       const user = allUsers[u];
@@ -99,19 +105,21 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
       userMap[user.id] = fullName;
     }
 
-    // ✅ Agrupar resultados
+    // Agrupar resultados por curso
     const resultMap: { [key: string]: FacetCourse } = {};
     for (var c = 0; c < courses.length; c++) {
       const course = courses[c];
       resultMap[course.id] = {
         id: course.id,
         title: course.title,
+        level: course.level || undefined,  // 👈 Incluir level
         certificateCount: 0,
         years: [],
         students: [],
       };
     }
 
+    // Procesar certificados
     for (var k = 0; k < certificates.length; k++) {
       const cert = certificates[k];
       const year = new Date(cert.issuedAt).getFullYear();
@@ -127,16 +135,17 @@ export const getCertificatesFacets = async (): Promise<FacetCourse[]> => {
       if (yearFacet) yearFacet.count++;
       else courseFacet.years.push({ year: year, count: 1 });
 
-      // Agregar info del estudiante
+      // Agregar info del estudiante con todos los datos necesarios
       courseFacet.students.push({
-        id: cert.userId,
+        certificateId: cert.id,        // ✅ ID del certificado
+        userId: cert.userId,           // ✅ ID del usuario
         fullName: userMap[cert.userId] || "Usuario desconocido",
         certificateUrl: cert.certificateUrl,
         issuedAt: cert.issuedAt,
       });
     }
 
-    // ✅ Ordenar años y estudiantes
+    // Ordenar y retornar
     return Object.values(resultMap).map(function (c) {
       return {
         ...c,

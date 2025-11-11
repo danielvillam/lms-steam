@@ -1,6 +1,6 @@
 "use client";
 
-import { CheckCircle } from "lucide-react";
+import { Award } from "lucide-react";
 import { format } from "date-fns";
 
 
@@ -29,7 +29,7 @@ const CourseCertificateCard: React.FC<Props> = ({
   return (
     <div className="p-6 border rounded-xl shadow-md bg-white hover:shadow-lg transition">
       <div className="flex items-center gap-2 text-emerald-800">
-        <CheckCircle className="w-6 h-6" />
+        <Award className="w-6 h-6" />
         <h3 className="font-semibold text-lg">Certificado de finalización</h3>
       </div>
 
