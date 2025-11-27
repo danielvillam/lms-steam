@@ -11,6 +11,7 @@ interface Props {
   completionDate: Date;
   userName: string;
   logoUrl: string;
+  
 }
 
 const CourseCertificateTemplate = forwardRef<HTMLDivElement, Props>(
@@ -183,7 +184,7 @@ const CourseCertificateTemplate = forwardRef<HTMLDivElement, Props>(
             
             <div className="pt-1.5">
               <p className="text-xs text-gray-400 font-mono">
-                ID: {courseId}
+                ID: {certificateId}
               </p>
             </div>
           </div>

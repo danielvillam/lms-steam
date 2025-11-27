@@ -8,7 +8,7 @@ import { CourseCertificateCard } from "./course-certificate-card";
 import CourseCertificatePreview from "./course-certificate-preview";
 import CourseCertificateTemplate from "./course-certificate-template";
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
+import { Download, Share2 } from "lucide-react";
 
 interface Props {
   course: {
@@ -32,7 +32,10 @@ const CourseCertificateUser: React.FC<Props> = ({
 }) => {
   const router = useRouter();
 
-  /** ---- FUNCIÓN PARA DESCARGAR PDF ---- **/
+  const handleVerify = () => {
+    router.push(`/courses/${course.id}/certificates/${certificateToken}/verify`);
+  };
+
   const downloadCertificate = async () => {
     const element = document.getElementById("certificate-download-html");
 
@@ -42,34 +45,28 @@ const CourseCertificateUser: React.FC<Props> = ({
     }
 
     await new Promise((resolve) => setTimeout(resolve, 400));
-
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
     });
-
     const imgData = canvas.toDataURL("image/png");
-
     const pdf = new jsPDF("landscape", "pt", "a4");
-
     const width = pdf.internal.pageSize.getWidth();
     const height = pdf.internal.pageSize.getHeight();
 
     pdf.addImage(imgData, "PNG", 0, 0, width, height);
-    pdf.save(`certificado-${course.title}.pdf`);
+    pdf.save(`Certificado-${course.title}.pdf`);
   };
 
   return (
     <div className="min-h-screen bg-gray-50 p-6">
       <div className="max-w-7xl mx-auto">
-        
         {/* Header */}
         <h1 className="text-3xl font-bold text-gray-900 mb-8">
           {course.title}
         </h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          
           {/* Left Side - Course Information */}
           <div className="bg-white rounded-lg shadow-lg">
             <div className="p-8">
@@ -103,11 +100,19 @@ const CourseCertificateUser: React.FC<Props> = ({
             {/* Action Buttons */}
             <div className="bg-gray-50 px-8 py-4 border-t flex gap-4">
               <Button
-                onClick={() => downloadCertificate()} 
+                onClick={downloadCertificate}
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 <Download className="w-4 h-4 mr-2" />
                 Descargar certificado
+              </Button>
+
+              <Button
+                onClick={handleVerify}
+                className="flex-1 bg-white hover:bg-gray-100 text-black border border-gray-300"
+              >
+                <Share2 className="w-4 h-4 mr-2" />
+                Compartir certificado
               </Button>
             </div>
           </div>
@@ -140,8 +145,7 @@ const CourseCertificateUser: React.FC<Props> = ({
       </div>
 
       {/* Área oculta para descargar PDF */}
-      <div id="certificate-download-html" 
-      className="absolute left-[-9999px] top-0">
+      <div id="certificate-download-html" className="absolute left-[-9999px] top-0">
         <CourseCertificateTemplate
           certificateId={certificateToken}
           courseId={course.id}

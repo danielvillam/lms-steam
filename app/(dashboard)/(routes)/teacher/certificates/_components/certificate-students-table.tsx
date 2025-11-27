@@ -62,6 +62,7 @@ const CertificateStudentsTable: React.FC<Props> = ({ students }) => {
                       level={student.level}
                       completionDate={student.completionDate}
                       userName={student.name}
+                      logoUrl="/IdentificadorAulaSTEAM.png"
                     />
                   }
                   fileName={`${student.name}-certificado.pdf`}
@@ -93,6 +94,7 @@ const CertificateStudentsTable: React.FC<Props> = ({ students }) => {
               completionDate={selectedStudent.completionDate}
               userName={selectedStudent.name}
               userEmail={selectedStudent.email}
+              logoUrl="/IdentificadorAulaSTEAM.png"
             />
           </div>
         </div>

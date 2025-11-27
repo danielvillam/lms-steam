@@ -9,6 +9,9 @@ import { Download, Eye, Copy } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import dynamic from "next/dynamic";
 import { select } from "slate";
+import { CertificateStudentsActions } from "./certificate-students-actions"
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const CertificateTemplate = dynamic(
   () => import("@/app/(course)/courses/[courseId]/certificates/[certificateId]/_components/course-certificate-template"),
@@ -133,23 +136,29 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
     setCurrentPage(1);
   };
 
+
+
   const handleBulkDownload = async () => {
     try {
       const JSZip = (await import("jszip")).default;
-      const { pdf } = await import("@react-pdf/renderer");
-      const { default: Template } = await import(
-        "@/app/(course)/courses/[courseId]/certificates/[certificateId]/_components/course-certificate-template"
-      );
-
       const zip = new JSZip();
 
       alert(`Generando ${filteredStudents.length} certificados...`);
 
-      for (let i = 0; i < filteredStudents.length; i++) {
-        const student = filteredStudents[i];
+      for (let student of filteredStudents) {
+        // 1. Crear contenedor temporal para renderizar el certificado
+        const container = document.createElement("div");
+        container.style.position = "absolute";
+        container.style.left = "-9999px";
+        container.style.top = "-9999px";
+        document.body.appendChild(container);
 
-        const blob = await pdf(
-          <Template
+        // 2. Renderizar el componente en el contenedor (usando ReactDOM)
+        const { createRoot } = await import("react-dom/client");
+        const root = createRoot(container);
+
+        root.render(
+          <CertificateTemplate
             certificateId={student.certificateId}
             courseId={selectedCourse!.id}
             userId={student.userId}
@@ -157,15 +166,46 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
             courseTitle={selectedCourse!.title}
             level={selectedCourse!.level}
             completionDate={student.issuedAt}
+            logoUrl="/IdentificadorAulaSTEAM.png"
           />
-        ).toBlob();
+        );
 
-        const fileName = `${selectedCourse!.title.replace(/\s+/g, "_")}_${student.fullName.replace(/\s+/g, "_")}.pdf`;
-        zip.file(fileName, blob);
+        // 3. Esperar a que se renderice
+        await new Promise((resolve) => setTimeout(resolve, 500));
+
+        // 4. Capturar con html2canvas
+        const canvas = await html2canvas(container, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#ffffff",
+        });
+
+        // 5. Convertir a PDF
+        const { jsPDF } = await import("jspdf");
+        const imgData = canvas.toDataURL("image/png");
+        const pdf = new jsPDF("landscape", "pt", "a4");
+        const width = pdf.internal.pageSize.getWidth();
+        const height = pdf.internal.pageSize.getHeight();
+
+        pdf.addImage(imgData, "PNG", 0, 0, width, height);
+
+        // 6. Agregar al ZIP
+        const pdfBlob = pdf.output("blob");
+        const fileName =
+          `${selectedCourse!.title.replace(/\s+/g, "_")}` +
+          `_${student.fullName.replace(/\s+/g, "_")}.pdf`;
+
+        zip.file(fileName, pdfBlob);
+
+        // 7. Limpiar
+        root.unmount();
+        document.body.removeChild(container);
       }
 
-      const content = await zip.generateAsync({ type: "blob" });
-      const url = window.URL.createObjectURL(content);
+      // 8. Generar y descargar ZIP
+      const zipBlob = await zip.generateAsync({ type: "blob" });
+      const url = window.URL.createObjectURL(zipBlob);
       const a = document.createElement("a");
       a.href = url;
       a.download = `Certificados_${selectedCourse!.title}_${selectedYear}.zip`;
@@ -174,10 +214,13 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
 
       alert("¡Descarga completada!");
     } catch (error) {
-      console.error("Error:", error);
-      alert("Error al generar el ZIP");
+      console.error(error);
+      alert("Error al generar ZIP");
     }
   };
+
+
+
 
   // 🔹 Nivel 1 — Vista de cursos
   if (!selectedCourse) {
@@ -441,186 +484,6 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
   );
 };
 
-// Componente de acciones de certificados (integrado en el mismo archivo)
-interface CertificateStudentsActionsProps {
-  certificateId: string;
-  courseId: string;
-  userId: string;
-  userName: string;
-  courseTitle: string;
-  level?: string;
-  completionDate: Date;
-  verificationCode?: string | null;
-}
 
-const CertificateStudentsActions = ({
-  certificateId,
-  courseId,
-  userId,
-  userName,
-  courseTitle,
-  level,
-  completionDate,
-  verificationCode,
-}: CertificateStudentsActionsProps) => {
-  const [showPreview, setShowPreview] = useState(false);
-  const [isDownloading, setIsDownloading] = useState(false);
-
-  const handlePreview = () => {
-    setShowPreview(true);
-  };
-
-  const handleDownload = async () => {
-    try {
-      setIsDownloading(true);
-
-      const { pdf } = await import("@react-pdf/renderer");
-      const { default: Template } = await import(
-        "@/app/(course)/courses/[courseId]/certificates/[certificateId]/_components/course-certificate-template"
-      );
-
-      const blob = await pdf(
-        <Template
-          certificateId={certificateId}
-          courseId={courseId}
-          userId={userId}
-          userName={userName}
-          courseTitle={courseTitle}
-          level={level}
-          completionDate={completionDate}
-        />
-      ).toBlob();
-
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `Certificado_${courseTitle.replace(/\s+/g, "_")}_${new Date(completionDate).getFullYear()}_${userName.replace(/\s+/g, "_")}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error("Error descargando certificado:", error);
-      alert("Error al descargar el certificado");
-    } finally {
-      setIsDownloading(false);
-    }
-  };
-
-  const handleCopyCode = async () => {
-    if (!verificationCode) return;
-
-    try {
-      await navigator.clipboard.writeText(verificationCode);
-      alert("Código copiado al portapapeles");
-    } catch (error) {
-      console.error("Error copiando código:", error);
-    }
-  };
-
-  return (
-    <>
-      <div className="flex gap-2">
-        <Button
-          className="bg-sky-800 hover:bg-sky-600 text-white"
-          size="sm"
-          onClick={handleDownload}
-          disabled={isDownloading}
-        >
-          <Download size={16} className="mr-1" />
-          {isDownloading ? "..." : "Descargar"}
-        </Button>
-
-        <Button variant="outline" size="sm" onClick={handlePreview}>
-          <Eye size={16} className="mr-1" /> Vista previa
-        </Button>
-
-        {verificationCode && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={handleCopyCode}
-            title="Copiar código"
-          >
-            <Copy size={16} />
-          </Button>
-        )}
-      </div>
-
-      <Dialog open={showPreview} onOpenChange={setShowPreview}>
-        <DialogContent className="max-w-5xl max-h-[90vh]">
-          <DialogHeader>
-            <DialogTitle>Vista previa - {userName}</DialogTitle>
-          </DialogHeader>
-          <div className="h-[75vh] w-full overflow-auto">
-            {showPreview && (
-              <CertificatePreviewClient
-                certificateId={certificateId}
-                courseId={courseId}
-                userId={userId}
-                userName={userName}
-                courseTitle={courseTitle}
-                level={level}
-                completionDate={completionDate}
-              />
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-};
-
-// 🔹 Componente de preview del certificado
-const CertificatePreviewClient = ({
-  certificateId,
-  courseId,
-  userId,
-  userName,
-  courseTitle,
-  level,
-  completionDate,
-}: {
-  certificateId: string;
-  courseId: string;
-  userId: string;
-  userName: string;
-  courseTitle: string;
-  level?: string;
-  completionDate: Date;
-}) => {
-  const [PDFViewer, setPDFViewer] = useState<any>(null);
-  const [Template, setTemplate] = useState<any>(null);
-
-  useState(() => {
-    async function loadPDF() {
-      const { PDFViewer: Viewer } = await import("@react-pdf/renderer");
-      const { default: CertTemplate } = await import(
-        "@/app/(course)/courses/[courseId]/certificates/[certificateId]/_components/course-certificate-template"
-      );
-      setPDFViewer(() => Viewer);
-      setTemplate(() => CertTemplate);
-    }
-    loadPDF();
-  });
-
-  if (!PDFViewer || !Template) {
-    return <div className="flex items-center justify-center h-full">Cargando vista previa...</div>;
-  }
-
-  return (
-    <PDFViewer width="100%" height="100%" showToolbar={false}>
-      <Template
-        certificateId={certificateId}
-        courseId={courseId}
-        userId={userId}
-        userName={userName}
-        courseTitle={courseTitle}
-        level={level}
-        completionDate={completionDate}
-      />
-    </PDFViewer>
-  );
-};
 
 export default CertificatesManagerClient;
