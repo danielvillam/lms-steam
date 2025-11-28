@@ -65,7 +65,7 @@
     },
     {
       icon: Award,
-      label: "Certificados",
+      label: "Constancias",
       href: "/teacher/certificates",
     },
 

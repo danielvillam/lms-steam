@@ -92,7 +92,7 @@ const CourseSidebar = async ({
                     <div className="certificate">
                             <CourseSidebarItem
                             id="certificate"
-                            label="Certificado"
+                            label="Constancia"
                             isCompleted={true}
                             courseId={course.id}
                             isLocked={false}

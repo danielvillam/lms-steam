@@ -50,7 +50,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
-  // Filtrar y ordenar cursos
+  
   const filteredCourses = useMemo(() => {
     return initialFacets
       .filter((course) =>
@@ -59,7 +59,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
       .sort((a, b) => a.title.localeCompare(b.title));
   }, [initialFacets, searchTerm]);
 
-  // Filtrar años
+  
   const filteredYears = useMemo(() => {
     if (!selectedCourse) return [];
     return selectedCourse.years.filter((y) =>
@@ -67,22 +67,22 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
     );
   }, [selectedCourse, search]);
 
-  // Datos del gráfico
+  
   const chartData = useMemo(() => {
     if (!selectedCourse) return [];
     return selectedCourse.years.map((y) => ({
       name: y.year.toString(),
-      certificados: y.count,
+      constancias: y.count,  
     }));
   }, [selectedCourse]);
 
-  // Total de certificados
+  
   const totalCertificates = useMemo(() => {
     if (!selectedCourse) return 0;
     return selectedCourse.years.reduce((sum, y) => sum + y.count, 0);
   }, [selectedCourse]);
 
-  // Estudiantes del año seleccionado
+  
   const studentsInYear = useMemo(() => {
     if (!selectedCourse?.students || !selectedYear) return [];
     return selectedCourse.students.filter((student) => {
@@ -91,7 +91,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
     });
   }, [selectedCourse?.students, selectedYear]);
 
-  // Meses disponibles
+  
   const availableMonths = useMemo(() => {
     const months = new Set<string>();
     studentsInYear.forEach((student) => {
@@ -102,7 +102,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
     return Array.from(months);
   }, [studentsInYear]);
 
-  // Filtrado de estudiantes
+  
   const filteredStudents = useMemo(() => {
     return studentsInYear.filter((student) => {
       const matchesSearch = student.fullName
@@ -119,7 +119,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
     });
   }, [studentsInYear, studentSearchTerm, selectedMonth]);
 
-  // Paginación
+  
   const totalPages = Math.ceil(filteredStudents.length / itemsPerPage);
   const currentData = useMemo(() => {
     return filteredStudents.slice(
@@ -143,17 +143,17 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
       const JSZip = (await import("jszip")).default;
       const zip = new JSZip();
 
-      alert(`Generando ${filteredStudents.length} certificados...`);
+      alert(`Generando ${filteredStudents.length} constancias...`);
 
       for (let student of filteredStudents) {
-        // 1. Crear contenedor temporal para renderizar el certificado
+        
         const container = document.createElement("div");
         container.style.position = "absolute";
         container.style.left = "-9999px";
         container.style.top = "-9999px";
         document.body.appendChild(container);
 
-        // 2. Renderizar el componente en el contenedor (usando ReactDOM)
+        
         const { createRoot } = await import("react-dom/client");
         const root = createRoot(container);
 
@@ -170,10 +170,10 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
           />
         );
 
-        // 3. Esperar a que se renderice
+        
         await new Promise((resolve) => setTimeout(resolve, 500));
 
-        // 4. Capturar con html2canvas
+        
         const canvas = await html2canvas(container, {
           scale: 2,
           useCORS: true,
@@ -181,7 +181,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
           backgroundColor: "#ffffff",
         });
 
-        // 5. Convertir a PDF
+        
         const { jsPDF } = await import("jspdf");
         const imgData = canvas.toDataURL("image/png");
         const pdf = new jsPDF("landscape", "pt", "a4");
@@ -190,7 +190,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
 
         pdf.addImage(imgData, "PNG", 0, 0, width, height);
 
-        // 6. Agregar al ZIP
+        
         const pdfBlob = pdf.output("blob");
         const fileName =
           `${selectedCourse!.title.replace(/\s+/g, "_")}` +
@@ -198,17 +198,17 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
 
         zip.file(fileName, pdfBlob);
 
-        // 7. Limpiar
+        
         root.unmount();
         document.body.removeChild(container);
       }
 
-      // 8. Generar y descargar ZIP
+      
       const zipBlob = await zip.generateAsync({ type: "blob" });
       const url = window.URL.createObjectURL(zipBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `Certificados_${selectedCourse!.title}_${selectedYear}.zip`;
+      a.download = `Constancias_${selectedCourse!.title}_${selectedYear}.zip`;
       a.click();
       window.URL.revokeObjectURL(url);
 
@@ -254,7 +254,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
                 >
                   <p className="font-medium">{course.title}</p>
                   <p className="text-xs text-gray-500">
-                    {course.certificateCount} certificados
+                    {course.certificateCount} constancias
                   </p>
                 </div>
               ))}
@@ -281,10 +281,10 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
               >
                 <h3 className="font-semibold">{course.title}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {course.certificateCount} {course.certificateCount === 1 ? "certificado" : "certificados"} emitido{course.certificateCount === 1 ? "" : "s"}
+                  {course.certificateCount} {course.certificateCount === 1 ? "constancia" : "constancia"} emitido{course.certificateCount === 1 ? "" : "s"}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
-                  Último certificado: {lastYear}
+                  Última constancia: {lastYear}
                 </p>
               </Card>
             );
@@ -340,10 +340,10 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
         </div>
 
         <div>
-          <Chart data={chartData} dataKey="certificados" label="Certificados" />
+          <Chart data={chartData} dataKey="constancias" label="Constancias" />
         </div>
 
-        <p>Total acumulado: {totalCertificates} {totalCertificates === 1 ? "certificado" : "certificados"}</p>
+        <p>Total acumulado: {totalCertificates} {totalCertificates === 1 ? "constancia" : "constancias"}</p>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {selectedCourse.years.map((year) => (
@@ -354,7 +354,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
             >
               <h3 className="font-semibold">{year.year}</h3>
               <p className="text-sm text-muted-foreground">
-                {year.count} {year.count === 1 ? "certificado" : "certificados"}
+                {year.count} {year.count === 1 ? "constancia" : "constancias"}
               </p>
 
               {year.year === currentYear && (
@@ -451,7 +451,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
             ) : (
               <tr>
                 <td colSpan={4} className="px-4 py-8 text-center text-sm text-gray-500">
-                  No se encontraron certificados
+                  No se encontraron constancias
                 </td>
               </tr>
             )}

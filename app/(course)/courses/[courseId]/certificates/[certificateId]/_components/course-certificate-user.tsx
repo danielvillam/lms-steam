@@ -33,8 +33,9 @@ const CourseCertificateUser: React.FC<Props> = ({
   const router = useRouter();
 
   const handleVerify = () => {
-    router.push(`/courses/${course.id}/certificates/${certificateToken}/verify`);
+    router.push(`/certificate/verify/${course.id}/${certificateToken}`);
   };
+
 
   const downloadCertificate = async () => {
     const element = document.getElementById("certificate-download-html");

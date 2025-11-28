@@ -7,7 +7,7 @@ const isPublicRoute = createRouteMatcher([
   '/sign-in(.*)',
   '/sign-up(.*)',
   '/api/uploadthing',
-  '/courses/:courseId/certificates/:certificateId/verify',
+  '/certificate/verify/:path*',
 ]);
 
 

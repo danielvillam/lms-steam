@@ -56,7 +56,7 @@ const CertificatePage = async ({ params }: CertificatePageProps) => {
       data: {
         courseId: course.id,
         userId,
-        certificateUrl: `${params.courseId}-${randomUUID()}`, // token único
+        certificateUrl: `${params.courseId}-${randomUUID()}`, 
       },
     });
     console.log("Nuevo certificado generado:", certificate);

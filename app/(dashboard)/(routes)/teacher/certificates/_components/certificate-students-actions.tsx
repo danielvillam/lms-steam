@@ -60,11 +60,11 @@ export const CertificateStudentsActions = ({
       const height = pdf.internal.pageSize.getHeight();
 
       pdf.addImage(imgData, "PNG", 0, 0, width, height);
-      pdf.save(`Certificado_${userName.replace(/\s+/g, "_")}.pdf`);
+      pdf.save(`Constancia_${userName.replace(/\s+/g, "_")}.pdf`);
 
     } catch (error) {
       console.error("Error generando PDF:", error);
-      alert("Error al descargar el certificado");
+      alert("Error al descargar la constancia");
     } finally {
       setIsDownloading(false);
     }
@@ -137,7 +137,7 @@ export const CertificateStudentsActions = ({
               <img
                 src={previewImg}
                 className="max-w-full rounded shadow"
-                alt="Vista previa del certificado"
+                alt="Vista previa de la constancia"
               />
             ) : (
               "Generando vista previa..."
