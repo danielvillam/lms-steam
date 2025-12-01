@@ -95,6 +95,7 @@ const CourseCertificateUser: React.FC<Props> = ({
                 completionDate={completionDate}
                 userName={userFullName}
                 logoUrl="/IdentificadorAulaSTEAM.png"
+                firma="/firmaMonicaVallejo.png"
               />
             </div>
 
@@ -105,7 +106,7 @@ const CourseCertificateUser: React.FC<Props> = ({
                 className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white"
               >
                 <Download className="w-4 h-4 mr-2" />
-                Descargar certificado
+                Descargar constancia
               </Button>
 
               <Button
@@ -113,7 +114,7 @@ const CourseCertificateUser: React.FC<Props> = ({
                 className="flex-1 bg-white hover:bg-gray-100 text-black border border-gray-300"
               >
                 <Share2 className="w-4 h-4 mr-2" />
-                Compartir certificado
+                Compartir constancia
               </Button>
             </div>
           </div>
@@ -122,7 +123,7 @@ const CourseCertificateUser: React.FC<Props> = ({
         {/* Footer Additional Information */}
         <div className="mt-8 bg-white rounded-lg p-6 shadow-sm">
           <h3 className="text-lg font-semibold text-gray-900 mb-3">
-            Sobre este certificado
+            Sobre esta constancia
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600">
@@ -156,6 +157,7 @@ const CourseCertificateUser: React.FC<Props> = ({
           completionDate={completionDate}
           userName={userFullName}
           logoUrl="/IdentificadorAulaSTEAM.png"
+          firma="/firmaMonicaVallejo.png"
         />
       </div>
     </div>

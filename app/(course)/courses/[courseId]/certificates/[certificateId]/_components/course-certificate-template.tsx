@@ -11,6 +11,7 @@ interface Props {
   completionDate: Date;
   userName: string;
   logoUrl: string;
+  firma: string;
   
 }
 
@@ -25,6 +26,7 @@ const CourseCertificateTemplate = forwardRef<HTMLDivElement, Props>(
       completionDate,
       userName,
       logoUrl,
+      firma,
     },
     ref
   ) => {
@@ -163,9 +165,7 @@ const CourseCertificateTemplate = forwardRef<HTMLDivElement, Props>(
           {/* Footer */}
           <div className="space-y-2.5 mt-2">
             
-            <p className="text-xs text-gray-500 italic font-medium">
-              Curso en línea no válido para homologación
-            </p>
+
             
             <div className="flex justify-center mt-1.5">
               <div 
@@ -181,11 +181,36 @@ const CourseCertificateTemplate = forwardRef<HTMLDivElement, Props>(
               </div>
             </div>
 
-            
+
+            {/* Sección de firma */}
+            <div className="flex flex-col items-center justify-center space-y-1 mt-3">
+              <div className="flex justify-center items-center">
+                <img 
+                  src={firma}
+                  alt="Firma" 
+                  className="h-20 w-auto object-contain"
+                />
+              </div>
+              
+              <div className="border-t-2 border-gray-800 w-64 mt-1"></div>
+              
+              <div className="text-center space-y-0.5 pt-1">
+                <p className="text-base font-bold text-gray-800">
+                  Mónica Vallejo Velásquez
+                </p>
+                <p className="text-sm text-gray-600">
+                  Directora del Instituto de Educación en Ingeniería
+                </p>
+              </div>
+            </div>
+  
             <div className="pt-1.5">
               <p className="text-xs text-gray-400 font-mono">
                 ID: {certificateId}
               </p>
+              <p className="text-xs text-gray-500 italic font-medium">
+              Curso en línea no válido para homologación
+            </p>
             </div>
           </div>
         </div>

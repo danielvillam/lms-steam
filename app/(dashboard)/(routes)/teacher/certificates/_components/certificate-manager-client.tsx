@@ -167,6 +167,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
             level={selectedCourse!.level}
             completionDate={student.issuedAt}
             logoUrl="/IdentificadorAulaSTEAM.png"
+            firma="/firmaMonicaVallejo.png"
           />
         );
 
@@ -281,7 +282,7 @@ const CertificatesManagerClient = ({ initialFacets }: CertificatesManagerClientP
               >
                 <h3 className="font-semibold">{course.title}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {course.certificateCount} {course.certificateCount === 1 ? "constancia" : "constancia"} emitido{course.certificateCount === 1 ? "" : "s"}
+                  {course.certificateCount} {course.certificateCount === 1 ? "constancia" : "constancia"} emitida{course.certificateCount === 1 ? "" : "s"}
                 </p>
                 <p className="text-xs text-gray-500 mt-1">
                   Última constancia: {lastYear}

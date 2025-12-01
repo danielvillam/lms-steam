@@ -160,6 +160,7 @@ export const CertificateStudentsActions = ({
           level={level}
           completionDate={completionDate}
           logoUrl="/IdentificadorAulaSTEAM.png"
+          firma="/firmaMonicaVallejo.png"
         />
       </div>
     </>

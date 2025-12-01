@@ -15,6 +15,7 @@ interface Props {
   userName: string;
   userEmail?: string;
   logoUrl: string;
+  firma: string;
 }
 
 const pxToMm = (px: number) => {
@@ -212,6 +213,7 @@ const CourseCertificatePreviewPDF: React.FC<Props> = ({
           completionDate={completionDate}
           userName={userName}
           logoUrl="/IdentificadorAulaSTEAM.png"
+          firma="/firmaMonicaVallejo.png"
         />
       </div>
     </div>

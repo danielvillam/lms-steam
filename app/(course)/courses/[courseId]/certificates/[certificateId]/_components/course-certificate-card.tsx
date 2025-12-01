@@ -30,7 +30,7 @@ const CourseCertificateCard: React.FC<Props> = ({
     <div className="p-6 border rounded-xl shadow-md bg-white hover:shadow-lg transition">
       <div className="flex items-center gap-2 text-emerald-800">
         <Award className="w-6 h-6" />
-        <h3 className="font-semibold text-lg">Certificado de finalización</h3>
+        <h3 className="font-semibold text-lg">Constancia de finalización</h3>
       </div>
 
       <div className="mt-4 space-y-2 text-gray-700">
@@ -53,7 +53,7 @@ const CourseCertificateCard: React.FC<Props> = ({
             : "No disponible"}
         </p>
         <p>
-          Este certificado confirma que{" "}
+          Este constancia confirma que{" "}
           <span className="font-semibold">{userName}</span> ha completado
           satisfactoriamente el curso.
         </p>
