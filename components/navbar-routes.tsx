@@ -17,9 +17,9 @@ export const NavbarRoutes = () => {
         return null;
     }
 
-    const isTeacherPage = pathname?.startsWith("/teacher");
-    const isCoursePage = pathname?.includes("/course");
-    const isSearchPage = pathname === "/search";
+    const isTeacherPage = pathname?.startsWith('/teacher');
+    const isCoursePage = pathname?.includes('/course');
+    const isSearchPage = pathname === '/search';
 
     return (
         <>
@@ -32,7 +32,7 @@ export const NavbarRoutes = () => {
             <div className="flex gap-4 items-center ml-auto">
                 {userId ? (
                     isTeacherPage ? (
-                        // If you are on the teacher page, it shows "Student Mode"
+                        // Volver a modo estudiante
                         <Link href="/">
                             <Button size="sm" variant="outline">
                                 <UserRound className="h-4 w-4 mr-2 text-blue-500" />
@@ -40,7 +40,7 @@ export const NavbarRoutes = () => {
                             </Button>
                         </Link>
                     ) : isCoursePage ? (
-                        // If you are on the course page, display "Back to top"
+                        // Volver al inicio desde curso
                         <Link href="/">
                             <Button size="sm" variant="outline">
                                 <Home className="h-4 w-4 mr-2 text-blue-500" />
@@ -48,7 +48,7 @@ export const NavbarRoutes = () => {
                             </Button>
                         </Link>
                     ) : isTeacher(userId) ? (
-                        // If you are a teacher and are not on the teacher or course page, show "Teacher Mode"
+                        // Ir a modo profesor
                         <Link href="/teacher/courses">
                             <Button size="sm" variant="outline">
                                 <UserRoundCog className="h-4 w-4 mr-2 text-green-500" />
@@ -57,7 +57,7 @@ export const NavbarRoutes = () => {
                         </Link>
                     ) : null
                 ) : (
-                    // If not logged in, display "Login"
+                    // Usuario no autenticado
                     <Link href="/sign-in">
                         <Button size="sm" variant="outline">
                             <LogIn className="h-4 w-4 mr-2 text-green-500" />
@@ -66,10 +66,8 @@ export const NavbarRoutes = () => {
                     </Link>
                 )}
 
-
                 <UserButton afterSwitchSessionUrl="/" />
             </div>
         </>
     );
 };
-

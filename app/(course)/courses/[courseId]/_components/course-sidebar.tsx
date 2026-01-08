@@ -27,11 +27,10 @@ const CourseSidebar = async ({
     course,
     progressCount
 }: CourseSidebarProps) => {
-    const { userId, redirectToSignIn } = await auth()
+    const { userId, redirectToSignIn } = await auth();
 
-    if (!userId) return redirectToSignIn()
+    if (!userId) return redirectToSignIn();
 
-    // Check if the user has purchased the course
     const purchase = await db.registration.findFirst({
         where: {
             AND: [
@@ -41,7 +40,7 @@ const CourseSidebar = async ({
         },
     });
 
-    let previousCompleted = true; // El primer módulo está habilitado por defecto
+    let previousCompleted = true;
     const isCourseCompleted = progressCount >= 100;
 
     return (
@@ -54,12 +53,15 @@ const CourseSidebar = async ({
                     </div>
                 )}
             </div>
+
             <div className="flex flex-col w-full">
                 {course.modules.map((item) => {
                     const isCompleted = !!item.userProgress?.[0]?.isCompleted;
                     const isUnlocked = previousCompleted && purchase;
 
-                    const moduleComponent = (
+                    previousCompleted = isCompleted;
+
+                    return (
                         <div key={item.id}>
                             <CourseSidebarItem
                                 id={item.id}
@@ -68,6 +70,7 @@ const CourseSidebar = async ({
                                 courseId={course.id}
                                 isLocked={!isUnlocked}
                             />
+
                             {item.evaluation?.isPublished && isUnlocked && (
                                 <CourseEvaluationItem
                                     courseId={course.id}
@@ -76,32 +79,24 @@ const CourseSidebar = async ({
                                     isLocked={!isUnlocked}
                                     type={item.evaluation.type}
                                 />
-
                             )}
                         </div>
                     );
-
-                    // Update the status for the next module
-                    previousCompleted = isCompleted;
-
-                    return moduleComponent;
                 })}
 
-                {/* Mostrar el certificado al completar el 100%*/}
+                {/* Certificado al completar el curso */}
                 {purchase && isCourseCompleted && (
-                    <div className="certificate">
-                            <CourseSidebarItem
-                            id="certificate"
-                            label="Constancia"
-                            isCompleted={true}
-                            courseId={course.id}
-                            isLocked={false}
-                            />
-                    </div>
+                    <CourseSidebarItem
+                        id="certificate"
+                        label="Constancia"
+                        isCompleted={true}
+                        courseId={course.id}
+                        isLocked={false}
+                    />
                 )}
             </div>
         </div>
     );
 };
 
-export { CourseSidebar }
+export { CourseSidebar };
