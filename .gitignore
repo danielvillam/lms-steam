@@ -26,11 +26,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-<<<<<<< HEAD
 .env*.local
-=======
-.env.local
->>>>>>> lms/main
 .env
 
 # vercel
