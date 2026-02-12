@@ -83,20 +83,6 @@ const AuthenticatedDashboard = async ({ userId }: { userId: string }) => {
                 </div>
             </div>
 
-            {/* Upcoming Events */}
-            <div className="mt-10">
-                <h2 className="text-2xl font-bold text-center">📅 Próximos Eventos</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                    {upcomingEvents.map((event, index) => (
-                        <div key={index} className="bg-gradient-to-br from-indigo-500 to-purple-600 text-white p-5 rounded-lg shadow-lg">
-                            <h3 className="text-xl font-semibold">{event.title}</h3>
-                            <p className="mt-1">{event.date}</p>
-                            <p className="mt-1 italic">{event.location}</p>
-                        </div>
-                    ))}
-                </div>
-            </div>
-
             {/* Latest News */}
             <div className="mt-10">
                 <h2 className="text-2xl font-bold text-center">📰 Últimas Novedades</h2>

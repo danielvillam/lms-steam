@@ -13,32 +13,36 @@ import { cn } from "@/lib/utils";
  * This component represents a single item in the sidebar navigation.
  */
 interface SidebarItemProps {
-  icon: LucideIcon;
+  icon: React.ElementType;
   label: string;
   href: string;
+  external?: boolean;
 }
-
-export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
+export const SidebarItem = ({
+  icon: Icon,
+  label,
+  href,
+  external = false,
+}: SidebarItemProps) => {
   const pathname = usePathname();
 
   const isActive = React.useMemo(
     () =>
-      pathname === href ||
-      pathname?.startsWith(`${href}/`) ||
-      (pathname === "/" && href === "/"),
-    [pathname, href]
+      !external &&
+      (pathname === href ||
+        pathname?.startsWith(`${href}/`) ||
+        (pathname === "/" && href === "/")),
+    [pathname, href, external]
   );
 
-  return (
-    <Link
-      href={href}
-      aria-current={isActive ? "page" : undefined}
-      className={cn(
-        "flex items-center gap-x-3 px-4 py-2.5 rounded-xl transition-all group",
-        "text-slate-600 hover:text-sky-600 hover:bg-sky-50/70",
-        isActive && "bg-sky-50 text-sky-600 font-medium"
-      )}
-    >
+  const className = cn(
+    "flex items-center gap-x-3 px-4 py-2.5 rounded-xl transition-all group",
+    "text-slate-600 hover:text-sky-600 hover:bg-sky-50/70",
+    isActive && "bg-sky-50 text-sky-600 font-medium"
+  );
+
+  const content = (
+    <>
       <div
         className={cn(
           "p-2 rounded-lg transition-all group-hover:bg-white group-hover:scale-[1.05]",
@@ -57,6 +61,29 @@ export const SidebarItem = ({ icon: Icon, label, href }: SidebarItemProps) => {
       <span className="text-sm font-medium transition-all duration-300">
         {label}
       </span>
+    </>
+  );
+
+  if (external) {
+    return (
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={className}
+      >
+        {content}
+      </a>
+    );
+  }
+
+  return (
+    <Link
+      href={href}
+      aria-current={isActive ? "page" : undefined}
+      className={className}
+    >
+      {content}
     </Link>
   );
 };

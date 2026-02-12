@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import { SidebarItem } from "./sidebar-item";
 import { isTeacher } from "@/lib/teacher";
 import { useAuth } from "@clerk/nextjs";
+import { SiInstagram } from "react-icons/si";
 
 /**
  * SidebarRoutes Component.
@@ -114,15 +115,37 @@ export const SidebarRoutes = () => {
       : guestRoutes;
 
   return (
-    <div className="flex flex-col w-full gap-y-1">
-      {routes.map((route) => (
-        <SidebarItem
-          key={route.href}
-          icon={route.icon}
-          label={route.label}
-          href={route.href}
-        />
-      ))}
+    <div className="flex flex-col justify-between h-full w-full">
+      
+
+        <div className="flex flex-col gap-y-1">
+        {routes.map((route) => (
+          <SidebarItem
+            key={route.href}
+            icon={route.icon}
+            label={route.label}
+            href={route.href}
+          />
+        ))}
+      </div>
+
+      {!(isOnTeacherPage && isUserTeacher) && (
+        <div className="pt-6 mt-6 border-t">
+          <p className="px-4 text-xs text-slate-400 mb-2">
+            Síguenos
+          </p>
+
+          <SidebarItem
+            icon={SiInstagram}
+            label="Instagram"
+            href="https://www.instagram.com/nachosteam_med/"
+            external
+          />
+        </div>
+      )}
+
+
     </div>
   );
+
 };
