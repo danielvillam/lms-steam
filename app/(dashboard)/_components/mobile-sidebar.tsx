@@ -1,15 +1,23 @@
-import { Menu } from "lucide-react";
+'use client';
 
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { Sidebar } from "./sidebar";
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+import { useEffect, useState } from 'react';
 
-/**
- * Mobile Sidebar Component.
- *
- * This component renders a sidebar navigation menu for mobile devices.
- */
 export const MobileSidebar = () => {
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    // No renderiza nada en el servidor
+    if (!isMounted) {
+        return null;
+    }
+
     return (
         <Sheet>
             <SheetTrigger className="md:hidden pr-4 hover:opacity-75 transition">
