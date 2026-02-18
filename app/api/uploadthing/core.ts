@@ -44,7 +44,7 @@ export const ourFileRouter = {
         }),
 
     // Route for module videos
-    moduleVideo: f({ video: { maxFileSize: "512GB", maxFileCount: 1 } })
+    moduleVideo: f({ video: { maxFileSize: "2GB", maxFileCount: 1 } })
         .middleware(async ({ req }) => {
             const userId = await handleAuth(req);
             return { userId: userId };

@@ -40,10 +40,48 @@ export async function DELETE(
       id: moduleId,
       courseId: courseId,
     },
+    include: {
+      evaluation: true,
+    },
   });
 
   if (!module) {
     return new NextResponse("Not Found", { status:404 });
+  }
+
+  // Delete user progress for this module
+  await db.userProgress.deleteMany({
+    where: { moduleId },
+  });
+
+  // Delete evaluation and its related data
+  if (module.evaluation) {
+    const evaluationId = module.evaluation.id;
+
+    // Delete selected answers
+    await db.selectedAnswer.deleteMany({
+      where: { question: { evaluationId } },
+    });
+
+    // Delete evaluation results
+    await db.evaluationResult.deleteMany({
+      where: { evaluationId },
+    });
+
+    // Delete answers
+    await db.answer.deleteMany({
+      where: { question: { evaluationId } },
+    });
+
+    // Delete questions
+    await db.question.deleteMany({
+      where: { evaluationId },
+    });
+
+    // Delete evaluation
+    await db.evaluation.delete({
+      where: { id: evaluationId },
+    });
   }
 
   const deletedModule = await db.module.delete({
